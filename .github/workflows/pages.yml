@@ -1,0 +1,47 @@
+# Deploy the site with GitHub Actions rather than the legacy branch build.
+#
+# The legacy builder reports failures as the string "Page build failed." with no
+# log, which is unworkable when something goes wrong. This path publishes the
+# directory verbatim and shows exactly what it did.
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deploys at once, but do not cancel one in progress — a
+# half-deployed site is worse than a slightly stale one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the exported data actually parses
+        # The pages are useless without it, and a malformed export should fail
+        # here rather than as a JSON.parse error in a visitor's browser.
+        run: |
+          for f in data/*.json; do
+            python3 -c "import json,sys; json.load(open('$f'))" || exit 1
+            echo "ok $f ($(du -h "$f" | cut -f1))"
+          done
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
