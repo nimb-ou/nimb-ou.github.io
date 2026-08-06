@@ -45,3 +45,9 @@ jobs:
           path: .
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          # The action's default is 10 minutes, and GitHub's deployment-status
+          # API has repeatedly taken longer than that to acknowledge a deploy
+          # that had in fact already gone live — a red run over a site that was
+          # serving the new content fine. Raised so a failed run means something.
+          timeout: 1200000
