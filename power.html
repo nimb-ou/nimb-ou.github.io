@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Power Price Alpha — Nimit Jain</title>
+<meta name="description" content="Day-ahead forecasting of GB half-hourly electricity prices, validated walk-forward over six and a half years, with conformal prediction intervals and a battery arbitrage backtest.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Project 02 · Energy markets</p>
+    <h1 style="max-width:16ch">Power Price Alpha</h1>
+    <p class="lede" style="max-width:64ch">
+      A day-ahead forecaster for GB half-hourly electricity prices, validated walk-forward
+      across six and a half years of real market data, given honest uncertainty bounds, and
+      converted into a battery arbitrage schedule charged for the frictions it would really pay.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/power-price-alpha">Source on GitHub →</a>
+      <span class="pill">Elexon · NESO · Open-Meteo</span>
+      <span class="pill">2019–2025</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-4" id="headline-stats">
+      <div class="card stat"><div class="label">MAE vs strongest baseline</div><div class="value" data-k="imp-strong">—</div><div class="sub" data-k="imp-strong-sub">—</div></div>
+      <div class="card stat"><div class="label">With weather removed</div><div class="value" data-k="imp-ablation">—</div><div class="sub">the pessimistic bracket</div></div>
+      <div class="card stat"><div class="label">Out-of-sample</div><div class="value" data-k="n-pred">—</div><div class="sub" data-k="folds">—</div></div>
+      <div class="card stat"><div class="label">Battery uplift</div><div class="value" data-k="uplift">—</div><div class="sub">over the naive schedule</div></div>
+    </div>
+
+    <div class="note mt2">
+      <strong>Why 22% and not 30%.</strong> The baseline was declared in code before any model
+      was fitted — <code>same_period_last_week</code>. It turned out not to be the hardest one:
+      <code>same_period_two_days_ago</code> beats it. Quoting the declared comparison would give
+      a larger number and would be choosing the flattering opponent after the fact, so the
+      headline is measured against the strongest baseline instead. The weather ablation is the
+      second check, and it lands at almost exactly the same place.
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section>
+  <div class="wrap">
+    <h2>1. A day at a time</h2>
+    <p class="lede mb2" style="max-width:62ch">
+      Real out-of-sample days. Every price is what the market actually settled at; every
+      forecast is what the model produced from information available at gate closure the day
+      before.
+    </p>
+
+    <div class="card">
+      <div class="grid grid-2 mb2" style="align-items:end">
+        <div class="control mb0">
+          <label for="day">Day</label>
+          <select id="day"></select>
+        </div>
+        <div class="control mb0">
+          <label>Show</label>
+          <div class="segmented" role="group">
+            <button type="button" data-band="none" aria-pressed="true">Point forecast</button>
+            <button type="button" data-band="raw">Raw P10–P90</button>
+            <button type="button" data-band="conformal">Conformalised</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-4 mb2">
+        <div class="stat" style="padding:0"><div class="label">Why this day</div><div class="value" id="d-reason" style="font-size:.95rem;font-family:var(--sans)">—</div></div>
+        <div class="stat" style="padding:0"><div class="label">Regime</div><div class="value" id="d-regime" style="font-size:.95rem;font-family:var(--sans)">—</div></div>
+        <div class="stat" style="padding:0"><div class="label">MAE that day</div><div class="value" id="d-mae">—</div></div>
+        <div class="stat" style="padding:0"><div class="label">Battery P&amp;L</div><div class="value" id="d-pnl">—</div></div>
+      </div>
+
+      <div class="chart" id="day-chart"></div>
+      <div class="chart-legend">
+        <span><i class="swatch" style="background:var(--text)"></i> settled price</span>
+        <span><i class="swatch" style="background:var(--accent)"></i> XGBoost forecast</span>
+        <span><i class="swatch" style="background:var(--text-3)"></i> seasonal naive</span>
+        <span id="band-legend" hidden><i class="swatch box" style="background:var(--accent);opacity:.3"></i> P10–P90 interval</span>
+      </div>
+
+      <h3 class="mt3">What the battery did</h3>
+      <p class="xs muted mb1">
+        Charge in the four cheapest forecast periods, discharge in the four dearest — decided
+        from the forecast alone, before any of these prices were known.
+      </p>
+      <div class="chart" id="day-battery"></div>
+      <div class="chart-legend">
+        <span><i class="swatch box" style="background:var(--good)"></i> charging (buying)</span>
+        <span><i class="swatch box" style="background:var(--bad)"></i> discharging (selling)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>2. Every baseline, and the one that matters</h2>
+    <div class="table-scroll">
+      <table id="models-table">
+        <thead><tr>
+          <th>Model</th><th class="num">MAE</th><th class="num">RMSE</th>
+          <th class="num">Bias</th><th class="num">vs declared baseline</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="muted small" id="dm-note"></p>
+
+    <h3 class="mt3">Is the gain just the gas crisis?</h3>
+    <p class="muted small mb2" style="max-width:62ch">
+      Regime boundaries were written into the config from market history before any model was
+      fitted. Choosing them after seeing where a model did well is a well-known way to
+      manufacture a story.
+    </p>
+    <div class="table-scroll">
+      <table id="regime-table">
+        <thead><tr>
+          <th>Regime</th><th class="num">n</th><th class="num">Mean price</th>
+          <th class="num">Volatility</th><th class="num">MAE (model)</th>
+          <th class="num">MAE (naive)</th><th class="num">Improvement</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>3. Where in the day it goes wrong</h2>
+    <p class="lede mb2" style="max-width:62ch">
+      Error is not uniform across the day. Both the model and the baseline are worst in the
+      evening peak — which is where the merit order steepens, where the marginal plant is most
+      likely to be a peaker, and where a battery makes most of its money.
+    </p>
+    <div class="card">
+      <div class="chart" id="period-chart"></div>
+      <div class="chart-legend">
+        <span><i class="swatch" style="background:var(--accent)"></i> XGBoost</span>
+        <span><i class="swatch" style="background:var(--text-3)"></i> seasonal naive</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>4. The interval did not mean what it said</h2>
+    <p class="lede mb2" style="max-width:64ch">
+      A P10–P90 band should contain the outturn 80% of the time. Fitted under pinball loss and
+      evaluated out-of-sample, it does not come close.
+    </p>
+
+    <div class="grid grid-2 mb2">
+      <div class="card">
+        <h3>Diagnosis first</h3>
+        <p class="muted small">
+          The obvious conclusion is that the quantile model is broken. It is not. Measured on
+          the data it was fitted on, coverage is <b>0.810</b> against a nominal 0.80 — exactly
+          right.
+        </p>
+        <p class="muted small mb0">
+          Across that same split the standard deviation of prices rose from 14.8 to 21.3
+          GBP/MWh. The estimator is fine and the market moved. An interval calibrated on a calm
+          window is simply too narrow for a volatile one.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Conformal prediction</h3>
+        <p class="muted small">
+          Hold out a calibration window the model never saw, measure how far outside its own
+          interval the outturn actually fell, and widen by the appropriate quantile of those
+          misses. Under exchangeability this gives finite-sample coverage for <em>any</em>
+          model.
+        </p>
+        <p class="muted small mb0">
+          Exchangeability does not hold on a non-stationary price series, so the calibration
+          window is the most recent 60 days rather than a random sample, and coverage improves
+          substantially without reaching nominal. That shortfall is the honest result.
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="table-scroll">
+        <table id="interval-table">
+          <thead><tr>
+            <th>Interval</th><th class="num">Coverage</th><th class="num">Nominal</th>
+            <th class="num">Mean width</th><th class="num">Winkler</th><th class="num">Crossings</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="muted small mb0">
+        <strong>Read the Winkler score, not the coverage.</strong> Any interval reaches 100%
+        coverage by becoming infinitely wide, and Winkler — width plus a penalty proportional to
+        how far outside a miss landed — is the number that punishes exactly that. The
+        conformalised band is wider <em>and</em> scores better, which is what says the extra
+        width was earned rather than bought.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>5. Turning a forecast into money, carefully</h2>
+    <p class="lede mb2" style="max-width:64ch">
+      A 1 MW / 2 MWh battery. Charge in the four cheapest forecast periods of each day,
+      discharge in the four dearest, pay transaction costs and slippage on every MWh, and lose
+      15% to round-trip efficiency.
+    </p>
+
+    <div class="grid grid-3 mb2">
+      <div class="card stat"><div class="label">Model schedule</div><div class="value" data-k="pnl-xgb">—</div><div class="sub">over the full period</div></div>
+      <div class="card stat"><div class="label">Naive schedule</div><div class="value" data-k="pnl-naive">—</div><div class="sub">same battery, worse forecast</div></div>
+      <div class="card stat"><div class="label">Perfect foresight</div><div class="value" data-k="pnl-oracle">—</div><div class="sub">the ceiling, not a strategy</div></div>
+    </div>
+
+    <div class="callout warn mb2">
+      <strong>The Sharpe ratio here is about 10, and it is not a skill result.</strong> A
+      battery buying low and selling high inside the same day is physical arbitrage — the naive
+      schedule alone scores above 8. Quoting the Sharpe would be quoting the battery, not the
+      forecast. The number that isolates the forecast's contribution is the
+      <b data-k="uplift-inline">—</b> uplift over the naive schedule, and that is what this
+      project claims.
+    </div>
+
+    <div class="card">
+      <h3>Cumulative P&amp;L</h3>
+      <div class="chart" id="pnl-chart"></div>
+      <p class="xs muted mt1 mb0">
+        Net of all frictions. The curve steepens through the gas crisis because spreads widened,
+        not because the model improved — which is the same reason the regime table above exists.
+      </p>
+    </div>
+
+    <div class="card mt2">
+      <h3>An earlier version of this strategy reported a Sharpe of 50</h3>
+      <p class="muted small">
+        It traded the spread between the forecast and the seasonal naive against the spread
+        between the realised price and the same naive. That number was not a discovery; it was a
+        bug. No instrument pays that payoff — you cannot buy "the forecast error" — and the
+        annualisation compounded it by treating 48 half-hourly settlement periods as 48
+        independent bets when they are one correlated day.
+      </p>
+      <p class="muted small mb0">
+        Both are fixed: the strategy is now a physical battery that could actually be operated,
+        and annualisation uses √365.25 on daily P&amp;L. The discarded design is written up in
+        the docstring of <code>strategy/signals.py</code> and in lesson 11, because the reasoning
+        is more useful than the strategy that replaced it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>6. What would break this in production</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Weather is outturn, not forecast</h3>
+        <p class="muted small mb0">
+          Features come from Open-Meteo's <em>archive</em> — what the weather actually did, not
+          what was forecast at gate closure. That makes the main run optimistic by an unknown
+          amount. Re-running with weather removed entirely brackets it, and the honest range is
+          between the two: closer to the with-weather end for temperature, closer to the
+          without-weather end for wind.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Market impact is assumed away</h3>
+        <p class="muted small mb0">
+          One megawatt in a market that clears tens of gigawatts moves nothing, so treating the
+          price as exogenous is defensible at this size and indefensible at a hundred times it.
+          The backtest charges fixed slippage rather than modelling depth.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Perfect execution</h3>
+        <p class="muted small mb0">
+          Every scheduled MWh is assumed to trade at the settled price. A real operator faces
+          the day-ahead auction clearing at a different price from the market index, and
+          imbalance exposure on the difference.
+        </p>
+      </div>
+      <div class="card">
+        <h3>No degradation cost</h3>
+        <p class="muted small mb0">
+          The battery cycles once a day for four and a half years with no cost charged for
+          capacity fade. A real financing model prices cycles, and that materially changes
+          whether a marginal day is worth trading.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>7. Run it yourself</h2>
+    <pre><code>git clone https://github.com/nimb-ou/power-price-alpha
+cd power-price-alpha
+make venv
+make all        # first run ~35 min: downloads 6.5 years, runs 54 folds
+
+make fixtures   # or: a committed 6-month sample, offline, seconds
+open reports/report.html</code></pre>
+    <p class="muted small">
+      No API keys. Three public sources, all cached to parquet — the first run is slow and every
+      run after it is offline. The committed CI fixture deliberately spans a clock-change day,
+      because that is where the joins break.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/power-price-alpha">Repository →</a>
+      <a class="pill" href="course.html#power">The course — 16 lessons →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs" data-k="build.stamp">—</div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/power.js"></script>
+</body>
+</html>

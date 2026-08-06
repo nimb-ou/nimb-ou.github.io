@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loan Underwriting Copilot — Nimit Jain</title>
+<meta name="description" content="A credit decisioning service: cost-optimal thresholds, SHAP attribution, retrieval over past cases, and an LLM layer whose every figure is verified against its evidence.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Project 01 · Credit risk decisioning</p>
+    <h1 style="max-width:18ch">Loan Underwriting Copilot</h1>
+    <p class="lede" style="max-width:64ch">
+      A service that scores a credit application, decomposes the score into the attributes that
+      drove it, retrieves the closest historical applicants whose outcomes are known, and
+      answers a loan officer's questions in English — with every figure in that answer checked
+      against its evidence before anyone sees it.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/loan-underwriting-copilot">Source on GitHub →</a>
+      <span class="pill">UCI Statlog German Credit · 1,000 applications</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-4" id="headline-stats">
+      <div class="card stat"><div class="label">Held-out ROC-AUC</div><div class="value" data-k="auc">—</div><div class="sub" data-k="auc-ci">—</div></div>
+      <div class="card stat"><div class="label">Decision threshold</div><div class="value" data-k="threshold">—</div><div class="sub">from the cost matrix, not 50%</div></div>
+      <div class="card stat"><div class="label">Cost per applicant</div><div class="value" data-k="cost">—</div><div class="sub" data-k="cost-sub">—</div></div>
+      <div class="card stat"><div class="label">Brier score</div><div class="value" data-k="brier">—</div><div class="sub">calibrated, <span data-k="calmethod">—</span></div></div>
+    </div>
+
+    <div class="note mt2">
+      <strong>The uncomfortable version.</strong> 0.79 is not 0.85, the 95% interval is
+      <span data-k="auc-ci-inline">—</span> on 250 held-out rows, and a plain logistic regression
+      scores <span data-k="logit-auc">—</span> on that same holdout while losing on
+      cross-validation. The paired difference is not distinguishable from zero. What this project
+      is actually about is the layer above the model — the decision, the explanation, and the
+      verification — and every number on this page comes from a pipeline that re-measures itself.
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section>
+  <div class="wrap">
+    <h2>1. The threshold is the model</h2>
+    <p class="lede mb2" style="max-width:62ch">
+      German Credit ships an official cost matrix: approving a bad loan costs <b>five times</b>
+      declining a good one. Under that matrix the default 0.5 cutoff is not merely suboptimal —
+      it costs more per applicant than declining every single application.
+    </p>
+    <p class="muted small mb2" style="max-width:62ch">
+      Move the slider. The confusion matrix and expected cost below are computed live from the
+      250 held-out applicants and their real predicted probabilities.
+    </p>
+
+    <div class="card">
+      <div class="control">
+        <label for="thr">Decline threshold — <span class="mono" id="thr-val">0.212</span></label>
+        <input type="range" id="thr" min="1" max="99" value="21" step="1">
+        <div class="row between xs muted" style="margin-top:-.2rem">
+          <span>approve almost everyone</span>
+          <span>decline almost everyone</span>
+        </div>
+      </div>
+
+      <div class="row mb2" style="gap:.5rem">
+        <button class="pill" type="button" data-set-thr="shipped">Shipped threshold</button>
+        <button class="pill" type="button" data-set-thr="half">The naive 0.50</button>
+        <button class="pill" type="button" data-set-thr="theoretical">Bayes-optimal 1/6</button>
+        <button class="pill" type="button" data-set-thr="optimal">Best in hindsight</button>
+      </div>
+
+      <div class="grid grid-4 mb2">
+        <div class="stat" style="padding:0"><div class="label">Cost per applicant</div><div class="value" id="live-cost">—</div><div class="sub" id="live-cost-vs">—</div></div>
+        <div class="stat" style="padding:0"><div class="label">Approval rate</div><div class="value" id="live-approval">—</div><div class="sub">of 250 applicants</div></div>
+        <div class="stat" style="padding:0"><div class="label">Bad loans approved</div><div class="value" id="live-fn">—</div><div class="sub">×5 cost each</div></div>
+        <div class="stat" style="padding:0"><div class="label">Good loans declined</div><div class="value" id="live-fp">—</div><div class="sub">×1 cost each</div></div>
+      </div>
+
+      <div class="chart" id="cost-curve"></div>
+      <div class="chart-legend">
+        <span><i class="swatch" style="background:var(--accent)"></i> expected cost per applicant</span>
+        <span><i class="swatch" style="background:var(--text-3)"></i> decline everyone (0.70)</span>
+        <span><i class="swatch box" style="background:var(--bad)"></i> where you are</span>
+      </div>
+    </div>
+
+    <div class="callout mt2">
+      <strong>Why the shipped threshold is not the best one on this chart.</strong> The
+      lowest point of the curve is the optimum <em>in hindsight</em>, chosen by looking at the
+      test set. The shipped threshold was selected on out-of-fold training predictions, before
+      the test set was touched. The gap between them — about
+      <span data-k="threshold-gap">—</span> per applicant — is what honest selection costs, and
+      reporting the hindsight optimum instead would be the most common quiet cheat in applied ML.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>2. Any applicant, fully explained</h2>
+    <p class="lede mb2" style="max-width:62ch">
+      All 250 held-out applicants, scored by the real model. Pick one to see the decision, the
+      SHAP decomposition, the adverse-action notice they would receive, and the historical cases
+      the retrieval layer found.
+    </p>
+
+    <div class="card">
+      <div class="grid grid-2 mb2" style="align-items:end">
+        <div class="control mb0">
+          <label for="applicant">Applicant</label>
+          <select id="applicant"></select>
+        </div>
+        <div class="control mb0">
+          <label for="applicant-filter">Show</label>
+          <select id="applicant-filter">
+            <option value="all">All 250</option>
+            <option value="declined-bad">Declined, and did default — correct declines</option>
+            <option value="approved-bad">Approved, but defaulted — the expensive errors</option>
+            <option value="declined-good">Declined, but would have repaid</option>
+            <option value="approved-good">Approved, and repaid</option>
+            <option value="confident-wrong">Most confident mistakes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-4 mb2">
+        <div class="stat" style="padding:0"><div class="label">P(default)</div><div class="value" id="a-prob">—</div></div>
+        <div class="stat" style="padding:0"><div class="label">Decision</div><div class="value" id="a-decision">—</div></div>
+        <div class="stat" style="padding:0"><div class="label">What actually happened</div><div class="value" id="a-actual">—</div></div>
+        <div class="stat" style="padding:0"><div class="label">Verdict</div><div class="value" id="a-verdict">—</div></div>
+      </div>
+
+      <h3 class="mt3">The application</h3>
+      <div class="table-scroll">
+        <table id="a-attributes"><tbody></tbody></table>
+      </div>
+
+      <h3 class="mt3">What drove the score</h3>
+      <p class="xs muted mb1">
+        SHAP contributions in log-odds, summed back from one-hot columns to real attributes —
+        exact, because SHAP is additive.
+        <label style="display:inline-flex;gap:.35rem;align-items:center;margin-left:.5rem">
+          <input type="checkbox" id="show-protected"> show protected attributes
+        </label>
+      </p>
+      <div class="bars" id="a-shap"></div>
+      <p class="xs muted mt1" id="a-shap-note"></p>
+
+      <h3 class="mt3">The adverse-action notice</h3>
+      <div id="a-reasons"></div>
+
+      <h3 class="mt3">Closest historical cases</h3>
+      <div id="a-precedents"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>3. Fairness, tested properly</h2>
+    <p class="lede mb2" style="max-width:64ch">
+      The system already hid protected attributes from the officer's view and blocked the LLM
+      from citing one as a reason. Neither is a fairness result. This measures what the model
+      actually does to each group.
+    </p>
+
+    <div class="card mb2">
+      <div class="control">
+        <label for="fair-attr">Protected attribute</label>
+        <select id="fair-attr"></select>
+      </div>
+      <div class="table-scroll">
+        <table id="fair-table"><thead><tr>
+          <th>Group</th><th class="num">n</th><th class="num">Approval rate</th>
+          <th class="num">Bad rate</th><th class="num">Approved among non-defaulters</th><th class="num">AUC</th>
+        </tr></thead><tbody></tbody></table>
+      </div>
+      <div id="fair-verdict"></div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>The test that was wrong</h3>
+        <p class="muted small">
+          The first version bootstrapped the min/max approval-rate ratio and checked whether the
+          interval excluded parity. It reported <b>all three</b> attributes as conclusively
+          disparate — including one whose minority group has eight members.
+        </p>
+        <p class="muted small mb0">
+          The error: <code>min</code> over a set of noisy group rates is a <b>biased</b>
+          estimator. With four groups of unequal size, the smallest lands at the bottom by luck
+          alone, so the point estimate sits below the truth and a bootstrap centred on it
+          inherits the bias intact. The four-fifths rule fires on that noise.
+        </p>
+      </div>
+      <div class="card">
+        <h3>The test that replaced it</h3>
+        <p class="muted small">
+          A permutation test. Shuffle group labels against fixed decisions and recompute the
+          ratio: every permutation has the same group sizes and the same
+          minimum-of-four-noisy-rates effect, so the null distribution absorbs the bias.
+        </p>
+        <p class="muted small mb0">
+          Result: one attribute untestable, one gap explained by realised default rates, and
+          <b>one real finding</b> — the age gap survives restricting to applicants who did not
+          default, so differing risk does not explain it.
+        </p>
+      </div>
+    </div>
+
+    <div class="card mt2">
+      <h3>So drop the protected attributes? Here is the price.</h3>
+      <p class="muted small mb2">
+        Refit without them, same hyperparameters, same calibration, threshold re-selected
+        out-of-fold so the ablated model is not handicapped.
+      </p>
+      <div class="table-scroll">
+        <table id="ablation-table"><tbody></tbody></table>
+      </div>
+      <p class="muted small mb0" id="ablation-note"></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>4. The LLM is not allowed to decide anything</h2>
+    <p class="lede mb2" style="max-width:64ch">
+      Four endpoints, layered by how much you should trust them. A caller who wants a decision
+      never depends on a language model being up, correct, or affordable.
+    </p>
+
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Endpoint</th><th>Returns</th><th>LLM involved</th><th>Fails when</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET /health</code></td><td class="wrapline">Model and store readiness</td><td><span class="pill">no</span></td><td class="wrapline">never — it is the readiness probe</td></tr>
+          <tr><td><code>POST /score</code></td><td class="wrapline">Probability and cost-based decision</td><td><span class="pill">no</span></td><td class="wrapline">artifacts missing</td></tr>
+          <tr><td><code>POST /explain</code></td><td class="wrapline">The above, plus SHAP factors and reason codes</td><td><span class="pill">no</span></td><td class="wrapline">artifacts missing</td></tr>
+          <tr class="highlight"><td><code>POST /ask</code></td><td class="wrapline">The above, plus a narrated answer</td><td><span class="pill accent">yes</span></td><td class="wrapline">provider down — everything else still returns</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid grid-2 mt2">
+      <div class="card">
+        <h3>Three checks on every answer</h3>
+        <p class="muted small mb1"><b>Numeric grounding.</b> Every figure in the answer must appear in the supplied context.</p>
+        <p class="muted small mb1"><b>Citation validity.</b> Every case ID cited must be one that was actually retrieved.</p>
+        <p class="muted small mb0"><b>Protected rationale.</b> A protected attribute may not be framed as a reason — checked at sentence level, so mentioning age in passing is not a violation while citing it as the cause is.</p>
+      </div>
+      <div class="card">
+        <h3>A failing answer is replaced, not annotated</h3>
+        <p class="muted small">
+          Showing a suspect answer with a warning attached is how warnings get ignored. The
+          guard substitutes a safe answer built from the verified evidence and returns
+          <code>grounded: false</code> so the caller knows.
+        </p>
+        <p class="muted small mb0">
+          Roughly half the guard's tests check the <em>opposite</em> direction — that correct
+          answers are not rejected. A guard that cries wolf gets switched off.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout warn mt2">
+      <strong>What the guard cannot catch.</strong> A false causal claim containing no numbers,
+      no case citations and no protected attribute — <em>"applicants like this rarely recover
+      once they miss a payment"</em> — passes all three checks and is pure fabrication. Catching
+      it needs entailment checking, which means a second model that can also be wrong, in the
+      layer where being wrong is worst. The gap is in the model card's failure table rather than
+      patched over.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>5. Retrieval did not do what it was supposed to</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="grid grid-2" style="gap:.6rem">
+          <div class="stat" style="padding:0"><div class="label">Model alone</div><div class="value" data-k="rag-model">—</div></div>
+          <div class="stat" style="padding:0"><div class="label">Model + neighbours</div><div class="value" data-k="rag-blend">—</div></div>
+          <div class="stat" style="padding:0"><div class="label">Neighbour-outcome AUC</div><div class="value" data-k="rag-neighbour">—</div><div class="sub">chance 0.5</div></div>
+          <div class="stat" style="padding:0"><div class="label">Self-retrievals</div><div class="value" data-k="rag-self">—</div><div class="sub">leakage check</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <p class="muted small">
+          The retrieved neighbourhood carries real signal about default — 0.61 against a chance
+          baseline of 0.5. Blending it with the model score nonetheless makes accuracy
+          <b>slightly worse</b>.
+        </p>
+        <p class="muted small mb0">
+          The store holds training rows the model already learned from, so the neighbours add
+          nothing it does not know. The layer stays because its job is to make a decision
+          <em>explicable</em> — "three of the five closest past applicants defaulted" is
+          checkable by a human in a way a log-odds table is not. That is the claim made for it,
+          and it is not a claim about accuracy.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>6. Run it yourself</h2>
+    <pre><code>git clone https://github.com/nimb-ou/loan-underwriting-copilot
+cd loan-underwriting-copilot
+make venv
+make all        # downloads data, trains, evaluates, writes the model card
+
+make api        # http://localhost:8000/docs
+make ui         # http://localhost:8501</code></pre>
+    <p class="muted small">
+      No API key needed — the LLM layer falls back to a labelled stub. <code>make all</code> is
+      incremental; it skips any stage whose inputs have not changed.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/loan-underwriting-copilot">Repository →</a>
+      <a class="pill" href="course.html#credit">The course — 15 lessons →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs" data-k="build.stamp">—</div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/credit.js"></script>
+</body>
+</html>

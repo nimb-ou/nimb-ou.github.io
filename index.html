@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nimit Jain — Machine learning projects</title>
+<meta name="description" content="Two production-shaped machine learning systems, built end to end: a credit decisioning service with a grounded LLM layer, and a GB electricity price forecaster with a battery arbitrage backtest.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  // Before paint, so there is no flash of the wrong theme.
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Machine learning · Python · Applied statistics</p>
+    <h1 style="max-width:16ch">Two systems, built to be checked.</h1>
+    <p class="lede" style="max-width:60ch">
+      Not notebooks. Two working services with real data, tests that assert the hard parts,
+      CI that re-measures every claim on every push, and a written course that teaches how
+      each one was built.
+    </p>
+
+    <div class="row mt2">
+      <a href="credit.html" class="pill accent">Loan Underwriting Copilot →</a>
+      <a href="power.html" class="pill accent">Power Price Alpha →</a>
+      <a href="course.html" class="pill">31 lessons →</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-2">
+
+      <a class="card card-link" href="credit.html">
+        <p class="eyebrow mb1">Project 01 · Credit risk</p>
+        <h2>Loan Underwriting Copilot</h2>
+        <p class="muted small">
+          A credit decisioning service that scores an application, attributes the score,
+          retrieves comparable historical cases, and lets a loan officer question the
+          decision in English — with every figure in the answer mechanically verified
+          against its evidence before it is shown.
+        </p>
+        <div class="grid grid-3 mt2" style="gap:.6rem">
+          <div><div class="stat" style="padding:0"><div class="label">ROC-AUC</div><div class="value" data-k="credit.auc">—</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">Decision threshold</div><div class="value" data-k="credit.threshold">—</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">Tests</div><div class="value">202</div></div></div>
+        </div>
+        <div class="tags mt2">
+          <span class="pill">XGBoost</span><span class="pill">SHAP</span>
+          <span class="pill">ChromaDB</span><span class="pill">FastAPI</span>
+          <span class="pill">Docker</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="power.html">
+        <p class="eyebrow mb1">Project 02 · Energy markets</p>
+        <h2>Power Price Alpha</h2>
+        <p class="muted small">
+          A day-ahead forecaster for GB half-hourly electricity prices, validated
+          walk-forward over six and a half years of real market data, and converted into a
+          battery arbitrage schedule charged for the frictions it would really pay.
+        </p>
+        <div class="grid grid-3 mt2" style="gap:.6rem">
+          <div><div class="stat" style="padding:0"><div class="label">MAE vs best naive</div><div class="value" data-k="power.improvement">—</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">Out-of-sample</div><div class="value" data-k="power.n">—</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">Tests</div><div class="value" data-k="power.tests">117</div></div></div>
+        </div>
+        <div class="tags mt2">
+          <span class="pill">XGBoost</span><span class="pill">Walk-forward</span>
+          <span class="pill">Conformal</span><span class="pill">Backtesting</span>
+          <span class="pill">Statsmodels</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What I was actually trying to demonstrate</h2>
+    <p class="lede mb2" style="max-width:62ch">
+      Both projects are built around the same idea: a result is worth what its verification is
+      worth. Most of the engineering in each repository exists to make a claim checkable rather
+      than to make it larger.
+    </p>
+
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>Measured, not remembered</h3>
+        <p class="muted small mb0">
+          Every number quoted anywhere — this site, the READMEs, the model card — is read from a
+          <code>metrics.json</code> that regenerates from raw data on every push. Nothing is
+          typed by hand, so nothing can quietly drift from the model it describes.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Reported against the hardest comparison</h3>
+        <p class="muted small mb0">
+          The forecasting project declares its baseline before fitting, then discovers the
+          declared one is not the hardest — and quotes the smaller improvement against the
+          hardest instead. The credit model's headline sits next to a logistic regression that
+          beats it on the holdout.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Negative results kept</h3>
+        <p class="muted small mb0">
+          The retrieval layer was supposed to improve accuracy. It slightly degrades it, so the
+          lesson says so and keeps the layer for a different, stated reason. A hypothesis about
+          missing-data patterns was tested, rejected, and left in the docstring.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-3 mt2">
+      <div class="card">
+        <h3>The bugs are in the history</h3>
+        <p class="muted small mb0">
+          A strategy reporting a Sharpe of 50 by trading a spread no instrument pays. A Docker
+          path bug that reported <code>model_loaded: false</code> with no error. A segfault that
+          105 passing tests never saw. Each is a commit with the reasoning attached.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Statistics that can say "no"</h3>
+        <p class="muted small mb0">
+          The fairness test was replaced after the first version flagged all three protected
+          attributes — because a bootstrap around a minimum-over-groups is biased, not because
+          the model was unfair. The replacement finds one real disparity instead of three.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Built as a taught course</h3>
+        <p class="muted small mb0">
+          31 lessons that derive each decision before writing the code, with exercises and
+          worked solutions. Several exercises are designed so the obvious approach fails
+          instructively.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="callout">
+      <strong>How to read this site.</strong> The interactive parts run on the real scored
+      output of each pipeline — the held-out applicants with their actual probabilities and
+      SHAP values, and the out-of-sample forecasts with their actual errors. The arithmetic in
+      the browser is live; the model that produced the numbers ran offline. Where a chart could
+      be mistaken for a live model, it says so.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div>
+        Built by Nimit Jain ·
+        <a href="mailto:nimitjain.248@gmail.com">nimitjain.248@gmail.com</a>
+      </div>
+      <div class="xs" data-k="build.stamp">—</div>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+import { loadJSON, fmt } from "./assets/site.js";
+
+function set(key, value) {
+  for (const node of document.querySelectorAll(`[data-k="${key}"]`)) node.textContent = value;
+}
+
+try {
+  const [credit, power] = await Promise.all([
+    loadJSON("data/credit.json"),
+    loadJSON("data/power.json"),
+  ]);
+
+  set("credit.auc", fmt.num(credit.headline.roc_auc, 3));
+  set("credit.threshold", fmt.pct(credit.model.threshold, 1));
+  set("power.improvement", fmt.pct(power.headline.improvement_vs_strongest, 0));
+  set("power.n", fmt.int(power.headline.n_predictions));
+  set("power.tests", power.meta?.tests ?? 117);
+  set("build.stamp", `credit @ ${credit.generated_from_commit ?? "—"} · power @ ${power.generated_from_commit ?? "—"}`);
+} catch (error) {
+  // The landing page is readable without live numbers; leave the em-dashes.
+  console.warn("stat load failed", error);
+}
+</script>
+
+</body>
+</html>

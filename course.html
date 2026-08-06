@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The course — Nimit Jain</title>
+<meta name="description" content="Thirty-one lessons that build a credit decisioning service and an electricity price forecaster from scratch, with exercises and worked solutions.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+<style>
+  .lesson { display: grid; grid-template-columns: 2.2rem 1fr; gap: .9rem; padding: .85rem 0; border-bottom: 1px solid var(--border); }
+  .lesson:last-child { border-bottom: 0; }
+  .lesson .n { font-family: var(--mono); font-size: .78rem; color: var(--text-3); padding-top: .15rem; }
+  .lesson h4 { margin: 0 0 .2rem; font-size: .95rem; font-weight: 580; }
+  .lesson p { margin: 0; font-size: .85rem; color: var(--text-2); }
+  .lesson .fmt { font-size: .68rem; color: var(--text-3); font-family: var(--mono); }
+  .lesson.starred h4::after { content: " ★"; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The course</p>
+    <h1 style="max-width:20ch">Both systems, derived rather than presented.</h1>
+    <p class="lede" style="max-width:64ch">
+      Thirty-one lessons. Each one states a problem, argues its way to an approach, writes the
+      code into <code>src/</code>, runs it against real data, shows the output, and ends at a
+      commit. Work through them in order and you will have built the systems, not read them.
+    </p>
+    <div class="row mt2">
+      <span class="pill">≈45 hours end to end</span>
+      <span class="pill">Exercises in every lesson</span>
+      <span class="pill">Worked solutions</span>
+      <span class="pill">★ = the ones with negative results in them</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>Notebooks are for thinking</h3>
+        <p class="muted small mb0">
+          A lesson explores, plots, argues, and arrives at a decision. The decided-upon logic
+          then goes into <code>src/</code> as a tested function, and the lesson imports it back.
+          No notebook is ever a dependency of the running service.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Sources are Python, not JSON</h3>
+        <p class="muted small mb0">
+          Lessons live as percent-format <code>.py</code> files; the <code>.ipynb</code> are
+          generated with no stored outputs. Notebooks are painful in git — JSON diffs, embedded
+          outputs, execution-count conflicts — and this sidesteps all of it. A test enforces
+          that the two stay in sync.
+        </p>
+      </div>
+      <div class="card">
+        <h3>The numbers regenerate</h3>
+        <p class="muted small mb0">
+          Every figure quoted in a lesson is read from a <code>metrics.json</code> produced by
+          <code>make all</code>. If you re-run and get something different, the lesson is wrong
+          and should be corrected — not the pipeline.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section id="credit">
+  <div class="wrap">
+    <div class="row between mb2">
+      <div>
+        <p class="eyebrow mb1">Project 01 · 15 lessons · ≈20 hours</p>
+        <h2 class="mb0">Loan Underwriting Copilot</h2>
+      </div>
+      <a class="pill accent" href="https://github.com/nimb-ou/loan-underwriting-copilot/tree/main/course">Read on GitHub →</a>
+    </div>
+
+    <p class="muted small mb2" style="max-width:62ch">
+      <b>Assumed:</b> Python, pandas, supervised learning basics, logistic regression,
+      cross-validation. <b>Not assumed:</b> XGBoost, SHAP, calibration, vector databases, LLM
+      prompting, FastAPI, Docker, or anything about credit risk.
+    </p>
+
+    <div class="card">
+      <div class="lesson"><div class="n">00</div><div><h4>Architecture and setup</h4><p>The shape of the system and why it has these layers. <span class="fmt">markdown</span></p></div></div>
+      <div class="lesson"><div class="n">01</div><div><h4>The data and its cost matrix</h4><p>Twenty attributes, an official 5:1 cost matrix, and the leakage traps hiding in a 1994 dataset. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">02</div><div><h4>A baseline worth beating</h4><p>Logistic regression, scorecard thinking, why AUC and where it stops being enough. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">03</div><div><h4>XGBoost and tuning</h4><p>Optuna, stratified CV, overfit diagnostics, and a confidence interval that makes you humbler. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">04</div><div><h4>Calibration</h4><p>Platt against isotonic, reliability curves, and why an uncalibrated score cannot be explained honestly. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson starred"><div class="n">05</div><div><h4>The threshold is the model</h4><p>Expected cost under an asymmetric matrix. At 0.5 this model costs more per applicant than declining everyone. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">06</div><div><h4>SHAP</h4><p>TreeExplainer, additivity as a check rather than a claim, and turning attributions into sentences. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">07</div><div><h4>The case store</h4><p>Case cards, embeddings, ChromaDB, and a leakage guard against retrieving the applicant you are scoring. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson starred"><div class="n">08</div><div><h4>Does retrieval actually help?</h4><p>It does not. The neighbourhood carries signal, blending it in makes accuracy slightly worse, and the lesson keeps the layer for a different stated reason. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson starred"><div class="n">09</div><div><h4>Faithfulness evaluation</h4><p>Adversarial prompts, grounding checks, refusal behaviour — and the one failure the guard provably cannot catch. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">10</div><div><h4>LLM provider and agent loop</h4><p>A provider abstraction, prompt design, tool calling, and the guard that runs after the model rather than instead of it. <span class="fmt">markdown</span></p></div></div>
+      <div class="lesson starred"><div class="n">11</div><div><h4>Fairness, and the notice you owe</h4><p>Why the incompatible definitions matter, a bootstrap that manufactured three findings, the permutation test that found one, and adverse-action reason codes. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">12</div><div><h4>API and officer UI</h4><p>FastAPI with a layered trust contract, error semantics, and a Streamlit view built for one job. <span class="fmt">markdown</span></p></div></div>
+      <div class="lesson"><div class="n">14</div><div><h4>Docker and CI</h4><p>An image that ships a trained model rather than training at build time, and a pipeline that re-measures every claim. <span class="fmt">markdown</span></p></div></div>
+      <div class="lesson"><div class="n">16</div><div><h4>Reconciling the claims</h4><p>Every resume bullet mapped to a command and a measured number, including the ones that got smaller. <span class="fmt">markdown</span></p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="power">
+  <div class="wrap">
+    <div class="row between mb2">
+      <div>
+        <p class="eyebrow mb1">Project 02 · 16 lessons · ≈25 hours</p>
+        <h2 class="mb0">Power Price Alpha</h2>
+      </div>
+      <a class="pill accent" href="https://github.com/nimb-ou/power-price-alpha/tree/main/course">Read on GitHub →</a>
+    </div>
+
+    <p class="muted small mb2" style="max-width:62ch">
+      <b>Assumed:</b> Python, pandas, and comfort with time-series basics. <b>Not assumed:</b>
+      anything about electricity markets — lesson 00 covers settlement periods, the day-ahead
+      auction and the merit order from scratch, and the rest is unreadable without it.
+    </p>
+
+    <div class="card">
+      <div class="lesson"><div class="n">00</div><div><h4>How the GB power market works</h4><p>Settlement periods, gate closure, the merit order, and what price you are even forecasting. <span class="fmt">markdown</span></p></div></div>
+      <div class="lesson"><div class="n">01</div><div><h4>Ingesting prices</h4><p>Elexon market index data: pagination, retries, rate limits, parquet caching. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">02</div><div><h4>Demand and weather</h4><p>NESO's per-year resources and Open-Meteo's archive, joined on keys that actually line up. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson starred"><div class="n">03</div><div><h4>The settlement calendar</h4><p>Days with 46, 48 and 50 periods. Joining UTC timestamps to settlement-date-and-period naively corrupts two days a year and every lag that crosses them. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">04</div><div><h4>Assembling the panel</h4><p>One half-hourly frame, and the quality checks that caught the joins — including a hypothesis that was tested and rejected. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">05</div><div><h4>What the data looks like</h4><p>Intraday and weekly shape, negative prices, spikes, and the 2021 regime break. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson starred"><div class="n">06</div><div><h4>Choosing what you will be judged against</h4><p>Three seasonal naive baselines, declared in code before fitting. The declared one turns out not to be the hardest. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">07</div><div><h4>Statsmodels</h4><p>OLS with Fourier terms, SARIMAX, residual diagnostics, stationarity. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">08</div><div><h4>Features that were knowable in time</h4><p>Lags, rolling stats, residual load, interconnectors — every one timestamped by when it could have been known. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson starred"><div class="n">09</div><div><h4>Walk-forward and leakage</h4><p>An expanding-window harness, and tests that assert no feature can see past gate closure. The single question a quant interviewer asks. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson starred"><div class="n">10</div><div><h4>Honest scoring</h4><p>MAE, RMSE, pinball, the Diebold–Mariano test — and choosing to quote 22% against the strongest baseline rather than 30% against the flattering one. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson starred"><div class="n">11</div><div><h4>The strategy that was thrown away</h4><p>It reported a Sharpe of 50 by trading a spread no instrument pays. Working out why is more useful than the strategy that replaced it. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">12</div><div><h4>The backtest engine</h4><p>Transaction costs, slippage, round-trip efficiency, and no look-ahead anywhere in the loop. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">13</div><div><h4>Risk and reporting</h4><p>Sharpe, hit rate, max drawdown, block-bootstrap intervals, per-regime splits — and an annualisation mistake worth seeing. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson starred"><div class="n">14</div><div><h4>Forecasting the uncertainty</h4><p>Quantile forecasts whose coverage is a lie out-of-sample, the diagnosis that separates a broken estimator from a moving market, and the conformal repair. <span class="fmt">notebook</span></p></div></div>
+      <div class="lesson"><div class="n">15</div><div><h4>Reproducibility</h4><p><code>make all</code>, CI against a committed fixture that spans a clock change, publishing the report. <span class="fmt">markdown</span></p></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Exercises, and why several of them fail on purpose</h2>
+    <p class="lede mb2" style="max-width:64ch">
+      Every lesson ends with exercises, and every exercise has a worked solution. Some solutions
+      end in "there is no clean answer" — those are not cop-outs, they are the point.
+    </p>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>An example that fails instructively</h3>
+        <p class="muted small">
+          Lesson 01 asks you to price a single-rule policy: decline everyone whose checking
+          account is overdrawn. It uses the strongest single predictor in the dataset.
+        </p>
+        <p class="muted small mb0">
+          It costs <b>0.912</b> per applicant against <b>0.700</b> for declining every
+          application. A rule can be genuinely informative and still be a losing policy, because
+          informative is about ranking and policy is about where you cut. Being told that is not
+          the same as computing it.
+        </p>
+      </div>
+      <div class="card">
+        <h3>An example with no good answer</h3>
+        <p class="muted small">
+          Lesson 11 asks you to write the adverse-action notice you would send if age were the
+          top-ranked factor and nothing else cleared the noise threshold.
+        </p>
+        <p class="muted small mb0">
+          Every option fails: citing age is not defensible, citing the next factor is false,
+          an empty notice breaches the duty, and "multiple factors were considered" is the exact
+          non-reason the regulation prohibits. You are meant to reach that dead end and conclude
+          the fix is upstream.
+        </p>
+      </div>
+    </div>
+
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/loan-underwriting-copilot/blob/main/course/solutions.md">Credit solutions →</a>
+      <a class="pill accent" href="https://github.com/nimb-ou/power-price-alpha/blob/main/course/solutions.md">Power solutions →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs">Lessons are in each repository under <code>course/</code> and <code>notebooks/</code></div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/site.js"></script>
+</body>
+</html>
