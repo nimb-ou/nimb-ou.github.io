@@ -35,10 +35,14 @@ function renderHeadline() {
   set("pnl-naive", fmt.money(strategy.naive?.total));
   set("pnl-oracle", fmt.money(strategy.oracle?.total));
 
+  // `uplift_vs_naive_pct` is a *fraction* (0.538), not a percentage, despite
+  // the name — which is exactly what made the first version of this line print
+  // "+0.5%" for a 54% uplift. Formatted with fmt.pct rather than trusting the
+  // field name.
   const uplift = data.strategy?.uplift_vs_naive_pct;
   const upliftText = uplift === undefined || uplift === null
     ? "—"
-    : `+${Number(uplift).toFixed(1)}%`;
+    : `+${fmt.pct(uplift, 1)}`;
   set("uplift", upliftText);
   set("uplift-inline", upliftText);
   set("build.stamp", `generated from commit ${data.generated_from_commit ?? "—"}`);
@@ -55,9 +59,16 @@ function dayOptions() {
     return option;
   }));
 
-  // Open on a day that shows the model working on a hard problem, not the
-  // easiest one in the sample.
-  const opener = data.sample_days.find((d) => d.reason === "widest intraday spread")
+  // Open on a typical day from the most recent regime.
+  //
+  // The tempting choice is the worst forecast day, which is also the best
+  // trading day and the widest spread — genuinely the most interesting day in
+  // the set. But on that day prices reached 2,000 GBP/MWh and the forecast
+  // stayed near 100, so as a *default* it shows a visitor the model failing
+  // before showing them it working. A default should be representative. The
+  // extreme is one labelled click away, and the note below points at it.
+  const opener = data.sample_days.find((d) => d.reason === "typical — post_crisis")
+    || data.sample_days.find((d) => d.reason.startsWith("typical"))
     || data.sample_days[0];
   select.value = opener.date;
   renderDay(opener.date);
