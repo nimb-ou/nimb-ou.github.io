@@ -58,7 +58,7 @@
         <div class="grid grid-3 mt2" style="gap:.6rem">
           <div><div class="stat" style="padding:0"><div class="label">ROC-AUC</div><div class="value" data-k="credit.auc">—</div></div></div>
           <div><div class="stat" style="padding:0"><div class="label">Decision threshold</div><div class="value" data-k="credit.threshold">—</div></div></div>
-          <div><div class="stat" style="padding:0"><div class="label">Tests</div><div class="value">202</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">Tests</div><div class="value" data-k="credit.tests">—</div></div></div>
         </div>
         <div class="tags mt2">
           <span class="pill">XGBoost</span><span class="pill">SHAP</span>
@@ -78,7 +78,7 @@
         <div class="grid grid-3 mt2" style="gap:.6rem">
           <div><div class="stat" style="padding:0"><div class="label">MAE vs best naive</div><div class="value" data-k="power.improvement">—</div></div></div>
           <div><div class="stat" style="padding:0"><div class="label">Out-of-sample</div><div class="value" data-k="power.n">—</div></div></div>
-          <div><div class="stat" style="padding:0"><div class="label">Tests</div><div class="value" data-k="power.tests">117</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">Tests</div><div class="value" data-k="power.tests">—</div></div></div>
         </div>
         <div class="tags mt2">
           <span class="pill">XGBoost</span><span class="pill">Walk-forward</span>
@@ -198,7 +198,10 @@ try {
   set("credit.threshold", fmt.pct(credit.model.threshold, 1));
   set("power.improvement", fmt.pct(power.headline.improvement_vs_strongest, 0));
   set("power.n", fmt.int(power.headline.n_predictions));
-  set("power.tests", power.meta?.tests ?? 117);
+  // Both counts come from `pytest --collect-only` at export time. Hardcoding
+  // them here is what made the site advertise 117 tests for a suite of 201.
+  set("credit.tests", fmt.int(credit.meta?.tests));
+  set("power.tests", fmt.int(power.meta?.tests));
   set("build.stamp", `credit @ ${credit.generated_from_commit ?? "—"} · power @ ${power.generated_from_commit ?? "—"}`);
 } catch (error) {
   // The landing page is readable without live numbers; leave the em-dashes.
