@@ -6,6 +6,7 @@
 <title>Splitwise Debt Settlement Engine — Nimit Jain</title>
 <meta name="description" content="Greedy minimum cash-flow debt simplification engine collapsing complex cyclic multi-party IOUs into minimal settlement plans with JWT-authenticated Flask API.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
   try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
@@ -48,7 +49,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.6rem 0.8rem;
-    background: var(--bg);
+    background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 6px;
     margin-bottom: 0.5rem;
@@ -63,17 +64,19 @@
 </head>
 <body>
 
-<nav class="nav">
+<nav class="nav" aria-label="Main Navigation">
   <div class="nav-inner">
     <a href="index.html" class="brand">Nimit Jain</a>
-    <a href="credit.html">Credit</a>
-    <a href="power.html">Power</a>
-    <a href="collections.html">Collections</a>
-    <a href="navier.html">Navier-Stokes</a>
-    <a href="geo-analog.html">GeoAnalog</a>
-    <a href="splitwise.html" class="active">Splitwise</a>
-    <a href="interactive-course/index.html" target="_blank">ML Notebook ↗</a>
-    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Overview</a>
+      <a href="credit.html" class="nav-link">Credit Copilot</a>
+      <a href="power.html" class="nav-link">Power Alpha</a>
+      <a href="collections.html" class="nav-link">Collections OS</a>
+      <a href="navier.html" class="nav-link">Navier-Stokes</a>
+      <a href="splitwise.html" class="nav-link active">Splitwise</a>
+      <a href="interactive-course/index.html" class="nav-link" target="_blank" rel="noopener">ML Notebook ↗</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    </div>
   </div>
 </nav>
 
@@ -84,8 +87,8 @@
     <p class="lede" style="max-width:64ch">
       A greedy minimum cash-flow simplification engine that collapses complex, cyclic multi-party debt networks into the absolute minimum number of settlement transactions. Features JWT-authenticated Flask REST endpoints, transactional SQLite persistence, and real-time graph simplification.
     </p>
-    <div class="row mt2">
-      <a class="pill accent" href="https://github.com/nimb-ou/splitwise" target="_blank">Source on GitHub →</a>
+    <div class="row mt2" style="flex-wrap: wrap; gap: 0.75rem;">
+      <a class="pill accent" href="https://github.com/nimb-ou/splitwise" target="_blank" rel="noopener">Source on GitHub →</a>
       <span class="pill">Python & Flask</span>
       <span class="pill">Greedy Min Cash Flow</span>
       <span class="pill">Graph Theory</span>
@@ -99,8 +102,8 @@
   <div class="wrap">
     <div class="grid grid-4">
       <div class="card stat"><div class="label">Tx Reduction</div><div class="value">62.5%</div><div class="sub">8 pairwise IOUs → 3 transfers</div></div>
-      <div class="card stat"><div class="label">Time Complexity</div><div class="value">O(N log N)</div><div class="sub">Greedy max-debtor reduction</div></div>
-      <div class="card stat"><div class="label">Guaranteed Ceiling</div><div class="value">≤ N - 1</div><div class="sub">Max transfers for N participants</div></div>
+      <div class="card stat"><div class="label">Time Complexity</div><div class="value">\(\mathcal{O}(N \log N)\)</div><div class="sub">Greedy max-debtor reduction</div></div>
+      <div class="card stat"><div class="label">Guaranteed Ceiling</div><div class="value">\(\le N - 1\)</div><div class="sub">Max transfers for N participants</div></div>
       <div class="card stat"><div class="label">Conservation</div><div class="value">100.0%</div><div class="sub">Zero-sum net balance invariant</div></div>
     </div>
 
@@ -134,11 +137,12 @@
         <div>
           <div class="demo-controls" style="grid-template-columns: 1fr; margin-bottom: 1rem;">
             <div class="control-group">
-              <label>Preset Group Scenario</label>
+              <label for="scenario-preset">Preset Group Scenario</label>
               <select id="scenario-preset">
                 <option value="dinner" selected>Dinner & Cabs (5 Friends · 8 IOUs)</option>
                 <option value="goa">Goa Vacation (3 Friends · Cyclic Loop)</option>
                 <option value="roommates">Apartment Rent & Bills (4 Roommates)</option>
+                <option value="lunch">Office Lunch & Snacks (5 Colleagues)</option>
               </select>
             </div>
           </div>
@@ -146,7 +150,7 @@
           <div class="card mb2" style="padding:1rem;">
             <p class="eyebrow mb1">Record New Expense</p>
             <div class="control-group mb1">
-              <label>Who Paid?</label>
+              <label for="exp-payer">Who Paid?</label>
               <select id="exp-payer">
                 <option value="Alice">Alice</option>
                 <option value="Bob">Bob</option>
@@ -157,7 +161,7 @@
             </div>
 
             <div class="control-group mb1">
-              <label>Amount (₹)</label>
+              <label for="exp-amount">Amount (₹)</label>
               <input type="number" id="exp-amount" min="10" step="10" value="1500">
             </div>
 
@@ -204,15 +208,15 @@
                 <p class="eyebrow mb0" style="color:var(--good);">After (Greedy Min Flow)</p>
                 <span class="pill accent" id="count-after">3 Transfers</span>
               </div>
-              <p class="xs muted mb1">Optimized Volume: <b id="vol-after">₹6,800</b> (Save 52%)</p>
+              <p class="xs muted mb1">Optimized Volume: <b id="vol-after">₹6,800</b> (<span id="pct-savings">Save 52%</span>)</p>
               <div id="list-after" style="max-height: 280px; overflow-y: auto;">
                 <!-- Simplified transfers -->
               </div>
             </div>
           </div>
 
-          <div class="callout">
-            <strong>Zero Circularity Proof:</strong> Notice that in the optimized plan, no participant both sends and receives money. Every participant is strictly either a Net Creditor or a Net Debtor, eliminating pointless intermediary transfers.
+          <div class="note">
+            <strong>Zero Circularity Invariant:</strong> Notice that in the optimized plan, no participant both sends and receives money. Every participant is strictly either a Net Creditor or a Net Debtor, eliminating pointless intermediary transfers and guaranteeing zero circular cash flow.
           </div>
         </div>
       </div>
@@ -236,13 +240,13 @@
         Let \(V = \{1, 2, \dots, N\}\) denote the set of participants. For each participant \(i\), their net balance \(\Delta_i\) is the difference between total funds paid into the group and total funds consumed:
       </p>
       <div class="formula-box">
-\Delta_i = \sum_{j=1}^N \text{PaidTo}(i, j) - \sum_{j=1}^N \text{BorrowedFrom}(i, j)
+$$\Delta_i = \sum_{j=1}^N \text{PaidTo}(i, j) - \sum_{j=1}^N \text{BorrowedFrom}(i, j)$$
       </div>
       <p class="muted small">
         By definition of closed transactions, the system is strictly zero-sum:
       </p>
       <div class="formula-box">
-\sum_{i=1}^N \Delta_i = 0
+$$\sum_{i=1}^N \Delta_i = 0$$
       </div>
 
       <h3 class="mt2">The Greedy Settlement Heuristic</h3>
@@ -275,12 +279,12 @@ Flask REST API Gateway
    ▼ [SQLite Relational Persistence]
 Tables: users, groups, group_members, expenses, expense_splits
    │
-   ▼ [Graph Simplification Trigger: GET /api/v1/settlements/<group_id>]
+   ▼ [Graph Simplification Trigger: GET /api/v1/settlements/&lt;group_id&gt;]
 min_cash_flow.py Solver Engine
    │
    ├── 1. Compute Net Balances: Delta_i for all i in group
    ├── 2. Priority Queues: Max-Heap(Creditors), Min-Heap(Debtors)
-   ├── 3. Greedy Matching Loop (<= N-1 transfers)
+   ├── 3. Greedy Matching Loop (&lt;= N-1 transfers)
    │
    ▼
 JSON Response: Minimal Settlement Schedule [{from, to, amount}]</code></pre>
@@ -321,36 +325,35 @@ JSON Response: Minimal Settlement Schedule [{from, to, amount}]</code></pre>
         </div>
       </div>
     </div>
-
-    <div class="guide-section">
-      <h2>5. Reproduce the Benchmarks</h2>
-      <pre><code>git clone https://github.com/nimb-ou/splitwise
-cd splitwise
-
-# 1. Install dependencies
-pip install flask pyjwt pytest
-
-# 2. Run unit test suite
-pytest tests/ -v
-
-# 3. Run the interactive microservice
-python3 app.py</code></pre>
-      <div class="row mt2">
-        <a class="pill accent" href="https://github.com/nimb-ou/splitwise" target="_blank">Repository on GitHub →</a>
-        <a class="pill" href="index.html">← Back to Overview</a>
-      </div>
-    </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
     <div class="row between">
-      <div><strong>Nimit Jain</strong> · Bengaluru, India · <a href="https://github.com/nimb-ou">GitHub</a></div>
-      <div class="xs"><a href="index.html">← All Projects</a></div>
+      <div><a href="index.html">← Back to Overview</a></div>
+      <div class="xs mono">Splitwise Optimization Engine · Graph Algorithms</div>
     </div>
   </div>
 </footer>
+
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/contrib/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  });
+</script>
 
 <script>
 // =============================================================================
@@ -370,8 +373,8 @@ python3 app.py</code></pre>
   const countAfter = document.getElementById('count-after');
   const volAfter = document.getElementById('vol-after');
   const listAfter = document.getElementById('list-after');
+  const pctSavings = document.getElementById('pct-savings');
 
-  // Pairwise IOUs stored as [{ from: 'Alice', to: 'Bob', amount: 500 }]
   let pairwiseDebts = [];
 
   const SCENARIOS = {
@@ -396,6 +399,13 @@ python3 app.py</code></pre>
       { from: 'David', to: 'Alice', amount: 4500 },
       { from: 'Alice', to: 'Charlie', amount: 1200 },
       { from: 'David', to: 'Bob', amount: 800 }
+    ],
+    lunch: [
+      { from: 'Bob', to: 'Alice', amount: 650 },
+      { from: 'Charlie', to: 'Bob', amount: 400 },
+      { from: 'David', to: 'Charlie', amount: 350 },
+      { from: 'Emma', to: 'Alice', amount: 500 },
+      { from: 'Alice', to: 'David', amount: 200 }
     ]
   };
 
@@ -413,11 +423,19 @@ python3 app.py</code></pre>
     const participants = Array.from(checkedBoxes).map(cb => cb.value);
     if (participants.length === 0) return;
 
-    const splitAmount = Math.round((amount / participants.length) * 100) / 100;
+    // Integer paise arithmetic to prevent floating point leaks
+    const totalPaise = Math.round(amount * 100);
+    const baseShare = Math.floor(totalPaise / participants.length);
+    let remainder = totalPaise % participants.length;
 
     participants.forEach(p => {
       if (p !== payer) {
-        pairwiseDebts.push({ from: p, to: payer, amount: splitAmount });
+        let pShare = baseShare;
+        if (remainder > 0) {
+          pShare += 1;
+          remainder -= 1;
+        }
+        pairwiseDebts.push({ from: p, to: payer, amount: pShare / 100 });
       }
     });
 
@@ -425,25 +443,38 @@ python3 app.py</code></pre>
   }
 
   function recalculate() {
-    // 1. Calculate Net Balances for each person
+    // 1. Calculate Net Balances for each person in integer paise
     const balances = {};
     pairwiseDebts.forEach(d => {
-      balances[d.from] = (balances[d.from] || 0) - d.amount;
-      balances[d.to] = (balances[d.to] || 0) + d.amount;
+      const amtPaise = Math.round(d.amount * 100);
+      balances[d.from] = (balances[d.from] || 0) - amtPaise;
+      balances[d.to] = (balances[d.to] || 0) + amtPaise;
     });
 
     // 2. Render Net Balances
     const people = Object.keys(balances).sort();
+    let netSum = 0;
     netBalancesContainer.innerHTML = people.map(p => {
-      const b = Math.round(balances[p]);
-      if (Math.abs(b) < 1) {
+      const bPaise = balances[p];
+      netSum += bPaise;
+      const bRupees = Math.round(bPaise / 100);
+      if (Math.abs(bPaise) < 1) {
         return `<span class="net-balance-pill">${p}: Settled (₹0)</span>`;
-      } else if (b > 0) {
-        return `<span class="net-balance-pill creditor">${p}: +₹${b.toLocaleString()} (Receives)</span>`;
+      } else if (bPaise > 0) {
+        return `<span class="net-balance-pill creditor">${p}: +₹${bRupees.toLocaleString()} (Receives)</span>`;
       } else {
-        return `<span class="net-balance-pill debtor">${p}: -₹${Math.abs(b).toLocaleString()} (Owes)</span>`;
+        return `<span class="net-balance-pill debtor">${p}: -₹${Math.abs(bRupees).toLocaleString()} (Owes)</span>`;
       }
     }).join('');
+
+    const badge = document.getElementById('split-badge');
+    if (Math.abs(netSum) < 1) {
+      badge.textContent = "NET SUM = ₹0.00 (CONSERVED)";
+      badge.style.color = "var(--good)";
+    } else {
+      badge.textContent = `LEAK DETECTED: ₹${(netSum / 100).toFixed(2)}`;
+      badge.style.color = "var(--bad)";
+    }
 
     // 3. Render Unsimplified (Before) List
     const totalVolBefore = pairwiseDebts.reduce((sum, d) => sum + d.amount, 0);
@@ -465,8 +496,11 @@ python3 app.py</code></pre>
     countAfter.textContent = `${simplified.length} Transfers`;
     volAfter.textContent = `₹${Math.round(totalVolAfter).toLocaleString()}`;
 
+    const savings = totalVolBefore > 0 ? Math.round(((totalVolBefore - totalVolAfter) / totalVolBefore) * 100) : 0;
+    pctSavings.textContent = `Save ${savings}%`;
+
     if (simplified.length === 0) {
-      listAfter.innerHTML = `<p class="muted small text-center" style="padding:1rem;">All balances are fully settled! Zero transfers needed.</p>`;
+      listAfter.innerHTML = `<p class="muted small text-center" style="padding:1rem;">All balances are fully settled! Zero transfers needed (e.g. perfect cyclic loop resolved).</p>`;
     } else {
       listAfter.innerHTML = simplified.map(d => `
         <div class="transfer-card" style="border-color:rgba(34, 197, 94, 0.4);">
@@ -482,19 +516,17 @@ python3 app.py</code></pre>
     let debtors = [];
     let creditors = [];
 
-    Object.entries(initialBalances).forEach(([person, bal]) => {
-      const rounded = Math.round(bal);
-      if (rounded < -0.01) {
-        debtors.push({ person, amount: -rounded });
-      } else if (rounded > 0.01) {
-        creditors.push({ person, amount: rounded });
+    Object.entries(initialBalances).forEach(([person, balPaise]) => {
+      if (balPaise < 0) {
+        debtors.push({ person, amount: -balPaise });
+      } else if (balPaise > 0) {
+        creditors.push({ person, amount: balPaise });
       }
     });
 
     const results = [];
 
     while (debtors.length > 0 && creditors.length > 0) {
-      // Sort to get max debtor and max creditor
       debtors.sort((a, b) => b.amount - a.amount);
       creditors.sort((a, b) => b.amount - a.amount);
 
@@ -502,13 +534,17 @@ python3 app.py</code></pre>
       const c = creditors[0];
 
       const transferAmount = Math.min(d.amount, c.amount);
-      results.push({ from: d.person, to: c.person, amount: transferAmount });
+      results.push({
+        from: d.person,
+        to: c.person,
+        amount: transferAmount / 100
+      });
 
       d.amount -= transferAmount;
       c.amount -= transferAmount;
 
-      if (d.amount < 0.01) debtors.shift();
-      if (c.amount < 0.01) creditors.shift();
+      if (d.amount === 0) debtors.shift();
+      if (c.amount === 0) creditors.shift();
     }
 
     return results;
@@ -520,10 +556,11 @@ python3 app.py</code></pre>
 
   btnAddExp.addEventListener('click', addExpense);
 
-  // Initial load
   loadScenario('dinner');
 })();
 </script>
+
+<script src="assets/site.js" type="module"></script>
 
 </body>
 </html>

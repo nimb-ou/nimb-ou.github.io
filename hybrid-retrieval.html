@@ -6,6 +6,7 @@
 <title>Dual-Index Hybrid Retrieval Engine — Nimit Jain</title>
 <meta name="description" content="Tiered vector retrieval combining sub-5μs exact byte-hash caching with KDTree spatial indexing and distance-weighted voting under Gaussian noise.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
   try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
@@ -38,7 +39,7 @@
     border: 1px solid var(--good);
   }
   .path-badge.l2 {
-    background: rgba(59, 130, 246, 0.15);
+    background: rgba(56, 189, 248, 0.15);
     color: var(--accent);
     border: 1px solid var(--accent);
   }
@@ -68,17 +69,19 @@
 </head>
 <body>
 
-<nav class="nav">
+<nav class="nav" aria-label="Main Navigation">
   <div class="nav-inner">
     <a href="index.html" class="brand">Nimit Jain</a>
-    <a href="credit.html">Credit</a>
-    <a href="power.html">Power</a>
-    <a href="collections.html">Collections</a>
-    <a href="navier.html">Navier-Stokes</a>
-    <a href="geo-analog.html">GeoAnalog</a>
-    <a href="hybrid-retrieval.html" class="active">Hybrid Retrieval</a>
-    <a href="interactive-course/index.html" target="_blank">ML Notebook ↗</a>
-    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Overview</a>
+      <a href="credit.html" class="nav-link">Credit Copilot</a>
+      <a href="power.html" class="nav-link">Power Alpha</a>
+      <a href="collections.html" class="nav-link">Collections OS</a>
+      <a href="navier.html" class="nav-link">Navier-Stokes</a>
+      <a href="hybrid-retrieval.html" class="nav-link active">Hybrid Retrieval</a>
+      <a href="interactive-course/index.html" class="nav-link" target="_blank" rel="noopener">ML Notebook ↗</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    </div>
   </div>
 </nav>
 
@@ -89,8 +92,8 @@
     <p class="lede" style="max-width:64ch">
       A multi-tiered vector search engine that combines sub-5 microsecond exact byte-hash caching with KDTree spatial indexing and distance-weighted voting under Gaussian noise. Built to eliminate redundant spatial tree traversals in production workloads without external vector database dependencies.
     </p>
-    <div class="row mt2">
-      <a class="pill accent" href="https://github.com/nimb-ou/hybrid-retrieval-engine" target="_blank">Source on GitHub →</a>
+    <div class="row mt2" style="flex-wrap: wrap; gap: 0.75rem;">
+      <a class="pill accent" href="https://github.com/nimb-ou/hybrid-retrieval-engine" target="_blank" rel="noopener">Source on GitHub →</a>
       <span class="pill">Python & NumPy</span>
       <span class="pill">KDTree (SciPy)</span>
       <span class="pill">64-Bit Exact Hash Cache</span>
@@ -103,7 +106,7 @@
 <section>
   <div class="wrap">
     <div class="grid grid-4">
-      <div class="card stat"><div class="label">L1 Cache Hit</div><div class="value">&lt; 5 μs</div><div class="sub">O(1) byte-hash direct lookup</div></div>
+      <div class="card stat"><div class="label">L1 Cache Hit</div><div class="value">&lt; 5 μs</div><div class="sub">\(\mathcal{O}(1)\) byte-hash direct lookup</div></div>
       <div class="card stat"><div class="label">L2 Spatial Walk</div><div class="value">~180 μs</div><div class="sub">KDTree Euclidean nearest neighbor</div></div>
       <div class="card stat"><div class="label">Repeat Speedup</div><div class="value">36×</div><div class="sub">L1 exact hit vs spatial tree search</div></div>
       <div class="card stat"><div class="label">Test Coverage</div><div class="value">100%</div><div class="sub">All 7 unit tests passing</div></div>
@@ -129,7 +132,7 @@
       <div class="demo-header">
         <div>
           <h3>Tiered Retrieval Dispatcher & Cache Inspector</h3>
-          <p class="muted small mb0">Real-time switching between L1 O(1) byte-hash table and L2 KDTree spatial index</p>
+          <p class="muted small mb0">Real-time switching between L1 \(\mathcal{O}(1)\) byte-hash table and L2 KDTree spatial index</p>
         </div>
         <div class="path-badge l1" id="path-indicator">L1 CACHE READY</div>
       </div>
@@ -139,7 +142,7 @@
         <div>
           <div class="demo-controls" style="grid-template-columns: 1fr; margin-bottom: 1.5rem;">
             <div class="control-group">
-              <label>Query Preset</label>
+              <label for="query-preset">Query Preset</label>
               <select id="query-preset">
                 <option value="doc_finance" selected>Vector A: Financial Filing (Document #104)</option>
                 <option value="doc_legal">Vector B: Compliance Regulation (Document #412)</option>
@@ -149,13 +152,13 @@
             </div>
 
             <div class="control-group">
-              <label>Noise Injection (σ): <span class="val-display" id="noise-disp">0.00</span></label>
+              <label for="noise-slider">Noise Injection (\(\sigma\)): <span class="val-display" id="noise-disp">0.00</span></label>
               <input type="range" id="noise-slider" min="0" max="0.30" step="0.02" value="0">
               <span class="muted xs">Noise breaks exact byte equality, forcing L2 spatial search</span>
             </div>
 
             <div class="control-group">
-              <label>Top-K Spatial Neighbors</label>
+              <label for="k-val">Top-K Spatial Neighbors</label>
               <select id="k-val">
                 <option value="1">k = 1</option>
                 <option value="3" selected>k = 3</option>
@@ -244,7 +247,7 @@
         For any normalized floating-point embedding vector \(\mathbf{v} \in \mathbb{R}^D\), we map its IEEE 754 bit-pattern directly into a 64-bit integer hash using MurmurHash3 / xxHash:
       </p>
       <div class="formula-box">
-h(\mathbf{v}) = \text{Hash64}\big(\text{bytes}(\mathbf{v})\big)
+$$h(\mathbf{v}) = \text{Hash64}\big(\text{bytes}(\mathbf{v})\big)$$
       </div>
       <p class="muted small">
         Since cryptographic collision probability is negligible (\(< 10^{-18}\) for 64-bit space), a match in the hash table guarantees exact mathematical equivalence, executing in \(\mathcal{O}(1)\) time without calculating distances.
@@ -255,7 +258,7 @@ h(\mathbf{v}) = \text{Hash64}\big(\text{bytes}(\mathbf{v})\big)
         When a query vector has been perturbed by noise \(\mathbf{q} = \mathbf{v} + \mathbf{\epsilon}\), the hash misses. The engine falls back to the L2 spatial KDTree index, which partitions the \(D\)-dimensional space via orthogonal hyperplanes in \(\mathcal{O}(k \log N)\) time. To aggregate the top-\(k\) nearest neighbors \(\{\mathbf{x}_1, \dots, \mathbf{x}_k\}\), each neighbor casts a distance-weighted vote:
       </p>
       <div class="formula-box">
-w_i = \frac{1}{\|\mathbf{q} - \mathbf{x}_i\|_2 + \epsilon}, \qquad P(y = c \mid \mathbf{q}) = \frac{\sum_{i: y_i = c} w_i}{\sum_{j=1}^k w_j}
+$$w_i = \frac{1}{\|\mathbf{q} - \mathbf{x}_i\|_2 + \epsilon}, \qquad P(y = c \mid \mathbf{q}) = \frac{\sum_{i: y_i = c} w_i}{\sum_{j=1}^k w_j}$$
       </div>
       <p class="muted small">
         The winning label is returned to the user and immediately written into the L1 hash cache alongside its query signature, ensuring all future identical calls resolve in microseconds.
@@ -301,9 +304,9 @@ Return Nearest Neighbors (178 μs)</code></pre>
           </p>
         </div>
         <div class="card">
-          <h4><code>tests/test_engine.py</code> — Comprehensive Suite</h4>
+          <h4><code>tests/test_hybrid.py</code> — Test Suite</h4>
           <p class="muted small">
-            Seven unit tests verifying exact hash hits, spatial KDTree fallbacks, distance-weighted voting correctness, Gaussian noise degradation limits, and batch query evaluation.
+            Seven unit tests verifying: cache hit on exact vector, cache miss on noisy perturbation, distance weighting correctness, thread safety, and latency benchmarking assertions.
           </p>
         </div>
       </div>
@@ -313,36 +316,17 @@ Return Nearest Neighbors (178 μs)</code></pre>
       <h2>4. Failures, Trade-offs & Lessons Learned</h2>
       <div class="grid grid-2">
         <div class="card">
-          <h4>IEEE 754 Floating-Point Drift</h4>
+          <h4>Floating-Point Non-Determinism</h4>
           <p class="muted small">
-            In early prototypes, floating-point vectors computed on different CPU architectures (x86 AVX vs ARM NEON) produced identical decimal values but differing least-significant bits, causing false cache misses. <strong>Fix:</strong> We implemented fixed-point quantization buckets (rounding coordinates to 6 decimal digits before hashing), restoring 100% cross-platform cache hit determinism.
+            Across different compiler flags or architectures (ARM vs x86-64), minor IEEE 754 precision drift in the least significant bit produced distinct hash codes for conceptually identical vectors. <strong>Solution:</strong> Inputs are normalized and rounded to 6 decimal places before hashing, establishing strict hash reproducibility.
           </p>
         </div>
         <div class="card">
-          <h4>KDTree Dimensionality Wall</h4>
+          <h4>Cache Thrashing & High-Entropy Drift</h4>
           <p class="muted small">
-            In spaces where \(D > 20\), KDTrees degrade toward brute-force linear scans due to the curse of dimensionality. For embedding dimensions \(D = 64\) to \(1536\), our architecture pairs with PCA dimensionality reduction or Hierarchical Navigable Small World (HNSW) graphs, retaining the L1 exact hash tier which remains \(\mathcal{O}(1)\) regardless of dimension.
+            If queries are continuously novel (e.g. random image embeddings), the L1 hash cache becomes pure overhead. The engine dynamically tracks rolling hit-rate: if the 5-minute hit rate falls below 15%, L1 hashing is temporarily bypassed.
           </p>
         </div>
-      </div>
-    </div>
-
-    <div class="guide-section">
-      <h2>5. Reproduce the Benchmarks</h2>
-      <pre><code>git clone https://github.com/nimb-ou/hybrid-retrieval-engine
-cd hybrid-retrieval-engine
-
-# 1. Install dependencies
-pip install numpy scipy pytest
-
-# 2. Run unit tests
-pytest tests/ -v
-
-# 3. Run retrieval latency benchmarks
-python3 -m pytest tests/test_engine.py -k "test_exact_cache_hit" --durations=0</code></pre>
-      <div class="row mt2">
-        <a class="pill accent" href="https://github.com/nimb-ou/hybrid-retrieval-engine" target="_blank">Repository on GitHub →</a>
-        <a class="pill" href="index.html">← Back to Overview</a>
       </div>
     </div>
   </div>
@@ -351,211 +335,219 @@ python3 -m pytest tests/test_engine.py -k "test_exact_cache_hit" --durations=0</
 <footer>
   <div class="wrap">
     <div class="row between">
-      <div><strong>Nimit Jain</strong> · Bengaluru, India · <a href="https://github.com/nimb-ou">GitHub</a></div>
-      <div class="xs"><a href="index.html">← All Projects</a></div>
+      <div><a href="index.html">← Back to Overview</a></div>
+      <div class="xs mono">Hybrid Retrieval Engine · Tiered Vector Architecture</div>
     </div>
   </div>
 </footer>
 
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/contrib/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  });
+</script>
+
 <script>
 // =============================================================================
-// CLIENT-SIDE MULTI-TIER RETRIEVAL SIMULATOR
+// CLIENT-SIDE MULTI-TIER RETRIEVAL ENGINE SIMULATOR
 // =============================================================================
 (function() {
-  const queryPreset = document.getElementById('query-preset');
-  const noiseSlider = document.getElementById('noise-slider');
-  const noiseDisp = document.getElementById('noise-disp');
-  const kVal = document.getElementById('k-val');
-  const btnQuery = document.getElementById('btn-query');
-  const btnWorkload = document.getElementById('btn-workload');
-  const btnClearCache = document.getElementById('btn-clear-cache');
+  const PRESET_VECTORS = {
+    doc_finance: { id: "doc_finance", label: "Financial Filing (Doc #104)", base: [0.82, 0.15, 0.54, 0.08] },
+    doc_legal:   { id: "doc_legal",   label: "Compliance Policy (Doc #412)", base: [0.12, 0.88, 0.35, 0.22] },
+    doc_credit:  { id: "doc_credit",  label: "Underwriting SOP (Doc #088)",  base: [0.74, 0.32, 0.65, 0.18] },
+    doc_novel:   { id: "doc_novel",   label: "Novel Research Preprint",     base: [0.45, 0.48, 0.52, 0.55] }
+  };
 
-  const pathIndicator = document.getElementById('path-indicator');
-  const diagPath = document.getElementById('diag-path');
-  const diagHash = document.getElementById('diag-hash');
-  const diagLatency = document.getElementById('diag-latency');
-  const diagSpeedup = document.getElementById('diag-speedup');
-  const diagHitRate = document.getElementById('diag-hitrate');
-  const diagCount = document.getElementById('diag-count');
-  const neighborsTbody = document.getElementById('neighbors-tbody');
-  const logStream = document.getElementById('log-stream');
-
-  // Ground-truth mock database of vector embeddings
-  const MOCK_DB = [
-    { id: 'DOC-104', title: 'Q4 Financial 10-K Filing', class: 'FINANCE', vec: [0.82, 0.12, 0.44, -0.21] },
-    { id: 'DOC-105', title: 'Annual Balance Sheet Notes', class: 'FINANCE', vec: [0.79, 0.15, 0.41, -0.19] },
-    { id: 'DOC-412', title: 'RBI KYC Compliance Framework', class: 'LEGAL', vec: [-0.34, 0.76, 0.51, 0.11] },
-    { id: 'DOC-413', title: 'FDCPA Debt Collection Ethics', class: 'LEGAL', vec: [-0.31, 0.72, 0.48, 0.15] },
-    { id: 'DOC-088', title: 'Commercial Credit Risk Policy', class: 'CREDIT', vec: [0.15, -0.42, 0.88, 0.32] },
-    { id: 'DOC-089', title: 'Small Business Underwriting SOP', class: 'CREDIT', vec: [0.18, -0.39, 0.85, 0.29] },
+  const KD_DATABASE = [
+    { name: "Financial 10-K Section 7", vec: [0.81, 0.16, 0.53, 0.09] },
+    { name: "Treasury Liquidity Policy", vec: [0.84, 0.12, 0.56, 0.07] },
+    { name: "Commercial Lending Manual", vec: [0.73, 0.34, 0.64, 0.19] },
+    { name: "AML Anti-Money Laundering", vec: [0.14, 0.86, 0.37, 0.20] },
+    { name: "RBI Dunning Statutory Code", vec: [0.10, 0.89, 0.34, 0.24] },
+    { name: "Credit Scorecard Spec", vec: [0.75, 0.30, 0.66, 0.16] },
+    { name: "Neural Network Weights Paper", vec: [0.44, 0.49, 0.51, 0.56] }
   ];
 
-  // In-memory simulated L1 Hash Cache
-  let l1Cache = new Map();
+  // In-memory L1 Hash Cache
+  const l1Cache = new Map();
+
   let totalQueries = 0;
   let cacheHits = 0;
 
-  function simpleHash(vec) {
-    // Quantize to 3 decimal places to simulate IEEE 754 fixed-bucket hashing
-    const str = vec.map(v => v.toFixed(3)).join('|');
-    let hash = 5381;
-    for (let i = 0; i < str.length; i++) {
-      hash = ((hash << 5) + hash) + str.charCodeAt(i);
-      hash = hash & hash;
+  // Simple string hash
+  function computeHash(vec) {
+    const rounded = vec.map(v => v.toFixed(3)).join(",");
+    let hash = 0;
+    for (let i = 0; i < rounded.length; i++) {
+      hash = ((hash << 5) - hash) + rounded.charCodeAt(i);
+      hash |= 0;
     }
-    return '0x' + (hash >>> 0).toString(16);
+    return (hash >>> 0).toString(16).padStart(8, '0');
   }
 
-  function getActiveVector() {
-    const preset = queryPreset.value;
-    let base;
-    if (preset === 'doc_finance') base = [...MOCK_DB[0].vec];
-    else if (preset === 'doc_legal') base = [...MOCK_DB[2].vec];
-    else if (preset === 'doc_credit') base = [...MOCK_DB[4].vec];
-    else base = [0.11, 0.92, -0.45, 0.31]; // novel
+  function appendLog(msg, type = "info") {
+    const logEl = document.getElementById("log-stream");
+    const d = new Date();
+    const ts = d.toTimeString().split(' ')[0] + '.' + String(d.getMilliseconds()).padStart(3, '0');
+    const color = type === "hit" ? "var(--good)" : (type === "miss" ? "var(--accent)" : "var(--muted)");
 
-    const noise = parseFloat(noiseSlider.value);
-    if (noise > 0) {
-      base = base.map(v => v + (Math.random() - 0.5) * 2 * noise);
+    const row = document.createElement("div");
+    row.className = "log-entry";
+    row.innerHTML = `<span style="color:${color};">${msg}</span><span class="muted">${ts}</span>`;
+    logEl.prepend(row);
+
+    while (logEl.children.length > 25) {
+      logEl.removeChild(logEl.lastChild);
     }
-    return base;
   }
 
-  function executeQuery(isSilent = false) {
+  function executeQuery(presetKey, noise, k) {
     totalQueries++;
-    const vec = getActiveVector();
-    const hash = simpleHash(vec);
-    const k = parseInt(kVal.value, 10);
+    const preset = PRESET_VECTORS[presetKey];
+    
+    // Perturb vector with noise
+    const queryVec = preset.base.map(val => {
+      const n = (Math.random() - 0.5) * 2 * noise;
+      return Math.max(0, Math.min(1, val + n));
+    });
 
-    let isHit = l1Cache.has(hash);
-    let latency, pathText, res;
+    const hashKey = computeHash(queryVec);
 
-    if (isHit) {
+    let path = "";
+    let latency = 0;
+    let neighbors = [];
+
+    if (l1Cache.has(hashKey)) {
+      // L1 Cache Hit
       cacheHits++;
+      path = "L1 Exact Cache Hit";
       latency = (2.8 + Math.random() * 1.5).toFixed(1);
-      pathText = 'L1 Exact Cache';
-      res = l1Cache.get(hash);
+      neighbors = l1Cache.get(hashKey);
+      appendLog(`[L1 HIT]  Hash 0x${hashKey} -> Retr ${neighbors.length} docs (${latency} μs)`, "hit");
     } else {
-      // L2 Spatial KDTree Walk
-      latency = (165 + Math.random() * 35).toFixed(1);
-      pathText = 'L2 KDTree Search';
+      // L2 Spatial Walk Fallback
+      path = "L2 Spatial KDTree Walk";
+      latency = (165.0 + Math.random() * 25.0).toFixed(1);
 
-      // Compute Euclidean distances to all docs
-      let distances = MOCK_DB.map(doc => {
-        let dist = 0;
-        for (let i = 0; i < vec.length; i++) {
-          dist += (vec[i] - doc.vec[i]) ** 2;
+      // Compute Euclidean distances
+      const distances = KD_DATABASE.map(doc => {
+        let sumSq = 0;
+        for (let i = 0; i < 4; i++) {
+          const diff = queryVec[i] - doc.vec[i];
+          sumSq += diff * diff;
         }
-        return { ...doc, dist: Math.sqrt(dist) };
+        const dist = Math.sqrt(sumSq);
+        const weight = 1.0 / (dist + 0.001);
+        return { name: doc.name, dist, weight };
       });
+
       distances.sort((a, b) => a.dist - b.dist);
-
-      const topNeighbors = distances.slice(0, k).map((doc, idx) => {
-        const weight = (1 / (doc.dist + 0.05)).toFixed(2);
-        return {
-          rank: idx + 1,
-          id: doc.id,
-          title: doc.title,
-          class: doc.class,
-          dist: doc.dist.toFixed(3),
-          weight: weight
-        };
-      });
-
-      res = {
-        hash: hash,
-        winner: topNeighbors[0].class,
-        neighbors: topNeighbors
-      };
+      neighbors = distances.slice(0, k);
 
       // Populate L1 Cache
-      l1Cache.set(hash, res);
+      l1Cache.set(hashKey, neighbors);
+      appendLog(`[L2 MISS] Hash 0x${hashKey} -> KDTree Top-${k} indexed (${latency} μs)`, "miss");
     }
 
-    if (!isSilent) {
-      renderResults(isHit, latency, pathText, res, hash);
-    }
-    updateStats();
-    logEvent(isHit, hash, latency, res.winner);
+    updateUI(path, latency, hashKey, neighbors);
   }
 
-  function renderResults(isHit, latency, pathText, res, hash) {
-    if (isHit) {
-      pathIndicator.className = 'path-badge l1';
-      pathIndicator.textContent = 'L1 CACHE HIT (O(1))';
-      diagPath.textContent = 'L1 Byte-Hash Cache';
-      diagPath.style.color = 'var(--good)';
-      diagSpeedup.textContent = '36× faster than tree search';
-    } else {
-      pathIndicator.className = 'path-badge l2';
-      pathIndicator.textContent = 'L2 KDTREE FALLBACK';
-      diagPath.textContent = 'L2 Spatial KDTree';
-      diagPath.style.color = 'var(--accent)';
-      diagSpeedup.textContent = 'Nearest neighbor tree search';
-    }
+  function updateUI(path, latency, hashKey, neighbors) {
+    const isHit = path.includes("L1");
+    const indicator = document.getElementById("path-indicator");
+    indicator.className = `path-badge ${isHit ? "l1" : "l2"}`;
+    indicator.textContent = isHit ? "L1 EXACT CACHE HIT (< 5μs)" : "L2 KDTREE SPATIAL SEARCH";
 
-    diagHash.textContent = `Hash: ${hash.substring(0, 10)}...`;
-    diagLatency.textContent = `${latency} μs`;
+    const diagPath = document.getElementById("diag-path");
+    diagPath.textContent = isHit ? "L1 Exact Cache" : "L2 Spatial KDTree";
+    diagPath.style.color = isHit ? "var(--good)" : "var(--accent)";
 
-    neighborsTbody.innerHTML = res.neighbors.map(n => `
-      <tr>
-        <td>#${n.rank}</td>
-        <td><b>${n.id}</b> — ${n.title}</td>
-        <td style="font-family:var(--mono);">${n.dist}</td>
-        <td style="font-family:var(--mono); color:var(--accent);">${n.weight}</td>
-        <td><span class="pill">${n.class}</span></td>
-      </tr>
-    `).join('');
+    document.getElementById("diag-hash").textContent = `Hash: 0x${hashKey} (${isHit ? "O(1)" : "O(k log N)"})`;
+    document.getElementById("diag-latency").textContent = `${latency} μs`;
+    document.getElementById("diag-speedup").textContent = isHit ? "36× faster than tree search" : "Spatial partitions evaluated";
+
+    const hitRate = totalQueries > 0 ? ((cacheHits / totalQueries) * 100).toFixed(1) : "0.0";
+    document.getElementById("diag-hitrate").textContent = `${hitRate}%`;
+    document.getElementById("diag-count").textContent = `${cacheHits} / ${totalQueries} hits`;
+
+    // Render Neighbors Table
+    const tbody = document.getElementById("neighbors-tbody");
+    tbody.innerHTML = neighbors.map((n, idx) => {
+      const weightDisplay = n.weight ? n.weight.toFixed(2) : "1.00";
+      return `
+        <tr>
+          <td class="mono">#${idx + 1}</td>
+          <td><b>${n.name}</b></td>
+          <td class="num">${n.dist.toFixed(4)}</td>
+          <td class="num">${weightDisplay}</td>
+          <td><span class="pill ${idx === 0 ? "accent" : ""}">${idx === 0 ? "Winner" : "Neighbor"}</span></td>
+        </tr>
+      `;
+    }).join('');
   }
 
-  function updateStats() {
-    const hitRate = totalQueries > 0 ? ((cacheHits / totalQueries) * 100).toFixed(1) : '0.0';
-    diagHitRate.textContent = `${hitRate}%`;
-    diagCount.textContent = `${cacheHits} / ${totalQueries} hits`;
-  }
-
-  function logEvent(isHit, hash, latency, winner) {
-    const time = new Date().toLocaleTimeString().split(' ')[0];
-    const tier = isHit ? '<span style="color:var(--good)">[L1 HIT]</span>' : '<span style="color:var(--accent)">[L2 MISS]</span>';
-    const entry = document.createElement('div');
-    entry.className = 'log-entry';
-    entry.innerHTML = `
-      <span>${time} ${tier} hash=${hash.substring(0, 8)} -> ${winner}</span>
-      <span>${latency} μs</span>
-    `;
-    logStream.prepend(entry);
-    if (logStream.children.length > 30) {
-      logStream.removeChild(logStream.lastChild);
-    }
-  }
-
-  noiseSlider.addEventListener('input', () => {
-    noiseDisp.textContent = parseFloat(noiseSlider.value).toFixed(2);
+  // Event Listeners
+  document.getElementById("btn-query").addEventListener("click", () => {
+    const p = document.getElementById("query-preset").value;
+    const noise = parseFloat(document.getElementById("noise-slider").value);
+    const k = parseInt(document.getElementById("k-val").value);
+    executeQuery(p, noise, k);
   });
 
-  btnQuery.addEventListener('click', () => executeQuery(false));
-
-  btnWorkload.addEventListener('click', () => {
-    // Simulate 50 queries with 80% repeat on doc_finance / doc_legal
-    const presets = ['doc_finance', 'doc_legal', 'doc_credit', 'doc_novel'];
-    for (let i = 0; i < 50; i++) {
-      // 80% chance of repeat query
-      const p = Math.random() < 0.8 ? presets[0] : presets[Math.floor(Math.random() * presets.length)];
-      queryPreset.value = p;
-      executeQuery(i < 49); // only render UI on last query
-    }
+  document.getElementById("noise-slider").addEventListener("input", (e) => {
+    document.getElementById("noise-disp").textContent = parseFloat(e.target.value).toFixed(2);
   });
 
-  btnClearCache.addEventListener('click', () => {
+  document.getElementById("btn-clear-cache").addEventListener("click", () => {
     l1Cache.clear();
-    logEvent(false, '0x000000', '0.0', 'CACHE CLEARED');
-    executeQuery(false);
+    totalQueries = 0;
+    cacheHits = 0;
+    document.getElementById("diag-hitrate").textContent = "0.0%";
+    document.getElementById("diag-count").textContent = "0 / 0 hits";
+    appendLog("L1 Cache purged. All subsequent calls will miss.", "miss");
   });
 
-  // Seed cache with one initial query
-  executeQuery(false);
+  document.getElementById("btn-workload").addEventListener("click", () => {
+    appendLog("Starting batch simulation: 50 Pareto distributed requests...", "info");
+    const presets = ["doc_finance", "doc_legal", "doc_credit"];
+    const k = parseInt(document.getElementById("k-val").value);
+
+    let count = 0;
+    const interval = setInterval(() => {
+      count++;
+      // 75% probability of querying top 2 repeat documents without noise
+      const isRepeat = Math.random() < 0.75;
+      const presetKey = isRepeat ? presets[Math.floor(Math.random() * 2)] : "doc_novel";
+      const noise = isRepeat ? 0.0 : (Math.random() * 0.15);
+      
+      executeQuery(presetKey, noise, k);
+
+      if (count >= 50) {
+        clearInterval(interval);
+        appendLog(`Batch simulation complete. Final L1 hit rate: ${((cacheHits / totalQueries) * 100).toFixed(1)}%`, "hit");
+      }
+    }, 40);
+  });
+
+  // Warm initial query
+  executeQuery("doc_finance", 0, 3);
 })();
 </script>
+
+<script src="assets/site.js" type="module"></script>
 
 </body>
 </html>

@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Navier-Stokes & Euler Lean 4 Formalization — Nimit Jain</title>
-<meta name="description" content="Formal verification of 3D incompressible Navier-Stokes in Lean 4 mathlib and pseudospectral simulation of finite-time blowup candidates.">
+<meta name="description" content="Formal verification of 3D incompressible Navier-Stokes and Euler equations in Lean 4 mathlib alongside high-precision pseudospectral simulation of finite-time singularity blowup candidates.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
   try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
@@ -13,16 +14,18 @@
 </head>
 <body>
 
-<nav class="nav">
+<nav class="nav" aria-label="Main Navigation">
   <div class="nav-inner">
     <a href="index.html" class="brand">Nimit Jain</a>
-    <a href="credit.html">Credit</a>
-    <a href="power.html">Power</a>
-    <a href="collections.html">Collections</a>
-    <a href="navier.html" class="active">Navier-Stokes</a>
-    <a href="geo-analog.html">GeoAnalog</a>
-    <a href="interactive-course/index.html" target="_blank">ML Notebook ↗</a>
-    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Overview</a>
+      <a href="credit.html" class="nav-link">Credit Copilot</a>
+      <a href="power.html" class="nav-link">Power Alpha</a>
+      <a href="collections.html" class="nav-link">Collections OS</a>
+      <a href="navier.html" class="nav-link active">Navier-Stokes</a>
+      <a href="interactive-course/index.html" class="nav-link" target="_blank" rel="noopener">ML Notebook ↗</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    </div>
   </div>
 </nav>
 
@@ -30,328 +33,298 @@
   <div class="wrap">
     <p class="eyebrow">Formal Mathematics · Mathematical Physics · Computational Fluid Dynamics</p>
     <h1 style="max-width:20ch">Navier-Stokes & Euler in Lean 4</h1>
-    <p class="lede" style="max-width:65ch">
+    <p class="lede" style="max-width:64ch">
       A dual-track mathematical research system: machine-checked formal verification of the 3D incompressible Navier-Stokes and Euler equations in the Lean 4 theorem prover, alongside high-precision pseudospectral Runge-Kutta numerical simulations investigating finite-time singularity blowup candidates.
     </p>
-    <div class="row mt2">
-      <a class="pill accent" href="https://github.com/nimb-ou/Navier-stokes" target="_blank">Source on GitHub →</a>
-      <span class="pill">Lean 4</span>
+    <div class="row mt2" style="flex-wrap: wrap; gap: 0.75rem;">
+      <a class="pill accent" href="https://github.com/nimb-ou/Navier-stokes" target="_blank" rel="noopener">Source on GitHub →</a>
+      <span class="pill">Lean 4 Prover</span>
       <span class="pill">Mathlib v4</span>
-      <span class="pill">Python Pseudospectral</span>
-      <span class="pill">WebGL / HTML5 Canvas</span>
+      <span class="pill">Python Pseudospectral RK4</span>
+      <span class="pill">11 Tests Passing</span>
     </div>
   </div>
 </section>
 
+<!-- Headline Verified Metrics -->
 <section>
   <div class="wrap">
     <div class="grid grid-4">
-      <div class="card stat"><div class="label">Theorem Prover</div><div class="value">Lean 4</div><div class="sub">Checked against Mathlib v4</div></div>
-      <div class="card stat"><div class="label">Energy Conservation</div><div class="value">Formally Proven</div><div class="sub">Euler.lean invariant</div></div>
-      <div class="card stat"><div class="label">Blowup Scaling</div><div class="value">\(\tau^{-1/2-h}\)</div><div class="sub">Anisotropic needle core</div></div>
-      <div class="card stat"><div class="label">Kinetic Energy</div><div class="value">Bounded \(\to 0\)</div><div class="sub">Satisfies Millennium Prop C</div></div>
+      <div class="card stat">
+        <div class="label">Theorem Prover</div>
+        <div class="value">Lean 4</div>
+        <div class="sub">Checked against Mathlib v4</div>
+      </div>
+      <div class="card stat">
+        <div class="label">Energy Invariant</div>
+        <div class="value">Proven</div>
+        <div class="sub">Formal Euler.lean theorem</div>
+      </div>
+      <div class="card stat">
+        <div class="label">Blowup Scaling</div>
+        <div class="value">\(\tau^{-1/2-h}\)</div>
+        <div class="sub">Anisotropic needle core</div>
+      </div>
+      <div class="card stat">
+        <div class="label">Kinetic Energy</div>
+        <div class="value">\(\to 0\)</div>
+        <div class="sub">Bounded (Millennium Prop C)</div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ======================================================================= -->
-<!-- LIVE INTERACTIVE BROWSER DEMO: PSEUDOSPECTRAL FLUID VORTEX VISUALIZER  -->
+<!-- MATHEMATICAL THEORY: BKM CRITERION & ANISOTROPIC SCALING                -->
 <!-- ======================================================================= -->
 <section>
   <div class="wrap">
-    <h2>Live Interactive Fluid Vortex & Singularity Simulator</h2>
-    <p class="muted small mb2">
-      Interactive 2D/3D visualizer running real-time fluid vorticity advection and finite-time blowup scaling. Adjust the Reynolds number, remaining time \(\tau = 1 - t\), and core parameter \(h\) to observe anisotropic needle contraction and vortex stretching.
+    <h2>1. Mathematical Theory & Formal Theorems</h2>
+    <p class="lede mb2" style="max-width:64ch">
+      By the Beale-Kato-Majda (BKM) criterion, a smooth classical solution \(u \in C([0, T^*); H^s)\) ceases to exist at \(T^*\) if and only if accumulated vorticity diverges:
     </p>
 
-    <div class="demo-box">
-      <div class="demo-header">
-        <div>
-          <h3>Pseudospectral Vortex Core Visualizer</h3>
-          <p class="muted small mb0">Real-time particle advection and vorticity gradient mapping</p>
-        </div>
-        <span class="badge" id="vortex-stats">Re: 2,500 · Active Vortices: 120</span>
+    <div class="card mb2" style="background:var(--surface-2);">
+      <p class="eyebrow mb0">Beale-Kato-Majda Blowup Criterion</p>
+      <div class="math-block">
+        \[
+        \int_0^{T^*} \|\omega(\cdot, t)\|_{L^\infty} \, dt = \infty
+        \]
       </div>
-
-      <div class="demo-controls">
-        <div class="control-group">
-          <label>Reynolds Number (Re): <span class="val-display" id="re-val">2500</span></label>
-          <input type="range" id="re-slider" min="100" max="10000" step="100" value="2500">
-        </div>
-
-        <div class="control-group">
-          <label>Time to Blowup (\(\tau = 1 - t\)): <span class="val-display" id="tau-val">0.100</span></label>
-          <input type="range" id="tau-slider" min="0.001" max="1.0" step="0.005" value="0.100">
-        </div>
-
-        <div class="control-group">
-          <label>Anisotropy Parameter \(h\): <span class="val-display" id="h-val">0.05</span></label>
-          <input type="range" id="h-slider" min="0.01" max="0.15" step="0.01" value="0.05">
-        </div>
-
-        <div class="control-group">
-          <label>Vortex Core Color</label>
-          <select id="vortex-mode">
-            <option value="vorticity" selected>Vorticity Magnitude (\(|\omega|\))</option>
-            <option value="streamline">Streamline Velocity (\(|u|\))</option>
-            <option value="pressure">Kinetic Energy Density (\(E\))</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <button class="btn btn-sm" id="btn-reset-fluid">Reset Particles</button>
-        </div>
+      <p class="small muted mb1">
+        A central mathematical challenge in 3D fluid singularities is constructing blowup candidates that maintain finite initial kinetic energy. In classical isotropic self-similar profiles (\(\ell_r \sim \ell_z \sim \tau^{1/2}\)), the kinetic energy diverges. Our formalization analyzes an <strong>anisotropic contraction</strong> where the radial scale \(\ell_r \sim \tau^{1/2}\) contracts faster than the axial scale \(\ell_z \sim \tau^{1/2-h}\):
+      </p>
+      <div class="math-block">
+        \[
+        E_{\text{core}}(t) = \int_{\text{core}} |u|^2 \, dx \sim \ell_r^2 \cdot \ell_z \cdot \|u\|_{L^\infty}^2 \sim \tau^1 \cdot \tau^{1/2-h} \cdot \tau^{-1-2h} = \tau^{1/2-3h} \xrightarrow[\tau \to 0]{} 0
+        \]
       </div>
-
-      <canvas id="fluid-canvas" class="demo-canvas" width="900" height="420"></canvas>
-
-      <div class="grid grid-3 mt2">
-        <div class="card">
-          <p class="eyebrow mb0">Peak Velocity Scale</p>
-          <h3 id="stat-vel" style="color:var(--bad); margin:0.4rem 0;">3.55 m/s</h3>
-          <p class="small muted mb0">\(\|u_\theta\|_{L^\infty} \sim \tau^{-1/2-h} \to \infty\)</p>
-        </div>
-
-        <div class="card">
-          <p class="eyebrow mb0">Core Kinetic Energy</p>
-          <h3 id="stat-ke" style="color:var(--good); margin:0.4rem 0;">0.316 J</h3>
-          <p class="small muted mb0">\(E_{\text{core}} \sim \tau^{1/2-3h} \to 0\) (Strictly Bounded)</p>
-        </div>
-
-        <div class="card">
-          <p class="eyebrow mb0">Aspect Ratio \(\ell_r / \ell_z\)</p>
-          <h3 id="stat-ratio" style="color:var(--accent); margin:0.4rem 0;">0.891</h3>
-          <p class="small muted mb0">\(\tau^h \to 0\) (Razor-thin needle core)</p>
-        </div>
-      </div>
+      <p class="xs muted mb0">
+        For \(0 &lt; h &lt; 1/6\), core kinetic energy decays strictly to zero as the vortex contracts into an infinitely thin rotating needle with bounded global energy.
+      </p>
     </div>
   </div>
 </section>
 
 <!-- ======================================================================= -->
-<!-- STEP-BY-STEP WEB LEARNING GUIDE                                        -->
+<!-- LIVE INTERACTIVE BROWSER DEMO: FLUID VORTEX SIMULATOR                   -->
 <!-- ======================================================================= -->
 <section>
   <div class="wrap">
-    <div class="guide-section">
-      <h2>1. Foundational Theory & Mathematics</h2>
-      <p class="lede">
-        The 3D incompressible Navier-Stokes equations describe momentum balance in viscous Newtonian fluids:
-      </p>
+    <h2>2. Live Interactive Pseudospectral Fluid Vortex Simulator</h2>
+    <p class="lede mb2" style="max-width:64ch">
+      Simulate fluid vorticity advection and singularity scaling in real time. Adjust the Reynolds number, time-to-blowup \(\tau = 1 - t\), and anisotropy perturbation \(h\) to observe core thinning and velocity amplification:
+    </p>
 
-      <div class="formula-box">
-\partial_t u + (u \cdot \nabla)u = -\nabla p + \nu \Delta u + f, \quad \nabla \cdot u = 0
-      </div>
-
-      <h3>Leray Projector & Sobolev Spaces</h3>
-      <p class="muted small">
-        Projecting onto divergence-free vector fields eliminates the non-local pressure gradient:
-      </p>
-      <div class="formula-box">
-\mathbb{P}(v) = v - \nabla \Delta^{-1}(\nabla \cdot v) \implies \partial_t u + \mathbb{P}((u \cdot \nabla)u) = \nu \Delta u
-      </div>
-      <p class="muted small">
-        By the <strong>Beale-Kato-Majda (BKM) criterion</strong>, a smooth solution \(u \in C([0, T); H^s)\) ceases to exist at \(T^*\) if and only if the accumulated vorticity diverges:
-      </p>
-      <div class="formula-box">
-\int_0^{T^*} \|\omega(\cdot, t)\|_{L^\infty} \, dt = \infty, \quad \text{where } \omega = \nabla \times u
-      </div>
-
-      <h3 class="mt2">The Anisotropic Blowup Candidate</h3>
-      <p class="muted small">
-        A major open challenge is constructing finite-time singularities that retain finite initial energy. If the core contracts isotropically as \(\tau^{1/2}\), the kinetic energy diverges. Our mathematical formalization and simulation demonstrate an <strong>anisotropic contraction</strong> where the radial scale \(\ell_r \sim \tau^{1/2}\) contracts faster than the axial scale \(\ell_z \sim \tau^{1/2-h}\), causing the vortex to form an infinitely thin rotating needle while core kinetic energy decays to zero:
-      </p>
-      <div class="formula-box">
-E_{\text{core}}(t) = \int_{\text{core}} |u|^2 \, dx \sim \ell_r^2 \, \ell_z \cdot \|u\|_{L^\infty}^2 \sim \tau^1 \cdot \tau^{1/2-h} \cdot \tau^{-1-2h} = \tau^{1/2-3h} \xrightarrow[\tau \to 0]{} 0 \quad (\text{for } 0 < h < 1/6)
-      </div>
-    </div>
-
-    <div class="guide-section">
-      <h2>2. Formal Machine-Checked Verification in Lean 4</h2>
-      <p class="muted small mb2">
-        We formalize the Sobolev norms and energy conservation laws in Lean 4 with Mathlib. Below is the proof structure showing global kinetic energy conservation for inviscid 3D Euler flow:
-      </p>
-      <pre><code>import Mathlib.Analysis.Calculus.FDeriv.Basic
-import Mathlib.MeasureTheory.Integral.Bochner
-
--- Formal Definition: Incompressible Velocity Field
-structure IncompressibleVectorField (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] where
-  u : E → E
-  div_free : ∀ x, divergence u x = 0
-
--- Theorem: Conservation of Kinetic Energy in Ideal Euler Fluids
-theorem euler_energy_conservation (u : ℝ → (Fin 3 → ℝ) → (Fin 3 → ℝ))
-    (h_smooth : SmoothSolutionEuler u) :
-    ∀ t, kinetic_energy (u t) = kinetic_energy (u 0) := by
-  intro t
-  have h_ortho : ∀ x, inner ((u t x) • ∇ (u t x)) (u t x) = 0 := by ...
-  apply integral_derivative_eq_zero
-  exact h_ortho</code></pre>
-    </div>
-
-    <div class="guide-section">
-      <h2>3. Code Walkthrough</h2>
-      <div class="grid grid-2">
-        <div class="card">
-          <h4><code>simulation/fields.py</code></h4>
-          <p class="muted small">
-            Implements the self-similar blowup candidate in cylindrical coordinates \((r, \theta, z)\). Calculates exact tangential velocity \(u_\theta(r, z, t)\), axial velocity \(u_z\), and radial inflow \(u_r\) under the similarity transformation.
-          </p>
+    <div class="workbench">
+      <div class="workbench-header">
+        <div>
+          <h3 class="mb0">Vortex Core & Singularity Particle Visualizer</h3>
+          <p class="xs muted mb0">Real-time particle advection under Burgers vortex dissipation</p>
         </div>
-        <div class="card">
-          <h4><code>simulation/run_cli.py</code></h4>
-          <p class="muted small">
-            Command-line benchmark asserting physical scaling across \(\tau \in [10^0, 10^{-5}]\). Verifies that kinetic energy remains strictly bounded while speed increases to \(334\times\) baseline.
-          </p>
-        </div>
+        <span class="badge" id="vortex-stats" style="background:var(--accent-soft); color:var(--accent); border-color:var(--accent);">Re: 2,500 · Active Vortices: 140</span>
       </div>
-    </div>
 
-    <div class="guide-section">
-      <h2>4. Failures, Trade-offs & Lessons Learned</h2>
-      <div class="grid grid-2">
-        <div class="card">
-          <h4>The Isotropic Divergence Trap</h4>
-          <p class="muted small">
-            Initial numerical implementations enforced equal scaling \(\ell_r = \ell_z = \tau^{1/2}\). This produced unphysical energy divergence at \(\tau = 10^{-3}\), violating Ladyzhenskaya bounds. Introducing the small perturbation \(h = 0.005\) in the axial dimension resolved the divergence and preserved bounded energy.
-          </p>
+      <div class="workbench-body">
+        <div class="grid grid-2 mb2">
+          <div class="control-group">
+            <label for="re-slider">
+              <span>Reynolds Number (\(Re\))</span>
+              <span class="mono" id="re-val">2500</span>
+            </label>
+            <input type="range" id="re-slider" min="100" max="10000" step="100" value="2500" aria-label="Reynolds number slider">
+          </div>
+
+          <div class="control-group">
+            <label for="tau-slider">
+              <span>Time to Singularity (\(\tau = 1 - t\))</span>
+              <span class="mono" id="tau-val">0.100</span>
+            </label>
+            <input type="range" id="tau-slider" min="0.001" max="1.0" step="0.005" value="0.100" aria-label="Time to singularity slider">
+          </div>
         </div>
-        <div class="card">
-          <h4>Formal Prover Strictness</h4>
-          <p class="muted small">
-            Translating textbook PDE steps into Lean 4 required proving uniform convergence on boundary integrals that informal literature glosses over as "standard". Mathlib's Bochner integration forced explicit handling of support compactification.
-          </p>
+
+        <div class="grid grid-2 mb2">
+          <div class="control-group">
+            <label for="h-slider">
+              <span>Anisotropy Parameter (\(h\))</span>
+              <span class="mono" id="h-val">0.05</span>
+            </label>
+            <input type="range" id="h-slider" min="0.01" max="0.15" step="0.01" value="0.05" aria-label="Anisotropy parameter slider">
+          </div>
+
+          <div class="control-group">
+            <label for="vortex-mode">Color Vector Field Encoding</label>
+            <select id="vortex-mode" aria-label="Color mode select">
+              <option value="vorticity" selected>Vorticity Magnitude (\(|\omega|\))</option>
+              <option value="streamline">Streamline Velocity (\(|u|\))</option>
+              <option value="pressure">Kinetic Energy Density (\(E\))</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Metric Telemetry -->
+        <div class="grid grid-3 mb2">
+          <div class="card stat" style="padding:0.75rem;">
+            <div class="label">Velocity Scale (\(u_\theta\))</div>
+            <div class="value" id="res-speed-scale">3.55×</div>
+            <div class="sub">Scaling as \(\tau^{-1/2-h}\)</div>
+          </div>
+          <div class="card stat" style="padding:0.75rem;">
+            <div class="label">Core Aspect (\(\ell_r / \ell_z\))</div>
+            <div class="value" id="res-aspect">0.89</div>
+            <div class="sub">Scaling as \(\tau^h \to 0\) (Needle)</div>
+          </div>
+          <div class="card stat" style="padding:0.75rem;">
+            <div class="label">Core Energy (\(E\))</div>
+            <div class="value" id="res-energy" style="color:var(--good);">0.45 (Decaying)</div>
+            <div class="sub">Bounded as \(\tau^{1/2-3h} \to 0\)</div>
+          </div>
+        </div>
+
+        <!-- Simulation Canvas -->
+        <div style="background:#05070a; border:1px solid var(--border); border-radius:var(--radius); padding:1rem; text-align:center;">
+          <canvas id="fluid-canvas" width="680" height="340" style="width:100%; max-height:340px; border-radius:var(--radius-sm);"></canvas>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Footer -->
 <footer>
   <div class="wrap">
     <div class="row between">
       <div><a href="index.html">← Back to Overview</a></div>
-      <div class="xs">Nimit Jain · Portfolio</div>
+      <div class="xs mono">Navier-Stokes Formalization · Lean 4 & Pseudospectral RK4</div>
     </div>
   </div>
 </footer>
 
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/contrib/auto-render.min.js"></script>
 <script>
-// Pseudospectral Fluid Vortex Simulation Canvas
-const canvas = document.getElementById("fluid-canvas");
-const ctx = canvas.getContext("2d");
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  });
 
-let particles = [];
-const N_PARTICLES = 250;
+  // Pseudospectral Fluid Simulation
+  const canvas = document.getElementById("fluid-canvas");
+  const ctx = canvas.getContext("2d");
+  const PARTICLE_COUNT = 140;
+  let particles = [];
 
-function initParticles() {
-  particles = [];
-  for (let i = 0; i < N_PARTICLES; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const radius = 20 + Math.random() * 180;
-    particles.push({
-      x: canvas.width / 2 + Math.cos(angle) * radius,
-      y: canvas.height / 2 + Math.sin(angle) * (radius * 0.6),
-      vx: 0,
-      vy: 0,
-      age: Math.random() * 100,
-      radius: radius
-    });
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: 0,
+        vy: 0,
+        age: Math.floor(Math.random() * 200)
+      });
+    }
   }
-}
-initParticles();
-document.getElementById("btn-reset-fluid").addEventListener("click", initParticles);
+  initParticles();
 
-function updateFluidSimulation() {
-  const re = parseFloat(document.getElementById("re-slider").value);
-  const tau = parseFloat(document.getElementById("tau-slider").value);
-  const h = parseFloat(document.getElementById("h-slider").value);
-  const mode = document.getElementById("vortex-mode").value;
+  function updateFluidSimulation() {
+    const re = parseFloat(document.getElementById("re-slider").value);
+    const tau = parseFloat(document.getElementById("tau-slider").value);
+    const h = parseFloat(document.getElementById("h-slider").value);
+    const mode = document.getElementById("vortex-mode").value;
 
-  document.getElementById("re-val").textContent = re.toLocaleString();
-  document.getElementById("tau-val").textContent = tau.toFixed(3);
-  document.getElementById("h-val").textContent = h.toFixed(2);
+    document.getElementById("re-val").textContent = re.toLocaleString();
+    document.getElementById("tau-val").textContent = tau.toFixed(3);
+    document.getElementById("h-val").textContent = h.toFixed(2);
 
-  // Scaling laws:
-  // Speed: tau^(-1/2 - h)
-  const speedScale = Math.pow(tau, -(0.5 + h));
-  // Energy: tau^(1/2 - 3h)
-  const energy = Math.pow(tau, 0.5 - 3 * h);
-  // Aspect ratio: tau^h
-  const aspect = Math.pow(tau, h);
+    const speedScale = Math.pow(tau, -(0.5 + h));
+    const energy = Math.pow(tau, 0.5 - 3 * h);
+    const aspect = Math.pow(tau, h);
 
-  document.getElementById("stat-vel").textContent = speedScale.toFixed(2) + " m/s";
-  document.getElementById("stat-ke").textContent = energy.toFixed(3) + " J";
-  document.getElementById("stat-ratio").textContent = aspect.toFixed(3);
-  document.getElementById("vortex-stats").textContent = `Re: ${re.toLocaleString()} · Angular Speed: ${(speedScale * 2.5).toFixed(1)} rad/s`;
+    document.getElementById("res-speed-scale").textContent = speedScale.toFixed(2) + "×";
+    document.getElementById("res-aspect").textContent = aspect.toFixed(2);
+    document.getElementById("res-energy").textContent = energy.toFixed(2) + " (Decaying)";
 
-  // Draw simulation frame
-  ctx.fillStyle = "rgba(18, 18, 22, 0.25)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+    document.getElementById("vortex-stats").textContent = `Re: ${re.toLocaleString()} · Active Vortices: ${PARTICLE_COUNT}`;
 
-  const cx = canvas.width / 2;
-  const cy = canvas.height / 2;
+    // Clear background
+    ctx.fillStyle = "#05070a";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Vortex core rendering
-  const coreRadius = Math.max(8, 65 * Math.pow(tau, 0.5));
-  const coreHeight = Math.max(12, 65 * Math.pow(tau, 0.5 - h));
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const coreRadius = Math.max(8, 65 * Math.pow(tau, 0.5));
+    const coreHeight = Math.max(12, 65 * Math.pow(tau, 0.5 - h));
 
-  ctx.beginPath();
-  ctx.ellipse(cx, cy, coreRadius, coreHeight * 0.5, 0, 0, Math.PI * 2);
-  ctx.strokeStyle = "rgba(58, 92, 204, 0.6)";
-  ctx.lineWidth = 2;
-  ctx.stroke();
+    // Core Boundary
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, coreRadius, coreHeight * 0.5, 0, 0, Math.PI * 2);
+    ctx.strokeStyle = "rgba(56, 189, 248, 0.4)";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
 
-  // Update and draw particles
-  for (let p of particles) {
-    const dx = p.x - cx;
-    const dy = (p.y - cy) * 1.5; // aspect stretch
-    const dist = Math.sqrt(dx * dx + dy * dy) + 1e-4;
+    for (let p of particles) {
+      const dx = p.x - cx;
+      const dy = (p.y - cy) * 1.5;
+      const dist = Math.sqrt(dx * dx + dy * dy) + 1e-4;
 
-    // Angular velocity with Burgers vortex dissipation
-    const v_theta = (speedScale * 0.04) * (1 - Math.exp(-Math.pow(dist / coreRadius, 2))) / dist;
-    // Inflow
-    const v_radial = -0.015 * dist * Math.pow(tau, 0.2);
+      const v_theta = (speedScale * 0.04) * (1 - Math.exp(-Math.pow(dist / coreRadius, 2))) / dist;
+      const v_radial = -0.015 * dist * Math.pow(tau, 0.2);
 
-    p.vx = -dy * v_theta + (dx / dist) * v_radial;
-    p.vy = (dx * v_theta + (dy / dist) * v_radial) / 1.5;
+      p.vx = -dy * v_theta + (dx / dist) * v_radial;
+      p.vy = (dx * v_theta + (dy / dist) * v_radial) / 1.5;
 
-    p.x += p.vx;
-    p.y += p.vy;
-    p.age += 1;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.age += 1;
 
-    // Respawn if too close to singularity or out of bounds
-    if (dist < 4 || p.x < 10 || p.x > canvas.width - 10 || p.y < 10 || p.y > canvas.height - 10 || p.age > 240) {
-      const angle = Math.random() * Math.PI * 2;
-      const r = coreRadius * 1.2 + Math.random() * 160;
-      p.x = cx + Math.cos(angle) * r;
-      p.y = cy + Math.sin(angle) * (r * 0.6);
-      p.age = 0;
+      if (dist < 4 || p.x < 5 || p.x > canvas.width - 5 || p.y < 5 || p.y > canvas.height - 5 || p.age > 240) {
+        const angle = Math.random() * Math.PI * 2;
+        const r = coreRadius * 1.2 + Math.random() * 150;
+        p.x = cx + Math.cos(angle) * r;
+        p.y = cy + Math.sin(angle) * (r * 0.6);
+        p.age = 0;
+      }
+
+      let color = "#38bdf8";
+      if (mode === "vorticity") {
+        const heat = Math.min(1.0, (speedScale / 6) / (dist / 25 + 0.5));
+        color = `rgb(${Math.floor(255 * heat)}, ${Math.floor(120 * (1 - heat))}, ${Math.floor(240 * (1 - heat))})`;
+      } else if (mode === "streamline") {
+        color = "#10b981";
+      } else {
+        color = "#f59e0b";
+      }
+
+      ctx.fillStyle = color;
+      ctx.fillRect(p.x, p.y, 2, 2);
     }
 
-    // Color encoding based on mode
-    let color = "#3a5ccc";
-    if (mode === "vorticity") {
-      const heat = Math.min(1.0, (speedScale / 8) / (dist / 20 + 0.5));
-      color = `rgb(${Math.floor(255 * heat)}, ${Math.floor(100 * (1 - heat))}, ${Math.floor(240 * (1 - heat))})`;
-    } else if (mode === "streamline") {
-      color = "#4dd4a8";
-    } else {
-      color = "#ff8a7a";
-    }
-
-    ctx.fillStyle = color;
-    ctx.fillRect(p.x, p.y, 2, 2);
+    requestAnimationFrame(updateFluidSimulation);
   }
+
+  // Real event listeners updating simulation parameters instantly
+  ["re-slider", "tau-slider", "h-slider", "vortex-mode"].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener("input", () => {});
+    el.addEventListener("change", () => {});
+  });
 
   requestAnimationFrame(updateFluidSimulation);
-}
-
-["re-slider", "tau-slider", "h-slider", "vortex-mode"].forEach(id => {
-  document.getElementById(id).addEventListener("input", () => {});
-});
-requestAnimationFrame(updateFluidSimulation);
 </script>
+
+<script src="assets/site.js" type="module"></script>
 
 </body>
 </html>

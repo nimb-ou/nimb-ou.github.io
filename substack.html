@@ -6,6 +6,7 @@
 <title>Substack Growth Agent (Manifest V3) — Nimit Jain</title>
 <meta name="description" content="Chrome Manifest V3 side panel extension providing real-time technical SEO, headline engagement prediction, and direct ProseMirror DOM bridge for newsletter authors.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
   try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
@@ -82,17 +83,19 @@
 </head>
 <body>
 
-<nav class="nav">
+<nav class="nav" aria-label="Main Navigation">
   <div class="nav-inner">
     <a href="index.html" class="brand">Nimit Jain</a>
-    <a href="credit.html">Credit</a>
-    <a href="power.html">Power</a>
-    <a href="collections.html">Collections</a>
-    <a href="navier.html">Navier-Stokes</a>
-    <a href="geo-analog.html">GeoAnalog</a>
-    <a href="substack.html" class="active">Substack Agent</a>
-    <a href="interactive-course/index.html" target="_blank">ML Notebook ↗</a>
-    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Overview</a>
+      <a href="credit.html" class="nav-link">Credit Copilot</a>
+      <a href="power.html" class="nav-link">Power Alpha</a>
+      <a href="collections.html" class="nav-link">Collections OS</a>
+      <a href="navier.html" class="nav-link">Navier-Stokes</a>
+      <a href="substack.html" class="nav-link active">Substack Agent</a>
+      <a href="interactive-course/index.html" class="nav-link" target="_blank" rel="noopener">ML Notebook ↗</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    </div>
   </div>
 </nav>
 
@@ -103,8 +106,8 @@
     <p class="lede" style="max-width:64ch">
       A Chrome extension operating natively within the browser sidePanel that serves as a real-time editorial copilot for technical newsletter authors. Directly inspects ProseMirror editor drafts, computing headline engagement scores, Flesch-Kincaid readability indices, power-word ratios, and SEO keyword density with zero draft leakage to external servers.
     </p>
-    <div class="row mt2">
-      <a class="pill accent" href="https://github.com/nimb-ou/substack-agent" target="_blank">Source on GitHub →</a>
+    <div class="row mt2" style="flex-wrap: wrap; gap: 0.75rem;">
+      <a class="pill accent" href="https://github.com/nimb-ou/substack-agent" target="_blank" rel="noopener">Source on GitHub →</a>
       <span class="pill">Chrome Manifest V3</span>
       <span class="pill">SidePanel API</span>
       <span class="pill">TypeScript & HTML5</span>
@@ -175,7 +178,7 @@
 
           <div class="row" style="gap:0.75rem;">
             <div class="control-group" style="flex:1;">
-              <label>Target Audience</label>
+              <label for="target-audience">Target Audience</label>
               <select id="target-audience">
                 <option value="engineering" selected>Engineering & Systems</option>
                 <option value="quant">Quantitative Finance & Alpha</option>
@@ -205,7 +208,7 @@
             <div class="card" style="padding:0.6rem 0.8rem;">
               <p class="eyebrow mb0">Grade Level</p>
               <h3 id="stat-grade" style="margin:0.2rem 0;">9.4</h3>
-              <p class="muted xs mb0">High school level</p>
+              <p class="muted xs mb0" id="stat-grade-desc">High school level</p>
             </div>
 
             <div class="card" style="padding:0.6rem 0.8rem;">
@@ -244,10 +247,10 @@
         To quantify whether prose is accessible or needlessly convoluted, we compute the Flesch Reading Ease (FRE) and Flesch-Kincaid Grade Level (FKGL):
       </p>
       <div class="formula-box">
-\text{FRE} = 206.835 - 1.015 \left(\frac{\text{words}}{\text{sentences}}\right) - 84.6 \left(\frac{\text{syllables}}{\text{words}}\right)
+$$\text{FRE} = 206.835 - 1.015 \left(\frac{\text{words}}{\text{sentences}}\right) - 84.6 \left(\frac{\text{syllables}}{\text{words}}\right)$$
       </div>
       <div class="formula-box">
-\text{FKGL} = 0.39 \left(\frac{\text{words}}{\text{sentences}}\right) + 11.8 \left(\frac{\text{syllables}}{\text{words}}\right) - 15.59
+$$\text{FKGL} = 0.39 \left(\frac{\text{words}}{\text{sentences}}\right) + 11.8 \left(\frac{\text{syllables}}{\text{words}}\right) - 15.59$$
       </div>
       <p class="muted small">
         Top-performing technical newsletters typically score in the <strong>60–70 range (Grade 8–10)</strong>: technical concepts explained with concise sentence structures and active verbs.
@@ -258,7 +261,7 @@
         The headline score \(\hat{y} \in [0, 100]\) maps five orthogonal signals through a calibrated logistic function:
       </p>
       <div class="formula-box">
-\hat{y} = 100 \cdot \sigma\Big( \beta_0 + \beta_1 \cdot \mathbb{I}_{\text{has\_number}} + \beta_2 \cdot \text{PowerWordRatio} - \beta_3 \cdot \max(0, \text{Len} - 65) - \beta_4 \cdot \text{PassiveVoicePenalty} \Big)
+$$\hat{y} = 100 \cdot \sigma\Big( \beta_0 + \beta_1 \cdot \mathbb{I}_{\text{has\_number}} + \beta_2 \cdot \text{PowerWordRatio} - \beta_3 \cdot \max(0, \text{Len} - 65) - \beta_4 \cdot \text{PassiveVoicePenalty} \Big)$$
       </div>
       <p class="muted small">
         Mobile email clients (Gmail, Apple Mail) truncate subject lines beyond 65 characters; hence, exceeding this threshold incurs an exponential penalty.
@@ -300,9 +303,9 @@ Lit / Vanilla JS Diagnostic Workbench
           </p>
         </div>
         <div class="card">
-          <h4><code>tests/test_manifest.py</code> — Specification Tests</h4>
+          <h4><code>content.js</code> — ProseMirror DOM Bridge</h4>
           <p class="muted small">
-            Automated Python test suite validating: manifest schema compliance (version 3), presence of required sidePanel fields, background service worker declaration, and valid web origin match patterns.
+            Attaches non-intrusive <code>MutationObserver</code> to Substack's content-editable tree, safely extracting inner text without mutating author DOM state or breaking redo/undo stacks.
           </p>
         </div>
       </div>
@@ -312,33 +315,17 @@ Lit / Vanilla JS Diagnostic Workbench
       <h2>4. Failures, Trade-offs & Lessons Learned</h2>
       <div class="grid grid-2">
         <div class="card">
-          <h4>Service Worker Dormancy & State Loss</h4>
+          <h4>DOM Mutation Storms</h4>
           <p class="muted small">
-            Under Manifest V3, background workers terminate after 30 seconds of inactivity to save battery. In early builds, author session statistics stored in memory variables were lost mid-typing. <strong>Fix:</strong> All state migrated to asynchronous <code>chrome.storage.local</code>, enabling instant seamless resumption without interrupting the writer.
+            Typing at 80 WPM triggers dozens of DOM mutations per second. Unthrottled NLP evaluation caused noticeable typing latency in ProseMirror. Debouncing observer callbacks to 250ms completely restored 60fps editor responsiveness.
           </p>
         </div>
         <div class="card">
-          <h4>ProseMirror Keystroke DOM Flooding</h4>
+          <h4>Service Worker Dormancy</h4>
           <p class="muted small">
-            The Substack rich-text editor (built on ProseMirror) fires multiple DOM mutations per keystroke. Running tokenization on every event caused fan spin and UI lag. Implementing a <strong>250ms trailing debounce</strong> reduced DOM extractions by 94% while maintaining the perception of instant real-time feedback.
+            Manifest V3 service workers terminate after 30 seconds of inactivity. In-flight token counts and state must persist to <code>chrome.storage.session</code> rather than relying on in-memory JavaScript globals.
           </p>
         </div>
-      </div>
-    </div>
-
-    <div class="guide-section">
-      <h2>5. Reproduce the Benchmarks</h2>
-      <pre><code>git clone https://github.com/nimb-ou/substack-agent
-cd substack-agent
-
-# 1. Run automated manifest and extension tests
-pytest tests/ -v
-
-# 2. Load Extension in Chrome
-# Open chrome://extensions -> Enable Developer Mode -> "Load Unpacked" -> Select folder</code></pre>
-      <div class="row mt2">
-        <a class="pill accent" href="https://github.com/nimb-ou/substack-agent" target="_blank">Repository on GitHub →</a>
-        <a class="pill" href="index.html">← Back to Overview</a>
       </div>
     </div>
   </div>
@@ -347,41 +334,62 @@ pytest tests/ -v
 <footer>
   <div class="wrap">
     <div class="row between">
-      <div><strong>Nimit Jain</strong> · Bengaluru, India · <a href="https://github.com/nimb-ou">GitHub</a></div>
-      <div class="xs"><a href="index.html">← All Projects</a></div>
+      <div><a href="index.html">← Back to Overview</a></div>
+      <div class="xs mono">Substack Growth Agent · Chrome Manifest V3</div>
     </div>
   </div>
 </footer>
 
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/contrib/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  });
+</script>
+
 <script>
 // =============================================================================
-// CLIENT-SIDE LOCAL NLP HEURISTIC ENGINE & SUBSTACK DRAFT ANALYZER
+// LOCAL NLP EDITORIAL DIAGNOSTICS ENGINE
 // =============================================================================
 (function() {
-  const inputTitle = document.getElementById('input-title');
-  const inputHook = document.getElementById('input-hook');
-  const charCount = document.getElementById('char-count');
-  const scoreCircle = document.getElementById('score-circle');
-  const scoreHeadline = document.getElementById('score-headline');
-  const scoreSub = document.getElementById('score-sub');
-  const statFlesch = document.getElementById('stat-flesch');
-  const statFleschDesc = document.getElementById('stat-flesch-desc');
-  const statGrade = document.getElementById('stat-grade');
-  const statPower = document.getElementById('stat-power');
-  const coachingFeed = document.getElementById('coaching-feed');
+  const POWER_WORDS = new Set([
+    "cut", "boost", "salvage", "proven", "critical", "bottleneck", "crush", "inverter",
+    "zero", "losses", "benchmark", "secret", "speedup", "exact", "guarantee", "shipped",
+    "revealed", "discovered", "tested", "measured", "instant", "microsecond", "real-time"
+  ]);
 
-  const presetGood = document.getElementById('preset-good');
-  const presetDense = document.getElementById('preset-dense');
-  const presetClickbait = document.getElementById('preset-clickbait');
+  const PRESETS = {
+    good: {
+      title: "How We Cut Inverter Switching Losses by 33% on STM32",
+      hook: "When designing motor drive firmware for electric vehicles, silicon heat dissipation is the bottleneck. Standard sinusoidal PWM continuously toggles all three inverter legs, burning power. Here is how discontinuous PWM clamped 60-degree intervals and salvaged our thermal budget."
+    },
+    dense: {
+      title: "An Empirical Investigation into Algorithmic Space Vector Topologies",
+      hook: "In the contemporary literature concerning three-phase power electronics converters, pulse-width modulation strategies predominantly exhibit non-negligible harmonic distortion characteristics that inevitably exacerbate total thermodynamic dissipation within wide-bandgap semiconductor devices."
+    },
+    clickbait: {
+      title: "You Won't Believe What This Simple Coding Trick Did To Our Code!",
+      hook: "Engineers are completely stunned. We tried this one weird trick on our computer yesterday and something truly incredible happened. Click here to see what our team discovered when we looked inside."
+    }
+  };
 
-  const POWER_WORDS = [
-    'cut', 'boost', 'losses', 'salvaged', 'inverter', 'zero', 'proof', 'how',
-    'fast', 'scalable', 'latency', 'production', 'architecture', 'eliminated',
-    'surpassed', 'bottleneck', 'failed', 'measured', 'verified', 'guaranteed'
-  ];
+  const inputTitle = document.getElementById("input-title");
+  const inputHook = document.getElementById("input-hook");
+  const charCount = document.getElementById("char-count");
 
   function countSyllables(word) {
-    word = word.toLowerCase();
+    word = word.toLowerCase().replace(/[^a-z]/g, '');
     if (word.length <= 3) return 1;
     word = word.replace(/(?:[^laeiouy]|ed|es|e)$/, '');
     word = word.replace(/^y/, '');
@@ -389,157 +397,149 @@ pytest tests/ -v
     return matches ? matches.length : 1;
   }
 
-  function analyze() {
+  function analyzeText() {
     const title = inputTitle.value.trim();
     const hook = inputHook.value.trim();
-
-    // 1. Title Character Count Analysis
     const len = title.length;
-    if (len >= 40 && len <= 65) {
+
+    // Character limit feedback
+    if (len <= 65) {
       charCount.textContent = `${len} / 65 chars (Optimal for Mobile)`;
-      charCount.style.color = 'var(--good)';
-    } else if (len < 40) {
-      charCount.textContent = `${len} / 65 chars (Too Short)`;
-      charCount.style.color = '#f59e0b';
+      charCount.style.color = "var(--good)";
     } else {
-      charCount.textContent = `${len} / 65 chars (Truncated on Mobile)`;
-      charCount.style.color = 'var(--bad)';
+      charCount.textContent = `${len} / 65 chars (Truncated by Mobile Clients!)`;
+      charCount.style.color = "var(--bad)";
     }
 
-    // 2. Text Statistics
-    const allText = `${title}. ${hook}`;
-    const words = allText.match(/\b[a-zA-Z0-9_-]+\b/g) || [];
-    const sentences = allText.split(/[.!?]+/).filter(s => s.trim().length > 0);
-
-    const totalWords = Math.max(1, words.length);
-    const totalSentences = Math.max(1, sentences.length);
+    // Tokenize Hook
+    const sentences = hook.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    const words = hook.split(/\s+/).filter(w => w.length > 0);
+    const numWords = Math.max(1, words.length);
+    const numSentences = Math.max(1, sentences.length);
 
     let totalSyllables = 0;
     let powerWordCount = 0;
+
     words.forEach(w => {
-      totalSyllables += countSyllables(w);
-      if (POWER_WORDS.includes(w.toLowerCase())) {
-        powerWordCount++;
-      }
+      const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+      totalSyllables += countSyllables(clean);
+      if (POWER_WORDS.has(clean)) powerWordCount++;
     });
 
-    // 3. Flesch Reading Ease & Grade Level
-    const wordsPerSentence = totalWords / totalSentences;
-    const syllablesPerWord = totalSyllables / totalWords;
+    // Check title power words as well
+    title.split(/\s+/).forEach(w => {
+      const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+      if (POWER_WORDS.has(clean)) powerWordCount++;
+    });
 
-    let fre = 206.835 - 1.015 * wordsPerSentence - 84.6 * syllablesPerWord;
-    fre = Math.min(100, Math.max(10, Math.round(fre * 10) / 10));
+    // Calculate Readability Metrics
+    const asl = numWords / numSentences;
+    const asw = totalSyllables / numWords;
 
-    let fkgl = 0.39 * wordsPerSentence + 11.8 * syllablesPerWord - 15.59;
-    fkgl = Math.max(1, Math.round(fkgl * 10) / 10);
+    let fre = 206.835 - (1.015 * asl) - (84.6 * asw);
+    fre = Math.max(0, Math.min(100, fre));
 
-    const powerPct = Math.round((powerWordCount / totalWords) * 100);
+    let fkgl = (0.39 * asl) + (11.8 * asw) - 15.59;
+    fkgl = Math.max(1, Math.min(20, fkgl));
 
-    statFlesch.textContent = fre.toFixed(1);
-    if (fre >= 60) statFleschDesc.textContent = 'Plain English (Readable)';
-    else if (fre >= 45) statFleschDesc.textContent = 'Technical / Moderate';
-    else statFleschDesc.textContent = 'Very Dense / Academic';
+    const powerPct = Math.min(100, Math.round((powerWordCount / numWords) * 100));
 
-    statGrade.textContent = fkgl.toFixed(1);
-    statPower.textContent = `${powerPct}%`;
-
-    // 4. Overall Engagement Score Heuristics
+    // Calculate Overall CTR / Engagement Score
     let score = 50;
-
-    // Has numbers? (+15)
     const hasNumber = /\d+/.test(title);
     if (hasNumber) score += 15;
+    if (len >= 35 && len <= 65) score += 15;
+    if (len > 65) score -= (len - 65) * 1.2;
+    if (fre >= 55 && fre <= 75) score += 12;
+    if (powerPct >= 8) score += 10;
+    if (fkgl > 14) score -= 15;
 
-    // Length in 40-65 chars? (+15)
-    if (len >= 40 && len <= 65) score += 15;
-    else if (len > 75) score -= 15;
+    score = Math.max(15, Math.min(96, Math.round(score)));
 
-    // Power words ratio (+15)
-    if (powerPct >= 8) score += 15;
+    // Update UI
+    const circle = document.getElementById("score-circle");
+    circle.textContent = score;
+    circle.className = `gauge-circle ${score >= 75 ? "high" : (score >= 50 ? "med" : "low")}`;
 
-    // Readability balance (+10)
-    if (fre >= 50 && fre <= 75) score += 10;
-    else if (fre < 35) score -= 15;
+    document.getElementById("stat-flesch").textContent = fre.toFixed(1);
+    document.getElementById("stat-flesch-desc").textContent = fre >= 60 ? "Plain English" : (fre >= 45 ? "Moderate Academic" : "Dense Reading");
 
-    score = Math.min(96, Math.max(25, score));
+    document.getElementById("stat-grade").textContent = fkgl.toFixed(1);
+    document.getElementById("stat-grade-desc").textContent = fkgl <= 10 ? "High School Level" : "Graduate / Dense";
 
-    scoreCircle.textContent = score;
-    scoreCircle.className = 'gauge-circle';
-    if (score >= 80) {
-      scoreCircle.classList.add('high');
-      scoreHeadline.textContent = 'Exceptional Technical Hook';
-      scoreSub.textContent = 'Predicted Top 10% Open Rate';
-    } else if (score >= 60) {
-      scoreCircle.classList.add('med');
-      scoreHeadline.textContent = 'Solid Solid Draft';
-      scoreSub.textContent = 'Predicted Average Open Rate (42%)';
+    document.getElementById("stat-power").textContent = `${powerPct}%`;
+
+    const headlineEl = document.getElementById("score-headline");
+    const subEl = document.getElementById("score-sub");
+    if (score >= 75) {
+      headlineEl.textContent = "Strong Editorial Hook";
+      subEl.textContent = "High expected open & retention rate";
+    } else if (score >= 50) {
+      headlineEl.textContent = "Moderate Engagement";
+      subEl.textContent = "Solid technical clarity, consider active hooks";
     } else {
-      scoreCircle.classList.add('low');
-      scoreHeadline.textContent = 'Needs Revision';
-      scoreSub.textContent = 'Low CTR / Mobile Truncation Risk';
+      headlineEl.textContent = "Needs Editorial Revision";
+      subEl.textContent = "Excessive jargon or mobile truncation detected";
     }
 
-    // 5. Coaching Recommendations Feed
+    // Generate Coaching Feed
+    const feed = document.getElementById("coaching-feed");
     const tips = [];
+
+    if (len <= 65) {
+      tips.push({ badge: "PASS", cls: "pass", text: "Title length (< 65 chars) displays fully without truncation in mobile Gmail and Apple Mail." });
+    } else {
+      tips.push({ badge: "FAIL", cls: "fail", text: `Title exceeds 65 characters by ${len - 65}. Truncation on mobile screens degrades tap-through rates.` });
+    }
+
     if (hasNumber) {
-      tips.push({ status: 'pass', text: 'Concrete quantitative metric included in subject line.' });
+      tips.push({ badge: "PASS", cls: "pass", text: "Contains quantitative proof numbers (e.g. 33%, STM32), boosting technical credibility." });
     } else {
-      tips.push({ status: 'warn', text: 'Add a hard number or percentage (e.g. "33%", "10x", "12μs") to increase credibility.' });
+      tips.push({ badge: "WARN", cls: "warn", text: "No quantitative numbers in title. Specific empirical figures (e.g. '42%', '5.2ms') increase clicks." });
     }
 
-    if (len >= 40 && len <= 65) {
-      tips.push({ status: 'pass', text: `Length (${len} chars) renders cleanly on mobile without truncation.` });
-    } else if (len > 65) {
-      tips.push({ status: 'fail', text: `Subject line is ${len} chars; email apps will truncate after ~60 characters.` });
+    if (fre >= 50) {
+      tips.push({ badge: "PASS", cls: "pass", text: `Readability ease (${fre.toFixed(1)}) is within optimal technical comprehension band.` });
     } else {
-      tips.push({ status: 'warn', text: 'Subject line is brief. Consider adding specific context or stakes.' });
+      tips.push({ badge: "FAIL", cls: "fail", text: `Hook paragraph is excessively dense (FRE ${fre.toFixed(1)}). Split long multi-clause sentences.` });
     }
 
-    if (powerPct >= 8) {
-      tips.push({ status: 'pass', text: `Strong action verb density (${powerPct}% power tokens).` });
-    } else {
-      tips.push({ status: 'warn', text: 'Low action verb ratio. Replace passive descriptions with decisive outcomes.' });
-    }
-
-    if (fre < 45) {
-      tips.push({ status: 'fail', text: `Dense prose (Grade ${fkgl}). Break down long multi-clause sentences in the hook.` });
-    } else {
-      tips.push({ status: 'pass', text: `Smooth cadence (${Math.round(wordsPerSentence)} words/sentence).` });
-    }
-
-    coachingFeed.innerHTML = tips.map(t => `
+    feed.innerHTML = tips.map(t => `
       <div class="coaching-tip">
-        <span class="tip-badge ${t.status}">${t.status.toUpperCase()}</span>
+        <span class="tip-badge ${t.cls}">${t.badge}</span>
         <span>${t.text}</span>
       </div>
     `).join('');
   }
 
-  presetGood.addEventListener('click', () => {
-    inputTitle.value = 'How We Cut Inverter Switching Losses by 33% on STM32';
-    inputHook.value = 'When designing motor drive firmware for electric vehicles, silicon heat dissipation is the bottleneck. Standard sinusoidal PWM continuously toggles all three inverter legs, burning power. Here is how discontinuous PWM clamped 60-degree intervals and salvaged our thermal budget.';
-    analyze();
+  // Presets
+  document.getElementById("preset-good").addEventListener("click", () => {
+    inputTitle.value = PRESETS.good.title;
+    inputHook.value = PRESETS.good.hook;
+    analyzeText();
   });
 
-  presetDense.addEventListener('click', () => {
-    inputTitle.value = 'An Algorithmic Investigation Regarding Harmonic Mitigation Strategies in Embedded Inverters';
-    inputHook.value = 'In this communicative exposition, an empirical assessment of contemporary multi-level switching topologies is contextualized within electromagnetic interference standards and theoretical formulations derived from continuous-time Fourier transforms.';
-    analyze();
+  document.getElementById("preset-dense").addEventListener("click", () => {
+    inputTitle.value = PRESETS.dense.title;
+    inputHook.value = PRESETS.dense.hook;
+    analyzeText();
   });
 
-  presetClickbait.addEventListener('click', () => {
-    inputTitle.value = 'You Will Never Believe What Happened When We Ran Our Inverter Code';
-    inputHook.value = 'We tried something totally crazy with our hardware board yesterday and the results blew our minds. Click to see what went wrong!';
-    analyze();
+  document.getElementById("preset-clickbait").addEventListener("click", () => {
+    inputTitle.value = PRESETS.clickbait.title;
+    inputHook.value = PRESETS.clickbait.hook;
+    analyzeText();
   });
 
-  inputTitle.addEventListener('input', analyze);
-  inputHook.addEventListener('input', analyze);
+  inputTitle.addEventListener("input", analyzeText);
+  inputHook.addEventListener("input", analyzeText);
+  document.getElementById("target-audience").addEventListener("change", analyzeText);
 
-  // Initial run
-  analyze();
+  analyzeText();
 })();
 </script>
+
+<script src="assets/site.js" type="module"></script>
 
 </body>
 </html>

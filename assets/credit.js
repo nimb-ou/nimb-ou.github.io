@@ -73,7 +73,10 @@ function renderThreshold(threshold) {
   const c = confusion(threshold);
   const declineAll = data.headline.baseline_decline_all_cost_per_applicant ?? 0.7;
 
-  document.getElementById("thr-val").textContent = threshold.toFixed(3);
+  const tv = document.getElementById("thr-val");
+  if (tv) tv.textContent = threshold.toFixed(3);
+  const tr = document.getElementById("thr-readout");
+  if (tr) tr.textContent = threshold.toFixed(3);
   document.getElementById("live-cost").textContent = fmt.num(c.costPerApplicant, 3);
   document.getElementById("live-approval").textContent = fmt.pct(c.approvalRate, 1);
   document.getElementById("live-fn").textContent = c.fn;

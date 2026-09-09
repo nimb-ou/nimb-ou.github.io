@@ -6,6 +6,7 @@
 <title>Peer Review System — Nimit Jain</title>
 <meta name="description" content="Applied machine learning for team dynamics: Isolation Forest behavioral anomaly detection, interaction archetype clustering, and automated 1-on-1 coaching plans.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
   try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
@@ -13,17 +14,19 @@
 </head>
 <body>
 
-<nav class="nav">
+<nav class="nav" aria-label="Main Navigation">
   <div class="nav-inner">
     <a href="index.html" class="brand">Nimit Jain</a>
-    <a href="credit.html">Credit</a>
-    <a href="power.html">Power</a>
-    <a href="collections.html">Collections</a>
-    <a href="navier.html">Navier-Stokes</a>
-    <a href="geo-analog.html">GeoAnalog</a>
-    <a href="peer-review.html" class="active">Peer Review</a>
-    <a href="interactive-course/index.html" target="_blank">ML Notebook ↗</a>
-    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Overview</a>
+      <a href="credit.html" class="nav-link">Credit Copilot</a>
+      <a href="power.html" class="nav-link">Power Alpha</a>
+      <a href="collections.html" class="nav-link">Collections OS</a>
+      <a href="navier.html" class="nav-link">Navier-Stokes</a>
+      <a href="peer-review.html" class="nav-link active">Peer Review</a>
+      <a href="interactive-course/index.html" class="nav-link" target="_blank" rel="noopener">ML Notebook ↗</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    </div>
   </div>
 </nav>
 
@@ -34,8 +37,8 @@
     <p class="lede" style="max-width:64ch">
       A continuous analytics platform for engineering teams. Trains Isolation Forest anomaly detection models and k-Means clustering over 8,900+ multi-rater reviews to detect burnout, psychological withdrawal, and team friction weeks before formal performance reviews.
     </p>
-    <div class="row mt2">
-      <a class="pill accent" href="https://github.com/nimb-ou/peer-review-system" target="_blank">Source on GitHub →</a>
+    <div class="row mt2" style="flex-wrap: wrap; gap: 0.75rem;">
+      <a class="pill accent" href="https://github.com/nimb-ou/peer-review-system" target="_blank" rel="noopener">Source on GitHub →</a>
       <span class="pill">Isolation Forest</span>
       <span class="pill">k-Means Archetypes</span>
       <span class="pill">Scikit-Learn</span>
@@ -70,14 +73,14 @@
       <div class="demo-header">
         <div>
           <h3>Employee Behavioral Profile & Anomaly Inspector</h3>
-          <p class="muted small mb0">Computes anomaly score \(s(x)\) and generates targeted 1-on-1 discussion talking points</p>
+          <p class="muted small mb0">Computes anomaly score \(s(\mathbf{x}, n)\) and generates targeted 1-on-1 coaching talking points</p>
         </div>
         <span class="badge" id="anomaly-badge">STATUS: NORMAL DYNAMICS</span>
       </div>
 
       <div class="demo-controls">
         <div class="control-group">
-          <label>Employee Profile</label>
+          <label for="emp-select">Employee Profile Preset</label>
           <select id="emp-select">
             <option value="emp_02" selected>Alex (High Performer / Collaborative)</option>
             <option value="emp_01">Sam (Recent Dip / Disengaged)</option>
@@ -87,22 +90,22 @@
         </div>
 
         <div class="control-group">
-          <label>Avg Review Score: <span class="val-display" id="val-score">3.80</span></label>
+          <label for="slider-score">Avg Review Score: <span class="val-display" id="val-score">3.80</span></label>
           <input type="range" id="slider-score" min="1.0" max="5.0" step="0.1" value="3.8">
         </div>
 
         <div class="control-group">
-          <label>Collaboration Rate: <span class="val-display" id="val-collab">40%</span></label>
+          <label for="slider-collab">Collaboration Rate: <span class="val-display" id="val-collab">40%</span></label>
           <input type="range" id="slider-collab" min="0" max="100" step="5" value="40">
         </div>
 
         <div class="control-group">
-          <label>7-Day Score Trend: <span class="val-display" id="val-trend">+0.30</span></label>
+          <label for="slider-trend">7-Day Score Trend: <span class="val-display" id="val-trend">+0.30</span></label>
           <input type="range" id="slider-trend" min="-1.5" max="1.5" step="0.05" value="0.30">
         </div>
 
         <div class="control-group">
-          <label>Withdrawn Tags (%): <span class="val-display" id="val-withdrawn">10%</span></label>
+          <label for="slider-withdrawn">Withdrawn Tags (%): <span class="val-display" id="val-withdrawn">10%</span></label>
           <input type="range" id="slider-withdrawn" min="0" max="80" step="5" value="10">
         </div>
       </div>
@@ -117,7 +120,7 @@
         <div class="card">
           <p class="eyebrow mb0">Isolation Forest Score</p>
           <h3 id="res-anomaly-score" style="color:var(--good); margin:0.4rem 0;">0.32 (Nominal)</h3>
-          <p class="small muted mb0" id="res-anomaly-sub">Path length \(\mathbb{E}(h(x))\) is deep (non-isolated).</p>
+          <p class="small muted mb0" id="res-anomaly-sub">Path length \(\mathbb{E}(h(\mathbf{x}))\) is deep (non-isolated).</p>
         </div>
 
         <div class="card">
@@ -150,10 +153,10 @@
 
       <h3>Isolation Forest Path Length Formulation</h3>
       <p class="muted small">
-        Anomalies are few and different, making them susceptible to isolation early in random recursive partition trees \(iTrees\). Given a feature vector \(\mathbf{x}\), the anomaly score \(s(\mathbf{x}, n)\) over \(n\) samples is:
+        Anomalies are few and different, making them susceptible to isolation early in random recursive partition trees (\(iTrees\)). Given a feature vector \(\mathbf{x}\), the anomaly score \(s(\mathbf{x}, n)\) over \(n\) samples is:
       </p>
       <div class="formula-box">
-s(\mathbf{x}, n) = 2^{-\frac{\mathbb{E}(h(\mathbf{x}))}{c(n)}}, \quad \text{where } c(n) = 2\ln(n - 1) + 0.5772156649 - \frac{2(n - 1)}{n}
+$$s(\mathbf{x}, n) = 2^{-\frac{\mathbb{E}(h(\mathbf{x}))}{c(n)}}, \quad \text{where } c(n) = 2\ln(n - 1) + 0.5772156649 - \frac{2(n - 1)}{n}$$
       </div>
       <p class="muted small">
         - If \(\mathbb{E}(h(\mathbf{x})) \to 0 \implies s \to 1\): \(\mathbf{x}\) isolates quickly (high anomaly / burnout candidate).<br>
@@ -165,7 +168,7 @@ s(\mathbf{x}, n) = 2^{-\frac{\mathbb{E}(h(\mathbf{x}))}{c(n)}}, \quad \text{wher
         Reviews are embedded across four dimensions: normalized score, collaboration percentage, withdrawn descriptor ratio, and 7-day velocity. Minimizing inertia yields 4 distinct organizational archetypes:
       </p>
       <div class="formula-box">
-\arg\min_{\mathbf{S}} \sum_{i=1}^4 \sum_{\mathbf{x} \in S_i} \|\mathbf{x} - \boldsymbol{\mu}_i\|^2 \implies \{\text{Catalyst}, \text{Anchor}, \text{Solo Specialist}, \text{At-Risk}\}
+$$\arg\min_{\mathbf{S}} \sum_{i=1}^4 \sum_{\mathbf{x} \in S_i} \|\mathbf{x} - \boldsymbol{\mu}_i\|^2 \implies \{\text{Catalyst}, \text{Anchor}, \text{Solo Specialist}, \text{At-Risk}\}$$
       </div>
     </div>
 
@@ -177,9 +180,9 @@ s(\mathbf{x}, n) = 2^{-\frac{\mathbb{E}(h(\mathbf{x}))}{c(n)}}, \quad \text{wher
 Rolling 7d/14d/30d Metrics: avg_score, pct_collaborative, pct_withdrawn, score_trend_7d
    │
    ▼ [Scikit-Learn ML Pipelines]
-├── Random Forest Regressor (R² = 0.977) ──> Predicts expected quarterly score
-├── Isolation Forest (Contamination = 0.10) ──> Detects structural behavioral shift
-└── k-Means Clustering (k = 4) ────────────> Assigns team interaction archetype
+├── Random Forest Regressor (R² = 0.977) ──► Predicts expected quarterly score
+├── Isolation Forest (Contamination = 0.10) ──► Detects structural behavioral shift
+└── k-Means Clustering (k = 4) ────────────► Assigns team interaction archetype
    │
    ▼ [Inference Layer]
 Streamlit Leadership Dashboard + Automated 1-on-1 Coaching Agendas</code></pre>
@@ -227,10 +230,28 @@ Streamlit Leadership Dashboard + Automated 1-on-1 Coaching Agendas</code></pre>
   <div class="wrap">
     <div class="row between">
       <div><a href="index.html">← Back to Overview</a></div>
-      <div class="xs">Nimit Jain · Portfolio</div>
+      <div class="xs mono">Peer Review System · Isolation Forest Psychometrics</div>
     </div>
   </div>
 </footer>
+
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/contrib/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  });
+</script>
 
 <script>
 const PROFILES = {
@@ -264,15 +285,17 @@ function calculateMetrics() {
   document.getElementById("val-trend").textContent = (trend > 0 ? "+" : "") + trend.toFixed(2);
   document.getElementById("val-withdrawn").textContent = withdrawn + "%";
 
-  // Isolation Forest heuristic approximation:
-  // Short path length = low collab + negative trend + high withdrawn
-  let anomalyFactor = 0.0;
-  if (withdrawn > 35) anomalyFactor += 0.35;
-  if (trend < -0.3) anomalyFactor += 0.30;
-  if (collab < 20) anomalyFactor += 0.25;
-  if (score < 3.0) anomalyFactor += 0.15;
+  // Isolation Forest heuristic calculation:
+  // Shallow path length = low collab + negative trend + high withdrawn tags
+  let anomalyFactor = 0.15;
+  if (withdrawn > 30) anomalyFactor += (withdrawn - 30) * 0.008;
+  if (trend < 0) anomalyFactor += Math.abs(trend) * 0.25;
+  if (collab < 25) anomalyFactor += (25 - collab) * 0.008;
+  if (score < 3.2) anomalyFactor += (3.2 - score) * 0.12;
 
-  const isAnomaly = anomalyFactor >= 0.55;
+  anomalyFactor = Math.max(0.12, Math.min(0.92, anomalyFactor));
+
+  const isAnomaly = anomalyFactor >= 0.52;
   const badge = document.getElementById("anomaly-badge");
   const scoreEl = document.getElementById("res-anomaly-score");
   const subEl = document.getElementById("res-anomaly-sub");
@@ -286,10 +309,10 @@ function calculateMetrics() {
 
   if (isAnomaly) {
     badge.textContent = "WARNING: BEHAVIORAL ANOMALY DETECTED";
-    badge.style.background = "var(--bad-soft)";
+    badge.style.background = "rgba(239, 68, 68, 0.15)";
     badge.style.color = "var(--bad)";
     scoreEl.style.color = "var(--bad)";
-    subEl.textContent = "Path length is shallow (easily isolated sample).";
+    subEl.textContent = "Path length E(h(x)) is shallow (easily isolated sample).";
 
     clusterEl.textContent = "Cluster 4: At-Risk / Withdrawal";
     clusterDescEl.textContent = "Sharp decline in collaboration and elevated negative sentiment indicators.";
@@ -297,39 +320,50 @@ function calculateMetrics() {
     actionEl.style.color = "var(--bad)";
     actionDescEl.textContent = "Check for burnout, blockages, or unaddressed interpersonal friction.";
 
-    talkEl.textContent = `"Recent metrics indicate a severe 7-day velocity drop (${trend.toFixed(2)}) and a rise in withdrawn peer feedback (${withdrawn}%). Schedule a supportive 1-on-1 immediately to discuss workload pressures, rebalance deliverables, and offer dedicated mentorship."`;
+    talkEl.textContent = `"Recent metrics indicate a sharp 7-day velocity drop (${trend.toFixed(2)}) and a rise in withdrawn peer feedback (${withdrawn}%). Schedule a supportive 1-on-1 immediately to discuss workload pressures, rebalance deliverables, and offer dedicated mentorship."`;
   } else {
-    badge.textContent = "STATUS: NORMAL DYNAMICS";
-    badge.style.background = "var(--good-soft)";
+    badge.textContent = "STATUS: NOMINAL TEAM DYNAMICS";
+    badge.style.background = "rgba(34, 197, 94, 0.15)";
     badge.style.color = "var(--good)";
     scoreEl.style.color = "var(--good)";
-    subEl.textContent = "Path length is deep (normal team member).";
+    subEl.textContent = "Path length E(h(x)) is deep (well-integrated cluster).";
 
-    if (collab >= 50) {
+    if (score >= 4.0 && collab >= 30) {
       clusterEl.textContent = "Cluster 1: Catalyst";
-      clusterDescEl.textContent = "High cross-functional collaboration and strong positive multiplier.";
-      actionEl.textContent = "Leadership Expansion";
-    } else if (score >= 4.0) {
-      clusterEl.textContent = "Cluster 3: Specialist";
-      clusterDescEl.textContent = "High individual delivery output with focused communication.";
-      actionEl.textContent = "Technical Deep-Dive";
+      clusterDescEl.textContent = "High performance with extensive cross-team collaboration.";
+      actionEl.textContent = "Leadership Track Alignment";
+      actionEl.style.color = "var(--accent)";
+      actionDescEl.textContent = "Explore project ownership and technical lead opportunities.";
+      talkEl.textContent = `"Consistently high ratings (${score.toFixed(1)}/5) and strong cross-functional engagement (${collab}%). Discuss interest in spearheading the next architecture initiative."`;
+    } else if (collab < 20 && score >= 4.0) {
+      clusterEl.textContent = "Cluster 3: Solo Specialist";
+      clusterDescEl.textContent = "High individual delivery output with concentrated communication loops.";
+      actionEl.textContent = "Pairing / Knowledge Share";
+      actionEl.style.color = "var(--text)";
+      actionDescEl.textContent = "Encourage cross-training to reduce bus-factor risk on critical modules.";
+      talkEl.textContent = `"Excellent deep technical contributions. Look for opportunities to pair program or conduct brown-bag sessions to disseminate specialized domain knowledge across the pod."`;
     } else {
       clusterEl.textContent = "Cluster 2: Anchor";
-      clusterDescEl.textContent = "Consistent contributor with balanced team dynamics.";
+      clusterDescEl.textContent = "Consistent contributor with balanced cross-functional feedback.";
       actionEl.textContent = "Quarterly Growth Check";
+      actionEl.style.color = "var(--good)";
+      actionDescEl.textContent = "Review career progression milestones and upcoming project preferences.";
+      talkEl.textContent = `"Solid peer ratings (${score.toFixed(1)}/5) with steady velocity. Review career goals and ensure sprint allocations remain aligned with long-term engineering ambitions."`;
     }
-    actionEl.style.color = "var(--text)";
-    actionDescEl.textContent = "Review career goals and upcoming high-visibility initiatives.";
-    talkEl.textContent = `"Performance remains stable with healthy peer rapport (${score.toFixed(1)}/5, ${collab}% collaboration). Reinforce appreciation for ongoing contributions and explore opportunities for taking ownership of upcoming architecture items."`;
   }
 }
 
 document.getElementById("emp-select").addEventListener("change", updatePeerReview);
 ["slider-score", "slider-collab", "slider-trend", "slider-withdrawn"].forEach(id => {
-  document.getElementById(id).addEventListener("input", calculateMetrics);
+  const el = document.getElementById(id);
+  el.addEventListener("input", calculateMetrics);
+  el.addEventListener("change", calculateMetrics);
 });
+
 updatePeerReview();
 </script>
+
+<script src="assets/site.js" type="module"></script>
 
 </body>
 </html>

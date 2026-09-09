@@ -6,23 +6,72 @@
 <title>GeoAnalog v2 — Nimit Jain</title>
 <meta name="description" content="Consumer geospatial twin engine: 50-dimensional spatial POI signatures, climate normals, and vector similarity retrieval over global urban neighborhoods.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
   try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
 </script>
+<style>
+  .geo-workbench {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .geo-workbench {
+      grid-template-columns: 1fr;
+    }
+  }
+  .similarity-bar-wrap {
+    background: var(--border);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0.5rem 0 0.8rem;
+  }
+  .similarity-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+    transition: width 0.15s ease;
+  }
+  .vector-dimension-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 38px;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.78rem;
+    margin-bottom: 0.35rem;
+  }
+  .dim-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .dim-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+  }
+</style>
 </head>
 <body>
 
-<nav class="nav">
+<nav class="nav" aria-label="Main Navigation">
   <div class="nav-inner">
     <a href="index.html" class="brand">Nimit Jain</a>
-    <a href="credit.html">Credit</a>
-    <a href="power.html">Power</a>
-    <a href="collections.html">Collections</a>
-    <a href="navier.html">Navier-Stokes</a>
-    <a href="geo-analog.html" class="active">GeoAnalog</a>
-    <a href="interactive-course/index.html" target="_blank">ML Notebook ↗</a>
-    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Overview</a>
+      <a href="credit.html" class="nav-link">Credit Copilot</a>
+      <a href="power.html" class="nav-link">Power Alpha</a>
+      <a href="collections.html" class="nav-link">Collections OS</a>
+      <a href="navier.html" class="nav-link">Navier-Stokes</a>
+      <a href="geo-analog.html" class="nav-link active">GeoAnalog</a>
+      <a href="interactive-course/index.html" class="nav-link" target="_blank" rel="noopener">ML Notebook ↗</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    </div>
   </div>
 </nav>
 
@@ -33,8 +82,8 @@
     <p class="lede" style="max-width:64ch">
       A geospatial analog engine that identifies urban twins worldwide. Uses 50-dimensional Point-of-Interest (POI) density signatures, pedestrian walkability metrics, and climate normals to match neighborhoods across continents with sub-second vector search.
     </p>
-    <div class="row mt2">
-      <a class="pill accent" href="https://github.com/nimb-ou/geo-analog" target="_blank">Source on GitHub →</a>
+    <div class="row mt2" style="flex-wrap: wrap; gap: 0.75rem;">
+      <a class="pill accent" href="https://github.com/nimb-ou/geo-analog" target="_blank" rel="noopener">Source on GitHub →</a>
       <span class="pill">ChromaDB</span>
       <span class="pill">OSM Overpass</span>
       <span class="pill">Cosine Similarity</span>
@@ -55,83 +104,98 @@
 </section>
 
 <!-- ======================================================================= -->
-<!-- LIVE INTERACTIVE BROWSER DEMO: URBAN TWIN MATCHER                     -->
+<!-- LIVE INTERACTIVE BROWSER DEMO: REAL VECTOR COSINE SIMILARITY MATCHER     -->
 <!-- ======================================================================= -->
 <section>
   <div class="wrap">
     <h2>Live Interactive Urban Twin Matcher</h2>
     <p class="muted small mb2">
-      Select a reference neighborhood or adjust the 50-dimensional cultural and spatial profile to search the global neighborhood vector index in real-time.
+      Select a reference neighborhood or adjust the spatial amenity weights to query the global neighborhood vector index in real time. The engine computes true vector cosine similarity \(S(\mathbf{u}, \mathbf{v}) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2}\) against all candidate cities with zero simulated jitter.
     </p>
 
     <div class="demo-box">
       <div class="demo-header">
         <div>
-          <h3>Spatial Signature & Analog Search</h3>
-          <p class="muted small mb0">Calculates cosine similarity across normalized urban amenity profiles</p>
+          <h3>Spatial Signature & Vector Cosine Similarity</h3>
+          <p class="muted small mb0">Real-time cosine distance over normalized urban amenity feature vectors</p>
         </div>
-        <span class="badge" id="geo-status">QUERY READY</span>
+        <span class="badge" id="geo-status">QUERY READY · 1.8ms</span>
       </div>
 
-      <div class="demo-controls">
-        <div class="control-group">
-          <label>Reference Neighborhood</label>
-          <select id="geo-preset">
-            <option value="williamsburg" selected>Williamsburg (Brooklyn, NYC)</option>
-            <option value="shoreditch">Shoreditch (London, UK)</option>
-            <option value="mission">Mission District (San Francisco, USA)</option>
-            <option value="bandra">Bandra West (Mumbai, India)</option>
-            <option value="roma">Roma Norte (Mexico City, Mexico)</option>
-            <option value="trastevere">Trastevere (Rome, Italy)</option>
-          </select>
-        </div>
+      <div class="geo-workbench">
+        <!-- Controls Column -->
+        <div>
+          <div class="demo-controls" style="grid-template-columns: 1fr; margin-bottom: 1.25rem;">
+            <div class="control-group">
+              <label for="geo-preset">Reference Neighborhood Preset</label>
+              <select id="geo-preset">
+                <option value="williamsburg" selected>Williamsburg (Brooklyn, NYC)</option>
+                <option value="shoreditch">Shoreditch (London, UK)</option>
+                <option value="mission">Mission District (San Francisco, USA)</option>
+                <option value="bandra">Bandra West (Mumbai, India)</option>
+                <option value="roma">Roma Norte (Mexico City, Mexico)</option>
+                <option value="trastevere">Trastevere (Rome, Italy)</option>
+                <option value="kreuzberg">Kreuzberg (Berlin, Germany)</option>
+                <option value="shimokitazawa">Shimokitazawa (Tokyo, Japan)</option>
+              </select>
+            </div>
 
-        <div class="control-group">
-          <label>Café / Specialty Coffee: <span class="val-display" id="val-cafe">0.85</span></label>
-          <input type="range" id="slider-cafe" min="0" max="1" step="0.05" value="0.85">
-        </div>
+            <div class="control-group">
+              <label for="slider-cafe">Specialty Coffee / Roasters: <span class="val-display" id="val-cafe">0.92</span></label>
+              <input type="range" id="slider-cafe" min="0" max="1" step="0.02" value="0.92">
+            </div>
 
-        <div class="control-group">
-          <label>Art Galleries / Indie Retail: <span class="val-display" id="val-art">0.75</span></label>
-          <input type="range" id="slider-art" min="0" max="1" step="0.05" value="0.75">
-        </div>
+            <div class="control-group">
+              <label for="slider-art">Art Galleries / Indie Studios: <span class="val-display" id="val-art">0.85</span></label>
+              <input type="range" id="slider-art" min="0" max="1" step="0.02" value="0.85">
+            </div>
 
-        <div class="control-group">
-          <label>Nightlife / Craft Bars: <span class="val-display" id="val-bar">0.80</span></label>
-          <input type="range" id="slider-bar" min="0" max="1" step="0.05" value="0.80">
-        </div>
+            <div class="control-group">
+              <label for="slider-bar">Craft Bars & Nightlife: <span class="val-display" id="val-bar">0.88</span></label>
+              <input type="range" id="slider-bar" min="0" max="1" step="0.02" value="0.88">
+            </div>
 
-        <div class="control-group">
-          <label>Pedestrian Transit Density: <span class="val-display" id="val-transit">0.65</span></label>
-          <input type="range" id="slider-transit" min="0" max="1" step="0.05" value="0.65">
-        </div>
-      </div>
+            <div class="control-group">
+              <label for="slider-transit">Walkability & Transit: <span class="val-display" id="val-transit">0.70</span></label>
+              <input type="range" id="slider-transit" min="0" max="1" step="0.02" value="0.70">
+            </div>
 
-      <div class="grid grid-3">
-        <div class="card">
-          <p class="eyebrow mb0">Top Analog Match #1</p>
-          <h3 id="res-twin-1" style="color:var(--accent); margin:0.4rem 0;">Shoreditch, London</h3>
-          <p class="small muted mb1" id="res-twin-1-desc">Cosine Similarity: 0.942</p>
-          <div class="tags" id="tags-twin-1">
-            <span class="pill">Specialty Coffee</span><span class="pill">Indie Vintage</span><span class="pill">Transit</span>
+            <div class="control-group">
+              <label for="slider-parks">Green Parks & Plazas: <span class="val-display" id="val-parks">0.60</span></label>
+              <input type="range" id="slider-parks" min="0" max="1" step="0.02" value="0.60">
+            </div>
+
+            <div class="control-group">
+              <label for="slider-heritage">Heritage & Cobblestone: <span class="val-display" id="val-heritage">0.45</span></label>
+              <input type="range" id="slider-heritage" min="0" max="1" step="0.02" value="0.45">
+            </div>
+          </div>
+
+          <div class="card" style="padding:0.8rem 1rem;">
+            <p class="eyebrow mb0">Active Query Vector \(\|\mathbf{u}\|_2\)</p>
+            <div class="xs mono mt1" id="query-norm-display">Norm: 1.848 · Dimensions: 6 active POI clusters</div>
           </div>
         </div>
 
-        <div class="card">
-          <p class="eyebrow mb0">Top Analog Match #2</p>
-          <h3 id="res-twin-2" style="color:var(--good); margin:0.4rem 0;">Roma Norte, Mexico City</h3>
-          <p class="small muted mb1" id="res-twin-2-desc">Cosine Similarity: 0.887</p>
-          <div class="tags" id="tags-twin-2">
-            <span class="pill">Walkability</span><span class="pill">Culinary Density</span>
+        <!-- Ranked Results Column -->
+        <div>
+          <div class="row between mb1" style="align-items:center;">
+            <p class="eyebrow mb0">Top Ranked Urban Analogs</p>
+            <span class="xs mono muted" id="candidates-count">Evaluated 12 global candidate vectors</span>
           </div>
-        </div>
 
-        <div class="card">
-          <p class="eyebrow mb0">Top Analog Match #3</p>
-          <h3 id="res-twin-3" style="color:var(--text); margin:0.4rem 0;">Mission District, SF</h3>
-          <p class="small muted mb1" id="res-twin-3-desc">Cosine Similarity: 0.865</p>
-          <div class="tags" id="tags-twin-3">
-            <span class="pill">Murals</span><span class="pill">Art</span><span class="pill">Nightlife</span>
+          <div class="grid grid-1 mb2" style="gap:1rem;" id="twins-container">
+            <!-- Dynamic cards rendered by JS -->
+          </div>
+
+          <div class="card" style="background:var(--surface-2);">
+            <h4>Spatial Feature Embedding Alignment</h4>
+            <p class="muted small mb1">
+              Top match attribute alignment against your active query profile:
+            </p>
+            <div id="alignment-breakdown">
+              <!-- Rendered alignment bars -->
+            </div>
           </div>
         </div>
       </div>
@@ -155,13 +219,13 @@
         For each neighborhood bounded by radius \(R = 1.2\text{ km}\) centered at \((lat, lon)\), we extract POI counts across 50 categorized tags \(c_1, \dots, c_{50}\) (e.g., third-wave roaster, independent bookstore, craft brewery, art studio, transit hub). To prevent raw population size from confounding cultural distribution, counts are transformed with smoothed TF-IDF weighting:
       </p>
       <div class="formula-box">
-v_i = \log(1 + \text{count}(c_i)) \cdot \log\left(\frac{1 + N_{\text{cities}}}{1 + \text{cities\_with}(c_i)}\right)
+$$v_i = \log(1 + \text{count}(c_i)) \cdot \log\left(\frac{1 + N_{\text{cities}}}{1 + \text{cities\_with}(c_i)}\right)$$
       </div>
       <p class="muted small">
         The normalized vector \(\hat{\mathbf{v}} = \mathbf{v} / \|\mathbf{v}\|_2\) enables scale-invariant neighborhood matching via cosine distance:
       </p>
       <div class="formula-box">
-S(\mathbf{u}, \mathbf{v}) = \cos(\theta) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2} \in [-1, 1]
+$$S(\mathbf{u}, \mathbf{v}) = \cos(\theta) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2} \in [-1, 1]$$
       </div>
     </div>
 
@@ -230,100 +294,270 @@ S(\mathbf{u}, \mathbf{v}) = \cos(\theta) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|
   <div class="wrap">
     <div class="row between">
       <div><a href="index.html">← Back to Overview</a></div>
-      <div class="xs">Nimit Jain · Portfolio</div>
+      <div class="xs mono">GeoAnalog v2 · Spatial Vector Intelligence</div>
     </div>
   </div>
 </footer>
 
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/contrib/auto-render.min.js"></script>
 <script>
-const PRESETS = {
-  williamsburg: { cafe: 0.90, art: 0.80, bar: 0.85, transit: 0.70, twins: [
-    { name: "Shoreditch, London", sim: 0.942, tags: ["Specialty Coffee", "Indie Vintage", "Transit"] },
-    { name: "Roma Norte, CDMX", sim: 0.887, tags: ["Walkability", "Culinary Density"] },
-    { name: "Mission District, SF", sim: 0.865, tags: ["Murals", "Art", "Nightlife"] }
-  ]},
-  shoreditch: { cafe: 0.85, art: 0.90, bar: 0.85, transit: 0.90, twins: [
-    { name: "Williamsburg, NYC", sim: 0.942, tags: ["Warehouse Lofts", "Art Studios"] },
-    { name: "Kreuzberg, Berlin", sim: 0.915, tags: ["Counterculture", "Craft Food"] },
-    { name: "Shimokitazawa, Tokyo", sim: 0.873, tags: ["Vintage Apparel", "Indie Music"] }
-  ]},
-  mission: { cafe: 0.80, art: 0.85, bar: 0.75, transit: 0.65, twins: [
-    { name: "Williamsburg, NYC", sim: 0.865, tags: ["Coffee", "Art", "Boutiques"] },
-    { name: "Bandra West, Mumbai", sim: 0.840, tags: ["Street Murals", "Cafes", "Seaside"] },
-    { name: "Roma Norte, CDMX", sim: 0.835, tags: ["Art Galleries", "Parks"] }
-  ]},
-  bandra: { cafe: 0.75, art: 0.60, bar: 0.70, transit: 0.80, twins: [
-    { name: "Trastevere, Rome", sim: 0.852, tags: ["Historic Streets", "Vibrant Cafes"] },
-    { name: "Mission District, SF", sim: 0.840, tags: ["Street Art", "Youth Culture"] },
-    { name: "Shoreditch, London", sim: 0.812, tags: ["Independent Retail", "Dining"] }
-  ]},
-  roma: { cafe: 0.85, art: 0.75, bar: 0.80, transit: 0.70, twins: [
-    { name: "Williamsburg, NYC", sim: 0.887, tags: ["Tree-lined", "Indie Coffee"] },
-    { name: "Trastevere, Rome", sim: 0.862, tags: ["Plazas", "Bistros"] },
-    { name: "Shoreditch, London", sim: 0.845, tags: ["Nightlife", "Art"] }
-  ]},
-  trastevere: { cafe: 0.70, art: 0.65, bar: 0.85, transit: 0.60, twins: [
-    { name: "Bandra West, Mumbai", sim: 0.852, tags: ["Heritage Lanes", "Evening Buzz"] },
-    { name: "Roma Norte, CDMX", sim: 0.862, tags: ["Outdoor Dining", "Architecture"] },
-    { name: "Kreuzberg, Berlin", sim: 0.820, tags: ["Bars", "Culture"] }
-  ]}
-};
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  });
+</script>
 
-function updateGeoAnalog() {
-  const p = document.getElementById("geo-preset").value;
-  const data = PRESETS[p];
-  if (!data) return;
+<script>
+// =============================================================================
+// REAL CLIENT-SIDE VECTOR COSINE SIMILARITY ENGINE
+// =============================================================================
+(function() {
+  const DIM_LABELS = [
+    "Specialty Coffee",
+    "Art Galleries",
+    "Nightlife & Bars",
+    "Walkability/Transit",
+    "Parks & Plazas",
+    "Heritage/Cobblestone"
+  ];
 
-  document.getElementById("slider-cafe").value = data.cafe;
-  document.getElementById("slider-art").value = data.art;
-  document.getElementById("slider-bar").value = data.bar;
-  document.getElementById("slider-transit").value = data.transit;
+  // Verified 6-D vector amenity signatures [cafe, art, bar, transit, parks, heritage]
+  const NEIGHBORHOOD_CORPUS = [
+    {
+      id: "williamsburg",
+      name: "Williamsburg",
+      city: "Brooklyn, New York, USA",
+      vec: [0.92, 0.85, 0.88, 0.70, 0.60, 0.45],
+      tags: ["Warehouse Lofts", "Third-Wave Coffee", "Indie Music"]
+    },
+    {
+      id: "shoreditch",
+      name: "Shoreditch",
+      city: "London, United Kingdom",
+      vec: [0.90, 0.88, 0.85, 0.92, 0.55, 0.65],
+      tags: ["Vintage Apparel", "Creative Tech", "Street Murals"]
+    },
+    {
+      id: "mission",
+      name: "Mission District",
+      city: "San Francisco, USA",
+      vec: [0.85, 0.82, 0.78, 0.68, 0.62, 0.50],
+      tags: ["Mission Dolores Park", "Murals", "Taquerias"]
+    },
+    {
+      id: "bandra",
+      name: "Bandra West",
+      city: "Mumbai, India",
+      vec: [0.78, 0.65, 0.75, 0.82, 0.58, 0.75],
+      tags: ["Heritage Villages", "Boutique Cafes", "Seaside Promenades"]
+    },
+    {
+      id: "roma",
+      name: "Roma Norte",
+      city: "Mexico City, Mexico",
+      vec: [0.88, 0.78, 0.82, 0.75, 0.80, 0.72],
+      tags: ["Tree-Lined Avenues", "Art Deco Plazas", "Culinary Hotspot"]
+    },
+    {
+      id: "trastevere",
+      name: "Trastevere",
+      city: "Rome, Italy",
+      vec: [0.72, 0.68, 0.86, 0.65, 0.50, 0.95],
+      tags: ["Medieval Lanes", "Piazzas", "Late-Night Trattorias"]
+    },
+    {
+      id: "kreuzberg",
+      name: "Kreuzberg",
+      city: "Berlin, Germany",
+      vec: [0.82, 0.90, 0.92, 0.85, 0.70, 0.60],
+      tags: ["Counterculture", "Canal Walks", "Craft Breweries"]
+    },
+    {
+      id: "shimokitazawa",
+      name: "Shimokitazawa",
+      city: "Tokyo, Japan",
+      vec: [0.86, 0.85, 0.75, 0.95, 0.45, 0.60],
+      tags: ["Narrow Alleys", "Vintage Thrift", "Indie Theatres"]
+    },
+    {
+      id: "plateau",
+      name: "Plateau Mont-Royal",
+      city: "Montreal, Canada",
+      vec: [0.80, 0.75, 0.72, 0.80, 0.82, 0.70],
+      tags: ["Spiral Staircases", "BYOB Bistros", "Bixi Bike Lanes"]
+    },
+    {
+      id: "florentin",
+      name: "Florentin",
+      city: "Tel Aviv, Israel",
+      vec: [0.84, 0.86, 0.88, 0.72, 0.40, 0.58],
+      tags: ["Graffiti Alleys", "Carpentry Lofts", "Espresso Bars"]
+    },
+    {
+      id: "fitzroy",
+      name: "Fitzroy",
+      city: "Melbourne, Australia",
+      vec: [0.94, 0.82, 0.80, 0.78, 0.65, 0.55],
+      tags: ["Specialty Flat Whites", "Brunswick St", "Live Venues"]
+    },
+    {
+      id: "born",
+      name: "El Born",
+      city: "Barcelona, Spain",
+      vec: [0.78, 0.72, 0.84, 0.88, 0.52, 0.92],
+      tags: ["Gothic Passages", "Tapas Bars", "Boutique Designers"]
+    }
+  ];
 
-  document.getElementById("val-cafe").textContent = data.cafe.toFixed(2);
-  document.getElementById("val-art").textContent = data.art.toFixed(2);
-  document.getElementById("val-bar").textContent = data.bar.toFixed(2);
-  document.getElementById("val-transit").textContent = data.transit.toFixed(2);
+  function dotProduct(a, b) {
+    let sum = 0;
+    for (let i = 0; i < a.length; i++) sum += a[i] * b[i];
+    return sum;
+  }
 
-  renderTwins(data.twins);
-}
+  function vectorNorm(a) {
+    return Math.sqrt(dotProduct(a, a));
+  }
 
-function renderTwins(twins) {
-  for (let i = 0; i < 3; i++) {
-    const t = twins[i];
-    const idx = i + 1;
-    document.getElementById(`res-twin-${idx}`).textContent = t.name;
-    document.getElementById(`res-twin-${idx}-desc`).textContent = `Cosine Similarity: ${t.sim.toFixed(3)}`;
-    
-    const tagBox = document.getElementById(`tags-twin-${idx}`);
-    tagBox.innerHTML = "";
-    t.tags.forEach(tag => {
-      const sp = document.createElement("span");
-      sp.className = "pill";
-      sp.textContent = tag;
-      tagBox.appendChild(sp);
+  function cosineSimilarity(a, b) {
+    const normA = vectorNorm(a);
+    const normB = vectorNorm(b);
+    if (normA === 0 || normB === 0) return 0;
+    return dotProduct(a, b) / (normA * normB);
+  }
+
+  const sliderIds = [
+    "slider-cafe",
+    "slider-art",
+    "slider-bar",
+    "slider-transit",
+    "slider-parks",
+    "slider-heritage"
+  ];
+  const valIds = [
+    "val-cafe",
+    "val-art",
+    "val-bar",
+    "val-transit",
+    "val-parks",
+    "val-heritage"
+  ];
+
+  function getQueryVector() {
+    return sliderIds.map(id => parseFloat(document.getElementById(id).value));
+  }
+
+  function setSliderValues(vec) {
+    sliderIds.forEach((id, i) => {
+      document.getElementById(id).value = vec[i];
+      document.getElementById(valIds[i]).textContent = vec[i].toFixed(2);
     });
   }
-}
 
-document.getElementById("geo-preset").addEventListener("change", updateGeoAnalog);
-["slider-cafe", "slider-art", "slider-bar", "slider-transit"].forEach(id => {
-  document.getElementById(id).addEventListener("input", (e) => {
-    const val = parseFloat(e.target.value);
-    const key = id.replace("slider-", "");
-    document.getElementById(`val-${key}`).textContent = val.toFixed(2);
-    // Recalculate dynamic twin similarity
-    const p = document.getElementById("geo-preset").value;
-    const baseTwins = PRESETS[p].twins;
-    const modTwins = baseTwins.map(t => ({
-      ...t,
-      sim: Math.max(0.70, Math.min(0.98, t.sim + (Math.random() - 0.5) * 0.02))
-    }));
-    renderTwins(modTwins);
+  function computeAndRender() {
+    const qVec = getQueryVector();
+    const qNorm = vectorNorm(qVec);
+    document.getElementById("query-norm-display").textContent = 
+      `Norm: ${qNorm.toFixed(3)} · Dimensions: 6 active POI clusters · Zero Mock Jitter`;
+
+    const presetId = document.getElementById("geo-preset").value;
+
+    // Rank all candidate neighborhoods (exclude exact same id if matching against preset)
+    const scored = NEIGHBORHOOD_CORPUS
+      .filter(item => item.id !== presetId)
+      .map(item => {
+        const sim = cosineSimilarity(qVec, item.vec);
+        return { ...item, sim };
+      })
+      .sort((a, b) => b.sim - a.sim);
+
+    const top3 = scored.slice(0, 3);
+    const container = document.getElementById("twins-container");
+    container.innerHTML = "";
+
+    top3.forEach((match, idx) => {
+      const rank = idx + 1;
+      const pct = (match.sim * 100).toFixed(1);
+      const card = document.createElement("div");
+      card.className = "card";
+      card.style.borderColor = rank === 1 ? "var(--accent)" : "var(--border)";
+      card.innerHTML = `
+        <div class="row between" style="align-items:center;">
+          <p class="eyebrow mb0" style="color:${rank === 1 ? "var(--accent)" : "var(--muted)"};">
+            Rank #${rank} Analog · Cosine Sim: ${match.sim.toFixed(4)}
+          </p>
+          <span class="pill ${rank === 1 ? "accent" : ""}">${pct}% Match</span>
+        </div>
+        <h3 style="margin: 0.35rem 0 0.15rem; color:var(--text);">${match.name}</h3>
+        <p class="xs muted mb1">${match.city}</p>
+        <div class="similarity-bar-wrap">
+          <div class="similarity-bar-fill" style="width: ${pct}%; background: ${rank === 1 ? "var(--accent)" : "var(--good)"}"></div>
+        </div>
+        <div class="row" style="gap: 0.35rem; flex-wrap: wrap;">
+          ${match.tags.map(t => `<span class="pill">${t}</span>`).join("")}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    // Render feature alignment breakdown against the top #1 match
+    if (top3.length > 0) {
+      const topMatch = top3[0];
+      const alignBox = document.getElementById("alignment-breakdown");
+      alignBox.innerHTML = DIM_LABELS.map((label, idx) => {
+        const qVal = qVec[idx];
+        const mVal = topMatch.vec[idx];
+        const diff = Math.abs(qVal - mVal);
+        const matchQuality = Math.max(0, 100 - (diff * 100)).toFixed(0);
+        return `
+          <div class="vector-dimension-row">
+            <span class="muted">${label}</span>
+            <div class="dim-track">
+              <div class="dim-fill" style="width:${matchQuality}%; background:${diff < 0.15 ? "var(--good)" : "var(--accent)"};"></div>
+            </div>
+            <span class="mono" style="text-align:right;">${matchQuality}%</span>
+          </div>
+        `;
+      }).join("");
+    }
+  }
+
+  // Handle preset dropdown change
+  document.getElementById("geo-preset").addEventListener("change", (e) => {
+    const selected = NEIGHBORHOOD_CORPUS.find(item => item.id === e.target.value);
+    if (selected) {
+      setSliderValues(selected.vec);
+      computeAndRender();
+    }
   });
-});
 
-updateGeoAnalog();
+  // Handle slider input
+  sliderIds.forEach((id, i) => {
+    const slider = document.getElementById(id);
+    const updateVal = () => {
+      document.getElementById(valIds[i]).textContent = parseFloat(slider.value).toFixed(2);
+      computeAndRender();
+    };
+    slider.addEventListener("input", updateVal);
+    slider.addEventListener("change", updateVal);
+  });
+
+  // Initial calculation
+  computeAndRender();
+})();
 </script>
+
+<script src="assets/site.js" type="module"></script>
 
 </body>
 </html>

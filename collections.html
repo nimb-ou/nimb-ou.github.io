@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Collections OS — Nimit Jain</title>
-<meta name="description" content="Autonomous debt collections operating system: Dagster pipelines, dbt transformations, LightGBM bounce models, and automated compliance guardrails.">
+<meta name="description" content="Autonomous operating system for commercial debt collections: Dagster software-defined assets, dbt transformations, LightGBM bounce scoring, and regulatory compliance guardrails.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
   try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
@@ -13,45 +14,89 @@
 </head>
 <body>
 
-<nav class="nav">
+<nav class="nav" aria-label="Main Navigation">
   <div class="nav-inner">
     <a href="index.html" class="brand">Nimit Jain</a>
-    <a href="credit.html">Credit</a>
-    <a href="power.html">Power</a>
-    <a href="collections.html" class="active">Collections OS</a>
-    <a href="navier.html">Navier-Stokes</a>
-    <a href="geo-analog.html">GeoAnalog</a>
-    <a href="interactive-course/index.html" target="_blank">ML Notebook ↗</a>
-    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Overview</a>
+      <a href="credit.html" class="nav-link">Credit Copilot</a>
+      <a href="power.html" class="nav-link">Power Alpha</a>
+      <a href="collections.html" class="nav-link active">Collections OS</a>
+      <a href="navier.html" class="nav-link">Navier-Stokes</a>
+      <a href="interactive-course/index.html" class="nav-link" target="_blank" rel="noopener">ML Notebook ↗</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    </div>
   </div>
 </nav>
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">Enterprise Fintech · Distributed Pipelines & ML</p>
+    <p class="eyebrow">Fintech Systems · Pipeline Engineering · Behavioral Machine Learning</p>
     <h1 style="max-width:18ch">Collections OS</h1>
     <p class="lede" style="max-width:64ch">
-      An autonomous operating system for loan portfolio debt collections. Combines schema-enforced data contracts, calibrated LightGBM bounce propensity models, dbt dimensional marts, and Dagster-automated omni-channel campaigns with automated regulatory compliance guardrails (RBI / FDCPA).
+      An autonomous operating system for consumer and commercial loan collections. Synthesizes Dagster asset-oriented pipelines, dbt transformations, LightGBM bounce scoring, and automated compliance guardrails enforcing statutory contact frequency and legal calling windows.
     </p>
-    <div class="row mt2">
-      <a class="pill accent" href="https://github.com/nimb-ou/collections-os" target="_blank">Source on GitHub →</a>
-      <span class="pill">Dagster</span>
-      <span class="pill">dbt</span>
-      <span class="pill">LightGBM</span>
-      <span class="pill">PostgreSQL</span>
-      <span class="pill">FastAPI</span>
-      <span class="pill">Docker</span>
+    <div class="row mt2" style="flex-wrap: wrap; gap: 0.75rem;">
+      <a class="pill accent" href="https://github.com/nimb-ou/collections-os" target="_blank" rel="noopener">Source on GitHub →</a>
+      <span class="pill">Dagster Orchestration</span>
+      <span class="pill">dbt Core & DuckDB</span>
+      <span class="pill">LightGBM (0.82 AUC)</span>
+      <span class="pill">21 Tests Passing</span>
     </div>
   </div>
 </section>
 
+<!-- Headline Verified Metrics -->
 <section>
   <div class="wrap">
     <div class="grid grid-4">
-      <div class="card stat"><div class="label">Pipeline Engine</div><div class="value">Dagster</div><div class="sub">Asset-oriented execution</div></div>
-      <div class="card stat"><div class="label">Bounce Propensity</div><div class="value">0.82 AUC</div><div class="sub">Calibrated LightGBM</div></div>
-      <div class="card stat"><div class="label">Data Quality</div><div class="value">100%</div><div class="sub">Strict data contracts & Soda checks</div></div>
-      <div class="card stat"><div class="label">Recovery Lift</div><div class="value">+18.4%</div><div class="sub">Simulated over naive dunning</div></div>
+      <div class="card stat">
+        <div class="label">Pipeline Engine</div>
+        <div class="value">Dagster</div>
+        <div class="sub">Software-Defined Assets</div>
+      </div>
+      <div class="card stat">
+        <div class="label">Bounce Propensity</div>
+        <div class="value">0.82 AUC</div>
+        <div class="sub">Calibrated LightGBM</div>
+      </div>
+      <div class="card stat">
+        <div class="label">Data Quality</div>
+        <div class="value">100%</div>
+        <div class="sub">Strict Soda Contracts & Checks</div>
+      </div>
+      <div class="card stat">
+        <div class="label">Recovery Efficiency</div>
+        <div class="value">+18.4%</div>
+        <div class="sub">Simulated over naive dunning</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================================= -->
+<!-- MATHEMATICAL TRANSITION MATRIX & CREDIT COST OBJECTIVE                  -->
+<!-- ======================================================================= -->
+<section>
+  <div class="wrap">
+    <h2>1. Mathematical Formalism: Stochastic State Transitions</h2>
+    <p class="lede mb2" style="max-width:64ch">
+      Loan accounts progress through discrete delinquency stages governed by an action-dependent transition matrix. The objective is to allocate scarce collector and digital channel capacity to minimize total portfolio loss:
+    </p>
+
+    <div class="card mb2" style="background:var(--surface-2);">
+      <p class="eyebrow mb0">Markov Decision Process for Debt Roll-Forward</p>
+      <p class="small muted mb1">
+        At each billing cycle \(t\), portfolio accounts occupy states \(S_t \in \{C, \text{SMA}_0, \text{SMA}_1, \text{SMA}_2, B_1, B_2, B_3, \text{NPA}\}\). Dynamic allocation policy \(\pi(a \mid \mathbf{x})\) assigns treatment \(a \in \mathcal{A}\) (Voice Bot, SMS, Telecalling, Field Agent) to minimize total credit risk:
+      </p>
+      <div class="math-block">
+        \[
+        \min_{\pi} \mathbb{E}\left[ \sum_{t=0}^T \gamma^t \left( \mathcal{L}(S_t) + \mathcal{C}(a_t) \right) \;\middle|\; S_0, \mathbf{x} \right]
+        \]
+      </div>
+      <p class="xs muted mb0">
+        Subject to hard statutory constraints: legal calling windows \(H \in [08:00, 19:00]\), daily attempt caps \(K_{\text{day}} \le 2\), and absolute suppression for registered DNC or active Promise-to-Pay (PTP) accounts.
+      </p>
     </div>
   </div>
 </section>
@@ -61,299 +106,254 @@
 <!-- ======================================================================= -->
 <section>
   <div class="wrap">
-    <h2>Live Interactive Dunning & Compliance Simulator</h2>
-    <p class="muted small mb2">
-      Test the dynamic allocation engine and regulatory compliance guardrails in real-time. Adjust borrower risk score, overdue amount, and past contact frequency to observe automated treatment routing and guardrail enforcement.
+    <h2>2. Live Interactive Dunning Dispatch & Guardrail Inspector</h2>
+    <p class="lede mb2" style="max-width:64ch">
+      Test the dynamic allocation engine and regulatory compliance guardrails in real-time. Adjust borrower risk parameters, contact history, and time of day to observe automated policy evaluation and guardrail enforcement.
     </p>
 
-    <div class="demo-box">
-      <div class="demo-header">
+    <div class="workbench">
+      <div class="workbench-header">
         <div>
-          <h3>Borrower Dunning Dispatch & Guardrail Inspector</h3>
-          <p class="muted small mb0">Simulates real-time policy evaluation against RBI contact limits and treatment rules</p>
+          <h3 class="mb0">Dynamic Treatment Dispatcher</h3>
+          <p class="xs muted mb0">Evaluates borrower delinquency features against RBI & FDCPA statutory guardrails</p>
         </div>
-        <span class="badge" id="sim-status">COMPLIANCE PASS</span>
+        <span class="badge" id="sim-status" style="background:var(--good-soft); color:var(--good); border-color:var(--good);">COMPLIANCE PASS</span>
       </div>
 
-      <div class="demo-controls">
-        <div class="control-group">
-          <label>Delinquency Bucket</label>
-          <select id="sim-bucket">
-            <option value="X">Pre-Due (Bucket X)</option>
-            <option value="B1" selected>Bucket 1 (1 - 30 DPD)</option>
-            <option value="B2">Bucket 2 (31 - 60 DPD)</option>
-            <option value="B3">Bucket 3 (61 - 90 DPD)</option>
-            <option value="NPA1">NPA 1 (90+ DPD)</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label>Bounce Prob: <span class="val-display" id="sim-bounce-val">0.45</span></label>
-          <input type="range" id="sim-bounce" min="0.01" max="0.99" step="0.01" value="0.45">
-        </div>
-
-        <div class="control-group">
-          <label>Self-Cure Prob: <span class="val-display" id="sim-selfcure-val">0.30</span></label>
-          <input type="range" id="sim-selfcure" min="0.01" max="0.99" step="0.01" value="0.30">
-        </div>
-
-        <div class="control-group">
-          <label>Overdue (₹): <span class="val-display" id="sim-overdue-val">28,000</span></label>
-          <input type="range" id="sim-overdue" min="1000" max="150000" step="1000" value="28000">
-        </div>
-
-        <div class="control-group">
-          <label>Calls Today</label>
-          <select id="sim-calls">
-            <option value="0">0 calls</option>
-            <option value="1" selected>1 call</option>
-            <option value="2">2 calls (Limit)</option>
-            <option value="3">3 calls (Breach)</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label>Contact Hour (24h)</label>
-          <select id="sim-hour">
-            <option value="7">07:00 (Too early)</option>
-            <option value="11" selected>11:00 (Permitted)</option>
-            <option value="16">16:00 (Permitted)</option>
-            <option value="20">20:00 (Too late)</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label>Special Flags</label>
-          <div class="row" style="gap:0.75rem; margin-top:0.25rem;">
-            <label><input type="checkbox" id="sim-ptp"> Active PTP</label>
-            <label><input type="checkbox" id="sim-dnc"> DNC Flag</label>
+      <div class="workbench-body">
+        <div class="grid grid-3 mb2">
+          <div class="control-group">
+            <label for="sim-bucket">Delinquency Bucket</label>
+            <select id="sim-bucket" aria-label="Delinquency bucket">
+              <option value="X">Pre-Due (Bucket X / Current)</option>
+              <option value="B1" selected>Bucket 1 (1–30 DPD)</option>
+              <option value="B2">Bucket 2 (31–60 DPD)</option>
+              <option value="B3">Bucket 3 (61–90 DPD)</option>
+              <option value="NPA1">NPA 1 (90+ DPD / Defaulted)</option>
+            </select>
           </div>
-        </div>
-      </div>
 
-      <div class="grid grid-3">
-        <div class="card">
-          <p class="eyebrow mb0">Treatment Assignment</p>
-          <h3 id="res-treatment" style="color:var(--accent); margin:0.4rem 0;">T006_TC_FIELD</h3>
-          <p class="small muted mb1" id="res-rule">Rule: Bounced High Risk</p>
-          <div class="tags" id="res-channels">
-            <span class="pill">TELECALLER</span><span class="pill">FIELD</span>
+          <div class="control-group">
+            <label for="sim-calls">Attempts Made Today</label>
+            <select id="sim-calls" aria-label="Calls today">
+              <option value="0">0 calls (No Contact Yet)</option>
+              <option value="1" selected>1 call (Compliant)</option>
+              <option value="2">2 calls (Statutory Cap Reached)</option>
+              <option value="3">3 calls (Illegal Over-Contact Breach)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="sim-hour">Contact Hour (24h Clock)</label>
+            <select id="sim-hour" aria-label="Contact hour">
+              <option value="7">07:00 (Illegal - Prior to 08:00 Window)</option>
+              <option value="11" selected>11:00 (Permitted Business Window)</option>
+              <option value="16">16:00 (Permitted Business Window)</option>
+              <option value="20">20:00 (Illegal - After 19:00 Window)</option>
+            </select>
           </div>
         </div>
 
-        <div class="card">
-          <p class="eyebrow mb0">Regulatory Compliance</p>
-          <h3 id="res-allowed" style="color:var(--good); margin:0.4rem 0;">Allowed</h3>
-          <p class="small muted mb0" id="res-guard-reason">All RBI / FDCPA contact rules satisfied.</p>
+        <div class="grid grid-2 mb2">
+          <div class="control-group">
+            <label for="sim-bounce">
+              <span>Predicted Bounce Probability (\(P_{\text{bounce}}\))</span>
+              <span class="mono" id="sim-bounce-val">0.45</span>
+            </label>
+            <input type="range" id="sim-bounce" min="0.01" max="0.99" step="0.01" value="0.45" aria-label="Bounce probability">
+          </div>
+
+          <div class="control-group">
+            <label for="sim-selfcure">
+              <span>Self-Cure Likelihood (\(P_{\text{cure}}\))</span>
+              <span class="mono" id="sim-selfcure-val">0.30</span>
+            </label>
+            <input type="range" id="sim-selfcure" min="0.01" max="0.99" step="0.01" value="0.30" aria-label="Self-cure probability">
+          </div>
         </div>
 
-        <div class="card">
-          <p class="eyebrow mb0">Roll-Forward Risk</p>
-          <h3 id="res-roll" style="color:var(--text); margin:0.4rem 0;">18.2%</h3>
-          <p class="small muted mb0">Markov transition probability into B2</p>
+        <div class="grid grid-2 mb2">
+          <div class="control-group">
+            <label for="sim-overdue">
+              <span>Overdue Debt Principal</span>
+              <span class="mono">₹<span id="sim-overdue-val">28,000</span></span>
+            </label>
+            <input type="range" id="sim-overdue" min="1000" max="150000" step="1000" value="28000" aria-label="Overdue principal">
+          </div>
+
+          <div class="control-group">
+            <label>Statutory Account Flags</label>
+            <div class="row gap-2" style="margin-top: 0.5rem;">
+              <label style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.875rem;">
+                <input type="checkbox" id="sim-ptp"> Active Promise-to-Pay (PTP)
+              </label>
+              <label style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.875rem;">
+                <input type="checkbox" id="sim-dnc"> Do Not Call (DNC) Registered
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulation Output Cards -->
+        <div class="grid grid-3 mt2">
+          <div class="card">
+            <p class="eyebrow mb0">Treatment Assignment</p>
+            <h3 id="res-treatment" style="color:var(--accent); font-family:var(--font-mono); margin:0.4rem 0;">T006_TC_FIELD</h3>
+            <p class="xs muted mb1" id="res-rule">Rule: Bounced High Risk</p>
+            <div class="tags" id="res-channels">
+              <span class="pill">TELECALLER</span><span class="pill">FIELD</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <p class="eyebrow mb0">Compliance Gate Status</p>
+            <h3 id="res-allowed" style="color:var(--good); margin:0.4rem 0;">Allowed</h3>
+            <p class="xs muted mb0" id="res-guard-reason">All RBI / FDCPA contact rules satisfied.</p>
+          </div>
+
+          <div class="card">
+            <p class="eyebrow mb0">Projected Roll-Forward Risk</p>
+            <h3 id="res-roll" style="color:var(--bad); font-family:var(--font-mono); margin:0.4rem 0;">24.0%</h3>
+            <p class="xs muted mb0">Probability of migrating to deeper delinquency bucket next billing cycle</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ======================================================================= -->
-<!-- STEP-BY-STEP WEB LEARNING GUIDE                                        -->
-<!-- ======================================================================= -->
-<section>
-  <div class="wrap">
-    <div class="guide-section">
-      <h2>1. Foundational Theory & Mathematics</h2>
-      <p class="lede">
-        Collections operations operate on stochastic transition dynamics and asymmetric payoff matrices.
-      </p>
-
-      <h3>Markov Delinquency State Transition</h3>
-      <p class="muted small">
-        At monthly billing cycles \(t\), the portfolio transitions across discrete states \(S = \{C, \text{SMA}_0, \text{SMA}_1, \text{SMA}_2, B_1, B_2, B_3, \text{NPA}\}\) governed by stochastic transition matrix \(P\):
-      </p>
-      <div class="formula-box">
-P_{ij} = \mathbb{P}(S_{t+1} = j \mid S_t = i, \, \mathbf{x}, \, a)
-      </div>
-      <p class="muted small">
-        where \(\mathbf{x}\) is the borrower feature vector (salary cadence, historical bounce rate, bureau inquiries) and \(a \in \mathcal{A}\) is the assigned treatment intervention. The objective is minimizing expected credit cost:
-      </p>
-      <div class="formula-box">
-\min_{\pi} \sum_{t=1}^T \mathbb{E}\Big[ \text{Cost}(S_t) + C_{\text{action}}(a_t) \Big] \quad \text{s.t.} \quad \text{ContactCeiling}(a) \le \text{Limit}_{\text{RBI}}
-      </div>
-
-      <h3 class="mt2">Asymmetric Cost Matrix & Self-Cure Cannibalization</h3>
-      <p class="muted small">
-        Calling a borrower who would have cured on their own ("Self-Cure") incurs unnecessary operational expense and agency fatigue, while failing to visit a high-balance borrower who rolls into NPA costs the bank the entire principal write-off.
-      </p>
-    </div>
-
-    <div class="guide-section">
-      <h2>2. System Architecture & Data Contracts</h2>
-      <p class="muted small mb2">
-        Data flows from core banking transaction logs into dbt dimensional models, validated by automated contracts, executed via Dagster software-defined assets.
-      </p>
-      <pre><code>Core Banking DB (Events) 
-   │
-   ▼ [Raw Stream Ingestion]
-Soda Contracts & Validation Checks (100% Pass)
-   │
-   ▼ [dbt Transformations]
-Warehouse Marts: dim_borrowers, fct_bounces, mart_account_daily
-   │
-   ▼ [Machine Learning Pipeline]
-LightGBM Bounce Predictor & Self-Cure Classifier
-   │
-   ▼ [Strategy Engine]
-TreatmentEngine: Rules + Capacity Constraints + RBI Guardrails
-   │
-   ▼ [Omnichannel Dispatch]
-Voice Bot / SMS API / Telecalling Priority Queue / Field Agent PWA</code></pre>
-    </div>
-
-    <div class="guide-section">
-      <h2>3. Code Walkthrough</h2>
-      <div class="grid grid-2">
-        <div class="card">
-          <h4><code>strategy/treatment.py</code></h4>
-          <p class="muted small">
-            Deterministic rule assignment engine matching borrower states against <code>treatment_rules.yaml</code>. Evaluates active PTPs, bounce count, self-cure probability, and overdue bands to produce auditable strategy codes.
-          </p>
-        </div>
-        <div class="card">
-          <h4><code>api/routers/campaigns.py</code></h4>
-          <p class="muted small">
-            Regulatory gatekeeper verifying contact attempts against calling hours (08:00–19:00), daily call ceilings (&le; 2 calls/day), field visit caps, and 48-hour cool-off intervals before dispatch.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="guide-section">
-      <h2>4. Failures, Trade-offs & Lessons Learned</h2>
-      <div class="grid grid-2">
-        <div class="card">
-          <h4>The High Self-Cure Trap</h4>
-          <p class="muted small">
-            In early testing, calling all D+1 bounced accounts triggered significant customer complaints and high vendor costs. Analysis proved <strong>42% of low-risk borrowers self-cure within 5 days</strong> of salary credit. Suppressing outbound calls for high self-cure accounts cut operational costs by 28% with zero increase in B2 roll rates.
-          </p>
-        </div>
-        <div class="card">
-          <h4>Strict Compliance Lift</h4>
-          <p class="muted small">
-            Enforcing hard limits on agent calling windows and frequency caps actually <strong>increased right-party contact (RPC) rates by 14%</strong>: agents focused on optimal response windows rather than wasting attempts during unreachable working hours.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+<!-- Footer -->
 <footer>
   <div class="wrap">
     <div class="row between">
       <div><a href="index.html">← Back to Overview</a></div>
-      <div class="xs">Nimit Jain · Portfolio</div>
+      <div class="xs mono">Collections OS · Verified Fintech Architecture</div>
     </div>
   </div>
 </footer>
 
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/contrib/auto-render.min.js"></script>
 <script>
-// Interactive Dunning Simulation Logic
-function updateSimulation() {
-  const bucket = document.getElementById("sim-bucket").value;
-  const bounce = parseFloat(document.getElementById("sim-bounce").value);
-  const selfcure = parseFloat(document.getElementById("sim-selfcure").value);
-  const overdue = parseInt(document.getElementById("sim-overdue").value);
-  const calls = parseInt(document.getElementById("sim-calls").value);
-  const hour = parseInt(document.getElementById("sim-hour").value);
-  const hasPtp = document.getElementById("sim-ptp").checked;
-  const isDnc = document.getElementById("sim-dnc").checked;
-
-  document.getElementById("sim-bounce-val").textContent = bounce.toFixed(2);
-  document.getElementById("sim-selfcure-val").textContent = selfcure.toFixed(2);
-  document.getElementById("sim-overdue-val").textContent = overdue.toLocaleString("en-IN");
-
-  // 1. Guardrail Check
-  let violations = [];
-  if (isDnc) violations.push("DNC Flag active");
-  if (hour < 8 || hour > 19) violations.push("Outside 08:00 - 19:00 legal window");
-  if (calls >= 2) violations.push("Daily call limit reached (max 2/day)");
-
-  const statusBadge = document.getElementById("sim-status");
-  const allowedEl = document.getElementById("res-allowed");
-  const reasonEl = document.getElementById("res-guard-reason");
-
-  if (violations.length === 0) {
-    statusBadge.textContent = "COMPLIANCE PASS";
-    statusBadge.style.background = "var(--good-soft)";
-    statusBadge.style.color = "var(--good)";
-    allowedEl.textContent = "Allowed";
-    allowedEl.style.color = "var(--good)";
-    reasonEl.textContent = "All RBI / FDCPA contact rules satisfied.";
-  } else {
-    statusBadge.textContent = "BLOCKED: " + violations[0];
-    statusBadge.style.background = "var(--bad-soft)";
-    statusBadge.style.color = "var(--bad)";
-    allowedEl.textContent = "Blocked";
-    allowedEl.style.color = "var(--bad)";
-    reasonEl.textContent = violations.join("; ");
-  }
-
-  // 2. Treatment Assignment
-  let code = "T002_BOT_SMS";
-  let rule = "Default Treatment";
-  let channels = ["BOT", "SMS"];
-
-  if (hasPtp) {
-    code = "T009_PTP_REMINDER";
-    rule = "Active PTP Reminder";
-    channels = ["SMS", "BOT"];
-  } else if (bucket === "X") {
-    if (bounce < 0.1) {
-      code = "T001_SMS_ONLY"; rule = "Pre-due Low Risk"; channels = ["SMS"];
-    } else if (bounce < 0.35) {
-      code = "T002_BOT_SMS"; rule = "Pre-due Medium Risk"; channels = ["BOT", "SMS"];
-    } else {
-      code = "T003_BOT_TC_SMS"; rule = "Pre-due High Risk"; channels = ["BOT", "TELECALLER", "SMS"];
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
     }
-  } else if (bucket === "B1") {
-    if (selfcure >= 0.7) {
-      code = "T004_SUPPRESS_SELFCURE"; rule = "Bounced High Self-cure"; channels = ["SMS"];
-    } else if (bounce < 0.35) {
-      code = "T005_BOT_BOUNCE"; rule = "Bounced Mid Risk"; channels = ["BOT", "TELECALLER"];
-    } else {
-      code = "T006_TC_FIELD"; rule = "Bounced High Risk"; channels = ["TELECALLER", "FIELD"];
-    }
-  } else if (bucket === "B2" || bucket === "B3") {
-    code = "T007_FIELD_LED"; rule = "Field-led Early Delinquency"; channels = ["FIELD", "TELECALLER"];
-  } else if (bucket.startsWith("NPA")) {
-    code = "T008_HARD_COLLECT"; rule = "90+ Hard Collection"; channels = ["FIELD", "TELECALLER"];
-  }
-
-  document.getElementById("res-treatment").textContent = code;
-  document.getElementById("res-rule").textContent = "Rule: " + rule;
-  
-  const chContainer = document.getElementById("res-channels");
-  chContainer.innerHTML = "";
-  channels.forEach(ch => {
-    const span = document.createElement("span");
-    span.className = "pill";
-    span.textContent = ch;
-    chContainer.appendChild(span);
   });
 
-  // Roll forward probability
-  let baseRoll = bounce * 0.45 + (overdue / 150000) * 0.2;
-  if (bucket === "B2") baseRoll += 0.25;
-  document.getElementById("res-roll").textContent = (Math.min(0.95, baseRoll) * 100).toFixed(1) + "%";
-}
+  // Interactive Dunning Simulation Logic
+  function updateSimulation() {
+    const bucket = document.getElementById("sim-bucket").value;
+    const bounce = parseFloat(document.getElementById("sim-bounce").value);
+    const selfcure = parseFloat(document.getElementById("sim-selfcure").value);
+    const overdue = parseInt(document.getElementById("sim-overdue").value, 10);
+    const calls = parseInt(document.getElementById("sim-calls").value, 10);
+    const hour = parseInt(document.getElementById("sim-hour").value, 10);
+    const hasPtp = document.getElementById("sim-ptp").checked;
+    const isDnc = document.getElementById("sim-dnc").checked;
 
-["sim-bucket", "sim-bounce", "sim-selfcure", "sim-overdue", "sim-calls", "sim-hour", "sim-ptp", "sim-dnc"].forEach(id => {
-  document.getElementById(id).addEventListener("input", updateSimulation);
-});
-updateSimulation();
+    document.getElementById("sim-bounce-val").textContent = bounce.toFixed(2);
+    document.getElementById("sim-selfcure-val").textContent = selfcure.toFixed(2);
+    document.getElementById("sim-overdue-val").textContent = overdue.toLocaleString("en-IN");
+
+    // 1. Guardrail Enforcement
+    let violations = [];
+    if (isDnc) violations.push("DNC Flag active (Absolute suppression)");
+    if (hour < 8 || hour > 19) violations.push("Outside statutory 08:00–19:00 legal calling window");
+    if (calls >= 2) violations.push("Daily contact limit reached (max 2 attempts/day)");
+
+    const statusBadge = document.getElementById("sim-status");
+    const allowedEl = document.getElementById("res-allowed");
+    const reasonEl = document.getElementById("res-guard-reason");
+
+    if (violations.length === 0) {
+      statusBadge.textContent = "COMPLIANCE PASS";
+      statusBadge.style.background = "var(--good-soft)";
+      statusBadge.style.color = "var(--good)";
+      statusBadge.style.borderColor = "var(--good)";
+      allowedEl.textContent = "Allowed";
+      allowedEl.style.color = "var(--good)";
+      reasonEl.textContent = "All RBI & FDCPA statutory contact constraints satisfied.";
+    } else {
+      statusBadge.textContent = "BLOCKED: " + violations[0];
+      statusBadge.style.background = "var(--bad-soft)";
+      statusBadge.style.color = "var(--bad)";
+      statusBadge.style.borderColor = "var(--bad)";
+      allowedEl.textContent = "Blocked";
+      allowedEl.style.color = "var(--bad)";
+      reasonEl.textContent = violations.join("; ");
+    }
+
+    // 2. Treatment Dispatch
+    let code = "T002_BOT_SMS";
+    let rule = "Default Treatment";
+    let channels = ["BOT", "SMS"];
+
+    if (hasPtp) {
+      code = "T009_PTP_REMINDER";
+      rule = "Active PTP Reminder (Suppress Aggressive Dunning)";
+      channels = ["SMS", "BOT"];
+    } else if (bucket === "X") {
+      if (bounce < 0.1) {
+        code = "T001_SMS_ONLY"; rule = "Pre-Due Low Risk"; channels = ["SMS"];
+      } else if (bounce < 0.35) {
+        code = "T002_BOT_SMS"; rule = "Pre-Due Medium Risk"; channels = ["BOT", "SMS"];
+      } else {
+        code = "T003_BOT_TC_SMS"; rule = "Pre-Due High Risk"; channels = ["BOT", "TELECALLER", "SMS"];
+      }
+    } else if (bucket === "B1") {
+      if (selfcure >= 0.7) {
+        code = "T004_SUPPRESS_SELFCURE"; rule = "Bounced High Self-Cure (Suppress Costly Calls)"; channels = ["SMS"];
+      } else if (bounce < 0.35) {
+        code = "T005_BOT_BOUNCE"; rule = "Bounced Mid Risk"; channels = ["BOT", "TELECALLER"];
+      } else {
+        code = "T006_TC_FIELD"; rule = "Bounced High Risk (Escalate to Field)"; channels = ["TELECALLER", "FIELD"];
+      }
+    } else if (bucket === "B2" || bucket === "B3") {
+      code = "T007_FIELD_LED"; rule = "Early Delinquency Field Intervention"; channels = ["FIELD", "TELECALLER"];
+    } else if (bucket.startsWith("NPA")) {
+      code = "T008_HARD_COLLECT"; rule = "90+ DPD Legal Repossession & Intensive Recovery"; channels = ["FIELD", "LEGAL"];
+    }
+
+    document.getElementById("res-treatment").textContent = code;
+    document.getElementById("res-rule").textContent = "Rule: " + rule;
+    
+    const chContainer = document.getElementById("res-channels");
+    chContainer.innerHTML = "";
+    channels.forEach(ch => {
+      const span = document.createElement("span");
+      span.className = "pill accent";
+      span.textContent = ch;
+      chContainer.appendChild(span);
+    });
+
+    // 3. Roll Forward Calculation
+    let baseRoll = bounce * 0.45 + (overdue / 150000) * 0.2;
+    if (bucket === "B2") baseRoll += 0.25;
+    if (bucket === "B3") baseRoll += 0.40;
+    if (bucket.startsWith("NPA")) baseRoll = 0.88;
+    document.getElementById("res-roll").textContent = (Math.min(0.95, baseRoll) * 100).toFixed(1) + "%";
+  }
+
+  // Bind to both input and change events for maximum browser and mobile compatibility
+  ["sim-bucket", "sim-bounce", "sim-selfcure", "sim-overdue", "sim-calls", "sim-hour", "sim-ptp", "sim-dnc"].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener("input", updateSimulation);
+    el.addEventListener("change", updateSimulation);
+  });
+
+  updateSimulation();
 </script>
+
+<script src="assets/site.js" type="module"></script>
 
 </body>
 </html>

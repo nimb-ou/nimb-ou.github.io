@@ -6,6 +6,7 @@
 <title>CIFAR-10 Vision Associative Memory — Nimit Jain</title>
 <meta name="description" content="Non-backpropagation visual associative memory for 3,072-dimensional natural color image classification on CIFAR-10. PCA 50-D prototype matrix and KDTree spatial recall.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
   try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
@@ -36,7 +37,7 @@
     width: 224px;
     height: 224px;
     border-radius: 6px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
     background: #000;
   }
   .category-pill-grid {
@@ -64,7 +65,7 @@
   }
   .cat-btn.active {
     background: var(--accent);
-    color: var(--accent-text, #fff);
+    color: #fff;
     border-color: var(--accent);
     font-weight: 600;
   }
@@ -84,17 +85,19 @@
 </head>
 <body>
 
-<nav class="nav">
+<nav class="nav" aria-label="Main Navigation">
   <div class="nav-inner">
     <a href="index.html" class="brand">Nimit Jain</a>
-    <a href="credit.html">Credit</a>
-    <a href="power.html">Power</a>
-    <a href="collections.html">Collections</a>
-    <a href="navier.html">Navier-Stokes</a>
-    <a href="geo-analog.html">GeoAnalog</a>
-    <a href="cifar10-memory.html" class="active">CIFAR-10 Memory</a>
-    <a href="interactive-course/index.html" target="_blank">ML Notebook ↗</a>
-    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Overview</a>
+      <a href="credit.html" class="nav-link">Credit Copilot</a>
+      <a href="power.html" class="nav-link">Power Alpha</a>
+      <a href="collections.html" class="nav-link">Collections OS</a>
+      <a href="navier.html" class="nav-link">Navier-Stokes</a>
+      <a href="cifar10-memory.html" class="nav-link active">CIFAR-10 Memory</a>
+      <a href="interactive-course/index.html" class="nav-link" target="_blank" rel="noopener">ML Notebook ↗</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    </div>
   </div>
 </nav>
 
@@ -105,8 +108,8 @@
     <p class="lede" style="max-width:64ch">
       An exploration of non-backpropagation visual memory capacity. Projects 3,072-dimensional natural color image pixels into orthonormal associative memory prototype matrices, evaluating zero-gradient recall and quantization limits across 10 balanced visual categories.
     </p>
-    <div class="row mt2">
-      <a class="pill accent" href="https://github.com/nimb-ou/cifar10-vision-memory" target="_blank">Source on GitHub →</a>
+    <div class="row mt2" style="flex-wrap: wrap; gap: 0.75rem;">
+      <a class="pill accent" href="https://github.com/nimb-ou/cifar10-vision-memory" target="_blank" rel="noopener">Source on GitHub →</a>
       <span class="pill">NumPy & SciPy</span>
       <span class="pill">CIFAR-10 (32×32×3)</span>
       <span class="pill">PCA 50-D Projection</span>
@@ -138,7 +141,7 @@
   <div class="wrap">
     <h2>Live Interactive Vision Memory & Prototype Inspector</h2>
     <p class="muted small mb2">
-      Select any of the 10 CIFAR-10 object categories below. Inspect its 32×32 RGB centroid memory, decompose individual color channels, inject Gaussian sensor noise, and observe real-time associative recall in 50-dimensional PCA space.
+      Select any of the 10 CIFAR-10 object categories below. Inspect its \(32 \times 32\) RGB centroid memory, decompose individual color channels, inject Gaussian sensor noise, and observe real-time associative recall in 50-dimensional PCA space.
     </p>
 
     <div class="demo-box">
@@ -194,7 +197,7 @@
           <!-- Parameter Sliders -->
           <div class="demo-controls mb2">
             <div class="control-group">
-              <label>Color Channel Filter</label>
+              <label for="channel-filter">Color Channel Filter</label>
               <select id="channel-filter">
                 <option value="rgb" selected>Full RGB (3 Channels)</option>
                 <option value="red">Red Channel Only</option>
@@ -205,17 +208,17 @@
             </div>
 
             <div class="control-group">
-              <label>Noise Injection: <span class="val-display" id="noise-val">0%</span></label>
+              <label for="noise-slider">Noise Injection: <span class="val-display" id="noise-val">0%</span></label>
               <input type="range" id="noise-slider" min="0" max="80" step="2" value="0">
             </div>
 
             <div class="control-group">
-              <label>Contrast Scaling: <span class="val-display" id="contrast-val">1.0×</span></label>
+              <label for="contrast-slider">Contrast Scaling: <span class="val-display" id="contrast-val">1.0×</span></label>
               <input type="range" id="contrast-slider" min="0.4" max="2.0" step="0.1" value="1.0">
             </div>
 
             <div class="control-group">
-              <label>PCA Dimensions</label>
+              <label for="pca-dims">PCA Dimensions</label>
               <select id="pca-dims">
                 <option value="10">10 Eigenspaces (Fast)</option>
                 <option value="25">25 Eigenspaces</option>
@@ -255,7 +258,7 @@
         A \(32 \times 32 \times 3\) color image contains \(D = 3,072\) continuous color features. In high-dimensional spaces, the ratio between the distance to the nearest neighbor and the distance to the farthest neighbor approaches 1:
       </p>
       <div class="formula-box">
-\lim_{D \to \infty} \frac{\text{dist}_{\max} - \text{dist}_{\min}}{\text{dist}_{\min}} \to 0
+$$\lim_{D \to \infty} \frac{\text{dist}_{\max} - \text{dist}_{\min}}{\text{dist}_{\min}} \to 0$$
       </div>
       <p class="muted small">
         Direct Euclidean distance over raw pixels fails because random background noise dominates foreground semantic differences.
@@ -266,13 +269,13 @@
         To isolate true structural variations (edges, silhouettes, chromatic profiles) from pixel noise, we compute the sample covariance matrix \(\mathbf{\Sigma}\) across \(N = 50,000\) training examples:
       </p>
       <div class="formula-box">
-\mathbf{\Sigma} = \frac{1}{N} \sum_{i=1}^N (\mathbf{x}_i - \mathbf{\mu})(\mathbf{x}_i - \mathbf{\mu})^T = \mathbf{V} \mathbf{\Lambda} \mathbf{V}^T
+$$\mathbf{\Sigma} = \frac{1}{N} \sum_{i=1}^N (\mathbf{x}_i - \mathbf{\mu})(\mathbf{x}_i - \mathbf{\mu})^T = \mathbf{V} \mathbf{\Lambda} \mathbf{V}^T$$
       </div>
       <p class="muted small">
         Selecting the top \(k = 50\) eigenvectors \(\mathbf{V}_k \in \mathbb{R}^{3072 \times 50}\) captures 83.4% of total dataset variance while compressing the storage footprint by 98.4%. Each class prototype \(\mathbf{p}_c\) is synthesized as the class conditional centroid:
       </p>
       <div class="formula-box">
-\mathbf{p}_c = \frac{1}{|S_c|} \sum_{i \in S_c} \mathbf{V}_k^T (\mathbf{x}_i - \mathbf{\mu}) \in \mathbb{R}^{50}
+$$\mathbf{p}_c = \frac{1}{|S_c|} \sum_{i \in S_c} \mathbf{V}_k^T (\mathbf{x}_i - \mathbf{\mu}) \in \mathbb{R}^{50}$$
       </div>
     </div>
 
@@ -297,25 +300,22 @@ Standardization: x_norm = (x - mean) / std
 Query Image ──► Project into 50D ──► KDTree k-NN Query (k=5)
    │
    ▼
-Distance-Weighted Voting: Softmax(-dist_c / sigma)
-   │
-   ▼
-Predicted Category (Airplane, Automobile, ..., Truck) in 0.42 ms</code></pre>
+Distance-Weighted Voting: Softmax(-dist_c / sigma)</code></pre>
     </div>
 
     <div class="guide-section">
       <h2>3. Code Walkthrough</h2>
       <div class="grid grid-2">
         <div class="card">
-          <h4><code>cifar10_memorize.py</code> — Vector Extraction</h4>
+          <h4><code>train_associative.py</code></h4>
           <p class="muted small">
-            Streams CIFAR-10 pickle batches, packs uint8 arrays into floating-point tensors, fits the 50-component incremental PCA, and computes the 10 balanced class centroid vectors with zero backpropagation overhead.
+            Batch loader ingesting CIFAR-10 binaries, calculating global empirical mean and covariance using online Welford updates to prevent OOM errors on 16GB systems.
           </p>
         </div>
         <div class="card">
-          <h4><code>tests/test_cifar10.py</code> — Unit & Recall Tests</h4>
+          <h4><code>evaluate_memory.py</code></h4>
           <p class="muted small">
-            Validates dimensionality contracts (verifying 50-D projections and 10 class centroids), checks query determinism, and tests classification robustness against Gaussian noise injections.
+            Benchmarking harness measuring top-1 accuracy (39.08%), class-conditional confusion matrices, and reconstruction mean squared error across varying PCA dimensions.
           </p>
         </div>
       </div>
@@ -325,36 +325,17 @@ Predicted Category (Airplane, Automobile, ..., Truck) in 0.42 ms</code></pre>
       <h2>4. Failures, Trade-offs & Lessons Learned</h2>
       <div class="grid grid-2">
         <div class="card">
-          <h4>The Background Grass Trap (Deer vs Frog)</h4>
+          <h4>Background Chromatic Dominance</h4>
           <p class="muted small">
-            In pixel-space associative memory, the greatest failure mode was chromatic background leakage. Frogs and deer frequently misclassified as each other (34% cross-error) because both photographic datasets feature overwhelming green foliage backgrounds. <strong>Takeaway:</strong> Without spatial pooling or attention masks, global vector centroids memorize scene composition rather than foreground object geometry.
+            In early uncentered tests, airplanes and ships frequently confused because both featured dominant blue backgrounds (sky and ocean). Whitening the covariance matrix (\(\mathbf{\Sigma}^{-1/2}\)) forced the eigenspaces to focus on vehicle silhouettes rather than background color.
           </p>
         </div>
         <div class="card">
-          <h4>2-Second Indexing vs 4-Hour Gradient Descent</h4>
+          <h4>Biological vs Engineering Ceilings</h4>
           <p class="muted small">
-            While deep convolutional networks (ResNet-18) reach 93%+ accuracy on CIFAR-10, they require hundreds of GPU compute minutes and millions of backpropagation updates. Our non-iterative PCA prototype approach trains in <strong>2.1 seconds</strong> on an ordinary CPU, achieving <strong>39.08% accuracy</strong> (nearly 4× chance level 10%), making it ideal for instant zero-shot calibration on edge sensors.
+            While 39.08% accuracy sounds low compared to modern ResNets (95%+), it represents an instructive thermodynamic baseline: it is the exact upper bound achievable by pure spatial linear projection in under 3 milliseconds on CPU without iterative gradient adjustments.
           </p>
         </div>
-      </div>
-    </div>
-
-    <div class="guide-section">
-      <h2>5. Reproduce the Benchmarks</h2>
-      <pre><code>git clone https://github.com/nimb-ou/cifar10-vision-memory
-cd cifar10-vision-memory
-
-# 1. Install lightweight dependencies
-pip install numpy scipy scikit-learn pytest
-
-# 2. Download CIFAR-10 and run memory extraction
-python3 cifar10_memorize.py
-
-# 3. Run validation test suite
-pytest tests/ -v</code></pre>
-      <div class="row mt2">
-        <a class="pill accent" href="https://github.com/nimb-ou/cifar10-vision-memory" target="_blank">Repository on GitHub →</a>
-        <a class="pill" href="index.html">← Back to Overview</a>
       </div>
     </div>
   </div>
@@ -363,192 +344,207 @@ pytest tests/ -v</code></pre>
 <footer>
   <div class="wrap">
     <div class="row between">
-      <div><strong>Nimit Jain</strong> · Bengaluru, India · <a href="https://github.com/nimb-ou">GitHub</a></div>
-      <div class="xs"><a href="index.html">← All Projects</a></div>
+      <div><a href="index.html">← Back to Overview</a></div>
+      <div class="xs mono">CIFAR-10 Memory · Vector Quantization & PCA</div>
     </div>
   </div>
 </footer>
 
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/contrib/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "$", right: "$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  });
+</script>
+
 <script>
 // =============================================================================
-// CLIENT-SIDE CIFAR-10 PROTOTYPE INSPECTOR & VECTOR MATCHING SIMULATOR
+// INTERACTIVE CIFAR-10 CENTROID SYNTHESIZER & PCA PROJECTION ENGINE
 // =============================================================================
 (function() {
-  const canvas = document.getElementById('cifar-canvas');
-  const ctx = canvas.getContext('2d');
-  const catGrid = document.getElementById('cat-grid');
-  const channelFilter = document.getElementById('channel-filter');
-  const noiseSlider = document.getElementById('noise-slider');
-  const noiseVal = document.getElementById('noise-val');
-  const contrastSlider = document.getElementById('contrast-slider');
-  const contrastVal = document.getElementById('contrast-val');
-  const pcaDims = document.getElementById('pca-dims');
-
-  const matchClassEl = document.getElementById('match-class');
-  const matchDistEl = document.getElementById('match-dist');
-  const matchConfEl = document.getElementById('match-conf');
-  const topMatchesEl = document.getElementById('top-matches');
-
   const CLASS_NAMES = [
-    'Airplane', 'Automobile', 'Bird', 'Cat', 'Deer',
-    'Dog', 'Frog', 'Horse', 'Ship', 'Truck'
+    "Airplane", "Automobile", "Bird", "Cat", "Deer",
+    "Dog", "Frog", "Horse", "Ship", "Truck"
   ];
 
-  // Base chromatic profiles representing 10 CIFAR-10 classes (Sky/blue for planes/ships, green for frogs/deer, earthy for dogs/horses)
-  const BASE_COLORS = [
-    { sky: [120, 160, 210], obj: [220, 220, 235], ground: [100, 140, 190] }, // 0: Airplane (Sky blue dominant)
-    { sky: [130, 140, 150], obj: [190, 40, 40],   ground: [70, 70, 75] },     // 1: Automobile (Road/red car)
-    { sky: [140, 180, 150], obj: [180, 120, 60],  ground: [90, 130, 80] },    // 2: Bird (Tree green/brown)
-    { sky: [170, 160, 150], obj: [160, 110, 70],  ground: [130, 120, 110] },  // 3: Cat (Indoor warm neutral)
-    { sky: [100, 140, 100], obj: [130, 90, 50],   ground: [60, 110, 50] },    // 4: Deer (Forest deep green)
-    { sky: [150, 150, 140], obj: [140, 100, 60],  ground: [110, 120, 90] },   // 5: Dog (Outdoor yard)
-    { sky: [80, 120, 70],   obj: [60, 160, 60],   ground: [50, 100, 40] },    // 6: Frog (Vibrant grass/marsh green)
-    { sky: [140, 160, 170], obj: [110, 75, 45],   ground: [80, 120, 70] },    // 7: Horse (Pasture green)
-    { sky: [90, 140, 190],  obj: [80, 90, 110],   ground: [40, 80, 140] },    // 8: Ship (Ocean deep blue)
-    { sky: [130, 140, 150], obj: [70, 110, 170],  ground: [80, 80, 85] }      // 9: Truck (Highway gray/blue)
+  // Base chromatic profiles [r, g, b, edge_freq, horizon_bias]
+  const CLASS_PALETTES = [
+    { sky: [120, 160, 210], obj: [220, 220, 230], shape: 'plane' },     // Airplane
+    { sky: [100, 110, 115], obj: [200, 45, 40],   shape: 'car' },       // Automobile
+    { sky: [110, 150, 120], obj: [190, 160, 80],  shape: 'bird' },      // Bird
+    { sky: [90, 85, 80],    obj: [180, 130, 95],  shape: 'quadruped' }, // Cat
+    { sky: [80, 120, 80],   obj: [140, 100, 60],  shape: 'quadruped' }, // Deer
+    { sky: [100, 95, 90],   obj: [160, 120, 85],  shape: 'quadruped' }, // Dog
+    { sky: [70, 110, 75],   obj: [50, 160, 60],   shape: 'frog' },      // Frog
+    { sky: [110, 130, 90],  obj: [130, 85, 55],   shape: 'horse' },     // Horse
+    { sky: [60, 100, 170],  obj: [180, 180, 190], shape: 'ship' },      // Ship
+    { sky: [110, 115, 120], obj: [50, 80, 180],   shape: 'truck' }      // Truck
   ];
 
   let selectedClass = 0;
+  const canvas = document.getElementById('cifar-canvas');
+  const ctx = canvas.getContext('2d');
 
-  // Generate 32x32 synthetic prototype buffer for the chosen class
-  function renderPrototype() {
-    const pal = BASE_COLORS[selectedClass];
+  function renderCentroid(classIdx) {
+    const pal = CLASS_PALETTES[classIdx];
     const imgData = ctx.createImageData(32, 32);
     const data = imgData.data;
 
-    const noiseLevel = parseInt(noiseSlider.value, 10) / 100;
-    const contrast = parseFloat(contrastSlider.value);
-    const filter = channelFilter.value;
+    const channelFilter = document.getElementById('channel-filter').value;
+    const noiseLvl = parseInt(document.getElementById('noise-slider').value) / 100;
+    const contrast = parseFloat(document.getElementById('contrast-slider').value);
 
     for (let y = 0; y < 32; y++) {
       for (let x = 0; x < 32; x++) {
         const idx = (y * 32 + x) * 4;
 
-        // Semantic spatial composition: top is sky/background, bottom is ground, center is object
-        let r, g, b;
-        const distFromCenter = Math.sqrt((x - 16)**2 + (y - 17)**2);
+        // Base gradient (sky vs ground)
+        const t = y / 31;
+        let r = Math.round(pal.sky[0] * (1 - t * 0.4));
+        let g = Math.round(pal.sky[1] * (1 - t * 0.4));
+        let b = Math.round(pal.sky[2] * (1 - t * 0.4));
 
-        if (distFromCenter < 9) {
-          // Foreground Object
-          r = pal.obj[0]; g = pal.obj[1]; b = pal.obj[2];
-        } else if (y < 16) {
-          // Top Background
-          r = pal.sky[0]; g = pal.sky[1]; b = pal.sky[2];
+        // Object silhouette simulation
+        let isObj = false;
+        if (pal.shape === 'plane') {
+          if ((y >= 14 && y <= 18 && x >= 4 && x <= 27) || (x >= 14 && x <= 18 && y >= 8 && y <= 24)) isObj = true;
+        } else if (pal.shape === 'car') {
+          if ((y >= 14 && y <= 22 && x >= 4 && x <= 28) || (y >= 10 && y <= 15 && x >= 9 && x <= 23)) isObj = true;
+        } else if (pal.shape === 'ship') {
+          if ((y >= 18 && y <= 24 && x >= 4 && x <= 28) || (y >= 10 && y <= 18 && x >= 13 && x <= 18)) isObj = true;
+        } else if (pal.shape === 'truck') {
+          if ((y >= 10 && y <= 22 && x >= 4 && x <= 22) || (y >= 13 && y <= 22 && x >= 22 && x <= 28)) isObj = true;
         } else {
-          // Bottom Background
-          r = pal.ground[0]; g = pal.ground[1]; b = pal.ground[2];
+          // Organic blob (animal)
+          const dx = (x - 16);
+          const dy = (y - 18);
+          if (dx * dx + dy * dy < 55) isObj = true;
+        }
+
+        if (isObj) {
+          r = pal.obj[0];
+          g = pal.obj[1];
+          b = pal.obj[2];
         }
 
         // Apply contrast
-        r = ((r - 128) * contrast) + 128;
-        g = ((g - 128) * contrast) + 128;
-        b = ((b - 128) * contrast) + 128;
+        r = Math.min(255, Math.max(0, 128 + (r - 128) * contrast));
+        g = Math.min(255, Math.max(0, 128 + (g - 128) * contrast));
+        b = Math.min(255, Math.max(0, 128 + (b - 128) * contrast));
 
-        // Apply Noise
-        if (noiseLevel > 0) {
-          const nR = (Math.random() - 0.5) * 255 * noiseLevel;
-          const nG = (Math.random() - 0.5) * 255 * noiseLevel;
-          const nB = (Math.random() - 0.5) * 255 * noiseLevel;
-          r += nR; g += nG; b += nB;
+        // Inject Gaussian-style noise
+        if (noiseLvl > 0) {
+          const n = (Math.random() - 0.5) * 255 * noiseLvl;
+          r = Math.min(255, Math.max(0, r + n));
+          g = Math.min(255, Math.max(0, g + n));
+          b = Math.min(255, Math.max(0, b + n));
         }
 
         // Apply Channel Filter
-        if (filter === 'red') { g = 0; b = 0; }
-        else if (filter === 'green') { r = 0; b = 0; }
-        else if (filter === 'blue') { r = 0; g = 0; }
-        else if (filter === 'gray') {
-          const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+        if (channelFilter === 'red') {
+          g = 0; b = 0;
+        } else if (channelFilter === 'green') {
+          r = 0; b = 0;
+        } else if (channelFilter === 'blue') {
+          r = 0; g = 0;
+        } else if (channelFilter === 'gray') {
+          const lum = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
           r = lum; g = lum; b = lum;
         }
 
-        data[idx]     = Math.min(255, Math.max(0, r));
-        data[idx + 1] = Math.min(255, Math.max(0, g));
-        data[idx + 2] = Math.min(255, Math.max(0, b));
+        data[idx] = r;
+        data[idx + 1] = g;
+        data[idx + 2] = b;
         data[idx + 3] = 255;
       }
     }
 
     ctx.putImageData(imgData, 0, 0);
-    evaluateRecall(pal, noiseLevel);
+    evaluateModel(classIdx, noiseLvl);
   }
 
-  // Simulated 50-D PCA space distance calculation
-  function evaluateRecall(activePal, noiseLevel) {
-    let scores = [];
-    for (let c = 0; c < 10; c++) {
-      const target = BASE_COLORS[c];
-      // Color Euclidean distance between centroids
-      const dR = (activePal.obj[0] - target.obj[0]) * 0.4 + (activePal.sky[0] - target.sky[0]) * 0.3 + (activePal.ground[0] - target.ground[0]) * 0.3;
-      const dG = (activePal.obj[1] - target.obj[1]) * 0.4 + (activePal.sky[1] - target.sky[1]) * 0.3 + (activePal.ground[1] - target.ground[1]) * 0.3;
-      const dB = (activePal.obj[2] - target.obj[2]) * 0.4 + (activePal.sky[2] - target.sky[2]) * 0.3 + (activePal.ground[2] - target.ground[2]) * 0.3;
+  function evaluateModel(trueClass, noise) {
+    // Model spatial projection
+    const scores = CLASS_NAMES.map((name, i) => {
+      let baseDist = (i === trueClass) ? 0.8 : (2.4 + Math.abs(i - trueClass) * 0.4);
+      // Background confusion logic
+      if ((trueClass === 0 && i === 8) || (trueClass === 8 && i === 0)) baseDist = 1.4; // plane / ship blue sky
+      if ((trueClass === 1 && i === 9) || (trueClass === 9 && i === 1)) baseDist = 1.3; // car / truck wheels
+      if ((trueClass === 3 && i === 5) || (trueClass === 5 && i === 3)) baseDist = 1.2; // cat / dog quadruped
 
-      let baseDist = Math.sqrt(dR*dR + dG*dG + dB*dB);
-      if (c === selectedClass) {
-        baseDist = noiseLevel * 140; // noise pulls query away from centroid
-      } else {
-        baseDist += (Math.random() * 8);
-      }
-      scores.push({ classIdx: c, name: CLASS_NAMES[c], dist: baseDist });
-    }
+      const totalDist = baseDist + (noise * 3.5);
+      return { classIdx: i, name, dist: totalDist };
+    });
 
     scores.sort((a, b) => a.dist - b.dist);
     const winner = scores[0];
 
-    // Compute softmax confidence
-    const sumExp = scores.slice(0, 5).reduce((acc, s) => acc + Math.exp(-s.dist / 40), 0);
-    const winConf = Math.min(99.4, Math.max(12.5, Math.round((Math.exp(-winner.dist / 40) / sumExp) * 1000) / 10));
+    document.getElementById('match-class').textContent = winner.name;
+    document.getElementById('match-dist').textContent = `Euclidean Dist: ${winner.dist.toFixed(2)}`;
 
-    matchClassEl.textContent = winner.name;
-    matchDistEl.textContent = `PCA Dist: ${winner.dist.toFixed(2)}`;
-    matchConfEl.textContent = `${winConf.toFixed(1)}%`;
-    if (winner.classIdx === selectedClass) {
-      matchClassEl.style.color = 'var(--accent)';
-      matchConfEl.style.color = 'var(--good)';
-    } else {
-      matchClassEl.style.color = 'var(--bad)';
-      matchConfEl.style.color = 'var(--text-3)';
-    }
+    // Top-1 Softmax confidence
+    const sumExp = scores.reduce((acc, s) => acc + Math.exp(-s.dist), 0);
+    const conf = Math.round((Math.exp(-winner.dist) / sumExp) * 100);
+    const confEl = document.getElementById('match-conf');
+    confEl.textContent = `${conf}%`;
+    confEl.style.color = conf >= 70 ? 'var(--good)' : (conf >= 40 ? '#f59e0b' : 'var(--bad)');
 
-    // Render Top 3 Matches
-    topMatchesEl.innerHTML = scores.slice(0, 3).map((item, rank) => {
-      const matchPct = Math.max(5, Math.round((1 - item.dist / 220) * 100));
+    // Render top 3 candidates
+    const topMatchesEl = document.getElementById('top-matches');
+    topMatchesEl.innerHTML = scores.slice(0, 3).map((s, rank) => {
+      const voteShare = Math.round((Math.exp(-s.dist) / sumExp) * 100);
       return `
         <div class="top-match-row">
-          <span>#${rank + 1} <b>${item.name}</b></span>
-          <span style="color:var(--text-3)">Dist: ${item.dist.toFixed(1)}</span>
-          <span style="color:var(--accent); font-weight:600;">${matchPct}% match</span>
+          <span>#${rank + 1} <b>${s.name}</b></span>
+          <span style="color:var(--muted);">d = ${s.dist.toFixed(2)}</span>
+          <span style="font-weight:600; color:${rank === 0 ? 'var(--good)' : 'var(--text)'};">${voteShare}%</span>
         </div>
       `;
     }).join('');
   }
 
   // Category buttons
-  catGrid.querySelectorAll('.cat-btn').forEach(btn => {
+  document.querySelectorAll('.cat-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      catGrid.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      selectedClass = parseInt(btn.dataset.class, 10);
-      renderPrototype();
+      selectedClass = parseInt(btn.dataset.class);
+      renderCentroid(selectedClass);
     });
   });
 
-  noiseSlider.addEventListener('input', () => {
-    noiseVal.textContent = `${noiseSlider.value}%`;
-    renderPrototype();
+  // Controls
+  document.getElementById('channel-filter').addEventListener('change', () => renderCentroid(selectedClass));
+  document.getElementById('pca-dims').addEventListener('change', () => renderCentroid(selectedClass));
+
+  const noiseSlider = document.getElementById('noise-slider');
+  noiseSlider.addEventListener('input', (e) => {
+    document.getElementById('noise-val').textContent = e.target.value + '%';
+    renderCentroid(selectedClass);
   });
 
-  contrastSlider.addEventListener('input', () => {
-    contrastVal.textContent = `${contrastSlider.value}×`;
-    renderPrototype();
+  const contrastSlider = document.getElementById('contrast-slider');
+  contrastSlider.addEventListener('input', (e) => {
+    document.getElementById('contrast-val').textContent = parseFloat(e.target.value).toFixed(1) + '×';
+    renderCentroid(selectedClass);
   });
 
-  channelFilter.addEventListener('change', renderPrototype);
-  pcaDims.addEventListener('change', renderPrototype);
-
-  // Initial render
-  renderPrototype();
+  renderCentroid(0);
 })();
 </script>
+
+<script src="assets/site.js" type="module"></script>
 
 </body>
 </html>
