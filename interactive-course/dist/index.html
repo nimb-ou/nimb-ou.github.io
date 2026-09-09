@@ -6042,7 +6042,7 @@ ${H.lab('power', 'Sample size and power calculator', 'The same formula, live. Wa
 <p>Twenty metrics at $\\alpha = 0.05$ gives a 64% chance of at least one spurious "win" ($1 - 0.95^{20}$). <b>Bonferroni</b> divides $\\alpha$ by the number of tests — safe, conservative, fine for a handful of pre-registered metrics. <b>Benjamini–Hochberg</b> controls the <i>false discovery rate</i> instead and is the right tool when screening many hypotheses and tolerating a known proportion of false positives among discoveries. Either way, declare one primary metric in advance; everything else is a guardrail or exploratory, and labelling them honestly is what separates an experiment from a fishing trip.</p>
 
 <h2><span class="sn">1.6.5</span> CUPED — the variance reduction worth knowing</h2>
-<p>With a pre-experiment covariate $X$ (last month's spend) correlated with the outcome $Y$, analyse $Y_{\\text{adj}} = Y - \\theta(X - \\mathbb{E}[X])$ with $\\theta = \\mathrm{Cov}(Y,X)/\\mathrm{Var}(X)$. The estimator stays unbiased and its variance falls by $(1-\\rho^2)$: at $\\rho = 0.6$ that is a <b>36% variance reduction</b>, so the same power arrives in 36% fewer samples — ten days instead of sixteen, for a line of arithmetic. It is the highest-leverage trick in experimentation and nearly always available, because pre-period behaviour usually predicts post-period behaviour.</p>
+<p>With a pre-experiment covariate $X$ (last month's spend) correlated with the outcome $Y$, analyse $Y_{\\text{adj}} = Y - \\theta(X - \\mathbb{E}[X])$ with $\\theta = \\mathrm{Cov}(Y,X)/\\mathrm{Var}(X)$. The estimator stays unbiased and its variance falls by $(1-\\rho^2)$: at $\\rho = 0.6$ that is a <b>36% variance reduction</b>, so the same power arrives in 36% fewer samples — ten days instead of sixteen, for a line of arithmetic. It is the most impactful technique in experimentation and nearly always available, because pre-period behaviour usually predicts post-period behaviour.</p>
 
 <h2><span class="sn">1.6.6</span> Bandits, when a fixed horizon is the wrong instrument</h2>
 <p>An A/B test deliberately wastes traffic on the losing arm for the whole run — that is the price of a clean estimate. A <b>multi-armed bandit</b> instead shifts traffic toward whatever is winning while it learns, trading estimation precision for cumulative reward.</p>
@@ -18966,7 +18966,7 @@ ${H.code(`{
     "additionalProperties": false
   }
 }`)}
-<p>Three things are doing work there. The <code>pattern</code> makes a malformed id impossible rather than merely unlikely. <code>additionalProperties: false</code> stops the model inventing plausible parameters. And the description states the tool's <b>boundary</b> — what it excludes and what to call instead — which is the single highest-leverage sentence you can write, because most tool misuse is a model reaching for the nearest tool rather than the right one.</p>
+<p>Three things are doing work there. The <code>pattern</code> makes a malformed id impossible rather than merely unlikely. <code>additionalProperties: false</code> stops the model inventing plausible parameters. And the description states the tool's <b>boundary</b> — what it excludes and what to call instead — which is the single most critical sentence you can write, because most tool misuse is a model reaching for the nearest tool rather than the right one.</p>
 
 <h2><span class="sn">5.3.2</span> The ReAct loop, and the parts people forget</h2>
 <p>Thought → Action → Observation, repeat. Everything else is an addition to it: <i>planning</i> (decompose before acting, so the trajectory is inspectable), <i>reflection</i> (critique the last result and retry), <i>memory</i> (short-term is the context window; long-term is a vector store plus periodic summarisation and compaction). Then the parts people forget: <b>termination conditions</b> — goal satisfied, iteration cap, token or dollar budget, wall clock — because an agent without a stop condition is an unbounded bill; and error handling that distinguishes retryable failures from permanent ones.</p>
@@ -19088,7 +19088,7 @@ ${H.probe([
     lede: 'Say the cost before the benefit — that ordering is itself the answer.',
     html: `
 <h2><span class="sn">5.4.1</span> Topologies</h2>
-<p><b>Orchestrator–worker</b> (one planner fans out, merges results) is the workhorse. <b>Handoffs</b> pass control between specialists. <b>Shared-state</b> designs have agents read and write a common blackboard. Routing can be deterministic (a rule) or model-decided — prefer deterministic wherever the decision is stable, because it is testable.</p>
+<p><b>Coordinator–worker</b> (one planner fans out, merges results) is the workhorse. <b>Handoffs</b> pass control between specialists. <b>Shared-state</b> designs have agents read and write a common blackboard. Routing can be deterministic (a rule) or model-decided — prefer deterministic wherever the decision is stable, because it is testable.</p>
 
 <h2><span class="sn">5.4.2</span> When multi-agent is a mistake</h2>
 <p>Every additional agent multiplies token spend, adds a coordination failure mode, and suffers <b>context rot</b> as agents work from divergent, stale views of the task. <mark>Prefer one well-scoped agent with good tools</mark> unless the work is genuinely parallel (independent subtasks, no shared state) or genuinely requires isolated roles and permissions.</p>
@@ -21867,7 +21867,7 @@ ${H.table(['Level', 'Scope you owned', 'Ambiguity you absorbed', 'The sentence t
       ['Senior (L5)', 'a system, with others contributing', 'you chose the <i>problem</i>', '"I found that our metric was wrong, changed it, and re-planned the roadmap around it"'],
       ['Staff+ (L6+)', 'multiple systems or a technical direction', 'you defined what was worth doing', '"I convinced the org to stop a project, which saved two quarters"']
     ])}
-${H.note('This is why "tell me about a project" is the highest-leverage question in the loop. The same work described as a task, a feature or a system-with-a-judgement-call maps to three different levels. Be accurate — inflating this is easy to detect on the follow-ups — but do not undersell scope you genuinely owned.')}
+${H.note('This is why "tell me about a project" is the most pivotal question in the loop. The same work described as a task, a feature or a system-with-a-judgement-call maps to three different levels. Be accurate — inflating this is easy to detect on the follow-ups — but do not undersell scope you genuinely owned.')}
 
 ${H.lab('readiness', 'Where is your prep actually weak?', 'Rate yourself honestly on each dimension. The output is an ordered plan with the specific sections to read, weighted by how much each dimension moves a hiring decision.')}
 
@@ -23625,7 +23625,7 @@ ${H.key('The one habit worth more than any of the above: <b>practise out loud, a
         why: 'The detection and the systemic fix are the parts that reveal maturity. Deflection reads as evasion.'
       },
       {
-        q: 'In an offer conversation, the highest-leverage thing to negotiate is usually…',
+        q: 'In an offer conversation, the most pivotal term to negotiate is usually…',
         options: ['sign-on bonus', 'the level, because it sets the band and the scope', 'base salary', 'start date'],
         answer: 1,
         why: 'Level determines the compensation band, the work you get, and how soon the next promotion is plausible.'

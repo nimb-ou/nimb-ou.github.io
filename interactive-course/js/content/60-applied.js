@@ -422,7 +422,7 @@ ${H.code(`{
     "additionalProperties": false
   }
 }`)}
-<p>Three things are doing work there. The <code>pattern</code> makes a malformed id impossible rather than merely unlikely. <code>additionalProperties: false</code> stops the model inventing plausible parameters. And the description states the tool's <b>boundary</b> — what it excludes and what to call instead — which is the single highest-leverage sentence you can write, because most tool misuse is a model reaching for the nearest tool rather than the right one.</p>
+<p>Three things are doing work there. The <code>pattern</code> makes a malformed id impossible rather than merely unlikely. <code>additionalProperties: false</code> stops the model inventing plausible parameters. And the description states the tool's <b>boundary</b> — what it excludes and what to call instead — which is the single most critical sentence you can write, because most tool misuse is a model reaching for the nearest tool rather than the right one.</p>
 
 <h2><span class="sn">5.3.2</span> The ReAct loop, and the parts people forget</h2>
 <p>Thought → Action → Observation, repeat. Everything else is an addition to it: <i>planning</i> (decompose before acting, so the trajectory is inspectable), <i>reflection</i> (critique the last result and retry), <i>memory</i> (short-term is the context window; long-term is a vector store plus periodic summarisation and compaction). Then the parts people forget: <b>termination conditions</b> — goal satisfied, iteration cap, token or dollar budget, wall clock — because an agent without a stop condition is an unbounded bill; and error handling that distinguishes retryable failures from permanent ones.</p>
@@ -544,7 +544,7 @@ ${H.probe([
     lede: 'Say the cost before the benefit — that ordering is itself the answer.',
     html: `
 <h2><span class="sn">5.4.1</span> Topologies</h2>
-<p><b>Orchestrator–worker</b> (one planner fans out, merges results) is the workhorse. <b>Handoffs</b> pass control between specialists. <b>Shared-state</b> designs have agents read and write a common blackboard. Routing can be deterministic (a rule) or model-decided — prefer deterministic wherever the decision is stable, because it is testable.</p>
+<p><b>Coordinator–worker</b> (one planner fans out, merges results) is the workhorse. <b>Handoffs</b> pass control between specialists. <b>Shared-state</b> designs have agents read and write a common blackboard. Routing can be deterministic (a rule) or model-decided — prefer deterministic wherever the decision is stable, because it is testable.</p>
 
 <h2><span class="sn">5.4.2</span> When multi-agent is a mistake</h2>
 <p>Every additional agent multiplies token spend, adds a coordination failure mode, and suffers <b>context rot</b> as agents work from divergent, stale views of the task. <mark>Prefer one well-scoped agent with good tools</mark> unless the work is genuinely parallel (independent subtasks, no shared state) or genuinely requires isolated roles and permissions.</p>

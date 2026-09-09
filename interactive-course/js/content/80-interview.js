@@ -44,7 +44,7 @@ ${H.table(['Level', 'Scope you owned', 'Ambiguity you absorbed', 'The sentence t
       ['Senior (L5)', 'a system, with others contributing', 'you chose the <i>problem</i>', '"I found that our metric was wrong, changed it, and re-planned the roadmap around it"'],
       ['Staff+ (L6+)', 'multiple systems or a technical direction', 'you defined what was worth doing', '"I convinced the org to stop a project, which saved two quarters"']
     ])}
-${H.note('This is why "tell me about a project" is the highest-leverage question in the loop. The same work described as a task, a feature or a system-with-a-judgement-call maps to three different levels. Be accurate — inflating this is easy to detect on the follow-ups — but do not undersell scope you genuinely owned.')}
+${H.note('This is why "tell me about a project" is the most pivotal question in the loop. The same work described as a task, a feature or a system-with-a-judgement-call maps to three different levels. Be accurate — inflating this is easy to detect on the follow-ups — but do not undersell scope you genuinely owned.')}
 
 ${H.lab('readiness', 'Where is your prep actually weak?', 'Rate yourself honestly on each dimension. The output is an ordered plan with the specific sections to read, weighted by how much each dimension moves a hiring decision.')}
 

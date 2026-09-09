@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Collections OS — Nimit Jain</title>
-<meta name="description" content="Autonomous debt collections operating system: Dagster orchestration, dbt transformations, LightGBM bounce models, and automated compliance guardrails.">
+<meta name="description" content="Autonomous debt collections operating system: Dagster pipelines, dbt transformations, LightGBM bounce models, and automated compliance guardrails.">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
@@ -28,10 +28,10 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">Enterprise Fintech · Distributed Orchestration & ML</p>
+    <p class="eyebrow">Enterprise Fintech · Distributed Pipelines & ML</p>
     <h1 style="max-width:18ch">Collections OS</h1>
     <p class="lede" style="max-width:64ch">
-      An autonomous operating system for loan portfolio debt collections. Combines schema-enforced data contracts, calibrated LightGBM bounce propensity models, dbt dimensional marts, and Dagster-orchestrated omni-channel campaigns with automated regulatory compliance guardrails (RBI / FDCPA).
+      An autonomous operating system for loan portfolio debt collections. Combines schema-enforced data contracts, calibrated LightGBM bounce propensity models, dbt dimensional marts, and Dagster-automated omni-channel campaigns with automated regulatory compliance guardrails (RBI / FDCPA).
     </p>
     <div class="row mt2">
       <a class="pill accent" href="https://github.com/nimb-ou/collections-os" target="_blank">Source on GitHub →</a>
@@ -48,7 +48,7 @@
 <section>
   <div class="wrap">
     <div class="grid grid-4">
-      <div class="card stat"><div class="label">Pipeline Engine</div><div class="value">Dagster</div><div class="sub">Asset-oriented orchestrator</div></div>
+      <div class="card stat"><div class="label">Pipeline Engine</div><div class="value">Dagster</div><div class="sub">Asset-oriented execution</div></div>
       <div class="card stat"><div class="label">Bounce Propensity</div><div class="value">0.82 AUC</div><div class="sub">Calibrated LightGBM</div></div>
       <div class="card stat"><div class="label">Data Quality</div><div class="value">100%</div><div class="sub">Strict data contracts & Soda checks</div></div>
       <div class="card stat"><div class="label">Recovery Lift</div><div class="value">+18.4%</div><div class="sub">Simulated over naive dunning</div></div>
@@ -191,7 +191,7 @@ P_{ij} = \mathbb{P}(S_{t+1} = j \mid S_t = i, \, \mathbf{x}, \, a)
     <div class="guide-section">
       <h2>2. System Architecture & Data Contracts</h2>
       <p class="muted small mb2">
-        Data flows from core banking transaction logs into dbt dimensional models, validated by automated contracts, orchestrated via Dagster software-defined assets.
+        Data flows from core banking transaction logs into dbt dimensional models, validated by automated contracts, executed via Dagster software-defined assets.
       </p>
       <pre><code>Core Banking DB (Events) 
    │

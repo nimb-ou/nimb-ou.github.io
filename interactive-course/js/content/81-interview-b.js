@@ -819,7 +819,7 @@ ${H.key('The one habit worth more than any of the above: <b>practise out loud, a
         why: 'The detection and the systemic fix are the parts that reveal maturity. Deflection reads as evasion.'
       },
       {
-        q: 'In an offer conversation, the highest-leverage thing to negotiate is usually…',
+        q: 'In an offer conversation, the most pivotal term to negotiate is usually…',
         options: ['sign-on bonus', 'the level, because it sets the band and the scope', 'base salary', 'start date'],
         answer: 1,
         why: 'Level determines the compensation band, the work you get, and how soon the next promotion is plausible.'
