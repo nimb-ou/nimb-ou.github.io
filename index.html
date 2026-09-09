@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nimit Jain — Machine Learning & Systems Engineering Portfolio</title>
-<meta name="description" content="Production machine learning, quantitative market forecasters, formal verification in Lean 4, and enterprise data operating systems built end to end.">
+<meta name="description" content="Production machine learning systems, quantitative market forecasters, formal verification in Lean 4, interactive ML courseware, and data operating systems.">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
@@ -21,6 +21,7 @@
     <a href="collections.html">Collections</a>
     <a href="navier.html">Navier-Stokes</a>
     <a href="geo-analog.html">GeoAnalog</a>
+    <a href="interactive-course/index.html" target="_blank">Interactive ML Book ↗</a>
     <a href="course.html">Course</a>
     <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
   </div>
@@ -39,6 +40,7 @@
       <a href="power.html" class="pill accent">Power Price Alpha →</a>
       <a href="collections.html" class="pill accent">Collections OS →</a>
       <a href="navier.html" class="pill accent">Navier-Stokes (Lean 4) →</a>
+      <a href="interactive-course/index.html" class="pill accent" target="_blank">Interactive ML Courseware ↗</a>
       <a href="course.html" class="pill">31 lessons →</a>
     </div>
   </div>
@@ -46,7 +48,7 @@
 
 <section>
   <div class="wrap">
-    <h2 class="mb2">Flagship Machine Learning Systems</h2>
+    <h2 class="mb2">1. Flagship Machine Learning Systems</h2>
     <div class="grid grid-2">
 
       <a class="card card-link" href="credit.html">
@@ -59,9 +61,9 @@
           against its evidence before it is shown.
         </p>
         <div class="grid grid-3 mt2" style="gap:.6rem">
-          <div><div class="stat" style="padding:0\"><div class="label">ROC-AUC</div><div class="value" data-k="credit.auc">—</div></div></div>
-          <div><div class="stat" style="padding:0\"><div class="label">Threshold</div><div class="value" data-k="credit.threshold">—</div></div></div>
-          <div><div class="stat" style="padding:0\"><div class="label">Tests</div><div class="value" data-k="credit.tests">—</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">ROC-AUC</div><div class="value" data-k="credit.auc">—</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">Threshold</div><div class="value" data-k="credit.threshold">—</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">Tests</div><div class="value" data-k="credit.tests">—</div></div></div>
         </div>
         <div class="tags mt2">
           <span class="pill">XGBoost</span><span class="pill">SHAP</span>
@@ -79,9 +81,9 @@
           battery arbitrage schedule charged for the frictions it would really pay.
         </p>
         <div class="grid grid-3 mt2" style="gap:.6rem">
-          <div><div class="stat" style="padding:0\"><div class="label">MAE vs naive</div><div class="value" data-k="power.improvement">—</div></div></div>
-          <div><div class="stat" style="padding:0\"><div class="label">Out-of-sample</div><div class="value" data-k="power.n">—</div></div></div>
-          <div><div class="stat" style="padding:0\"><div class="label">Tests</div><div class="value" data-k="power.tests">—</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">MAE vs naive</div><div class="value" data-k="power.improvement">—</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">Out-of-sample</div><div class="value" data-k="power.n">—</div></div></div>
+          <div><div class="stat" style="padding:0"><div class="label">Tests</div><div class="value" data-k="power.tests">—</div></div></div>
         </div>
         <div class="tags mt2">
           <span class="pill">XGBoost</span><span class="pill">Walk-forward</span>
@@ -96,7 +98,82 @@
 
 <section>
   <div class="wrap">
-    <h2 class="mb2">Production Infrastructure & Data Systems</h2>
+    <h2 class="mb2">2. Machine Learning Research & Foundations</h2>
+    <div class="grid grid-3">
+
+      <a class="card card-link" href="interactive-course/index.html" target="_blank">
+        <p class="eyebrow mb1">Full Interactive Web Course ↗</p>
+        <h3>Interactive AI/ML Notebook</h3>
+        <p class="muted small">
+          A complete, interactive digital curriculum teaching machine learning from mathematics up: linear algebra, probability, transformers, RAG, and agentic workflows with live KaTeX visualizers.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">Interactive Labs</span><span class="pill">KaTeX</span><span class="pill">Curriculum</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="navier.html">
+        <p class="eyebrow mb1">Formal Math & Simulation</p>
+        <h3>Navier-Stokes (Lean 4)</h3>
+        <p class="muted small">
+          Machine-checked formalization of 3D Navier-Stokes in Lean 4 mathlib alongside high-resolution pseudospectral numerical simulations studying finite-time blowup candidates.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">Lean 4</span><span class="pill">Mathlib</span><span class="pill">Pseudospectral</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="ml-memory.html">
+        <p class="eyebrow mb1">Low-Level Optimization</p>
+        <h3>Associative Digit Memory</h3>
+        <p class="muted small">
+          High-dimensional associative memory networks and weight quantization achieving 99.1% exact recall in sub-12μs pure SIMD C without backpropagation.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">C (SIMD)</span><span class="pill">Quantization</span><span class="pill">MNIST</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="cifar10-memory.html">
+        <p class="eyebrow mb1">Computer Vision</p>
+        <h3>CIFAR-10 Vision Memory</h3>
+        <p class="muted small">
+          Orthonormal associative memory prototype matrices for 3,072-dimensional natural color image classification across 10 balanced visual categories.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">Vision</span><span class="pill">NumPy</span><span class="pill">Vector Store</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="hybrid-retrieval.html">
+        <p class="eyebrow mb1">Vector Search</p>
+        <h3>Dual-Index Hybrid Retrieval</h3>
+        <p class="muted small">
+          Multi-tiered vector search combining sub-5μs exact byte-hash caching with KDTree spatial indexing and distance-weighted voting under Gaussian noise.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">KDTree</span><span class="pill">Hash Cache</span><span class="pill">Zero DB</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="credit-risk-analyzer/index.html">
+        <p class="eyebrow mb1">Agentic AI</p>
+        <h3>Credit Risk Analyzer Agent</h3>
+        <p class="muted small">
+          Automated financial statement feature extraction, risk scoring, and interactive web dashboard powered by LLM agent intelligence.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">Gemini</span><span class="pill">FastAPI</span><span class="pill">Web UI</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="mb2">3. Production Infrastructure & Distributed Systems</h2>
     <div class="grid grid-3">
 
       <a class="card card-link" href="collections.html">
@@ -117,7 +194,7 @@
           Consumer-grade geospatial intelligence engine matching global urban twins via 50-dimensional spatial POI signatures, climate normals, and ChromaDB vector retrieval.
         </p>
         <div class="tags mt2">
-          <span class="pill">ChromaDB</span><span class="pill">OSM</span><span class="pill">Gemini</span>
+          <span class="pill">ChromaDB</span><span class="pill">OSM</span><span class="pill">Streamlit</span>
         </div>
       </a>
 
@@ -132,37 +209,6 @@
         </div>
       </a>
 
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2 class="mb2">Mathematical Modeling & Deep Research</h2>
-    <div class="grid grid-3">
-
-      <a class="card card-link" href="navier.html">
-        <p class="eyebrow mb1">Formal Math & Simulation</p>
-        <h3>Navier-Stokes (Lean 4)</h3>
-        <p class="muted small">
-          Interactive theorem proving in Lean 4 mathlib formalizing 3D fluid equations alongside high-resolution pseudospectral numerical simulations of potential singularity blowups.
-        </p>
-        <div class="tags mt2">
-          <span class="pill">Lean 4</span><span class="pill">Mathlib</span><span class="pill">Fluid Dynamics</span>
-        </div>
-      </a>
-
-      <a class="card card-link" href="ml-memory.html">
-        <p class="eyebrow mb1">ML & Low-Level C</p>
-        <h3>Associative Memory</h3>
-        <p class="muted small">
-          High-dimensional associative memory networks and weight quantization delivering 12-microsecond digit recall in pure SIMD-optimized C without deep backprop.
-        </p>
-        <div class="tags mt2">
-          <span class="pill">C (SIMD)</span><span class="pill">Quantization</span><span class="pill">MNIST</span>
-        </div>
-      </a>
-
       <a class="card card-link" href="pwm.html">
         <p class="eyebrow mb1">Power Electronics</p>
         <h3>Inverter PWM Strategies</h3>
@@ -171,6 +217,28 @@
         </p>
         <div class="tags mt2">
           <span class="pill">Embedded C</span><span class="pill">STM32</span><span class="pill">Flask UI</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="splitwise.html">
+        <p class="eyebrow mb1">Optimization Microservice</p>
+        <h3>Splitwise Debt Settlement</h3>
+        <p class="muted small">
+          Greedy minimum cash-flow debt simplification engine eliminating circular balances in multi-party expense groups with JWT authentication.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">Flask</span><span class="pill">Min-Cash-Flow</span><span class="pill">Web UI</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="substack.html">
+        <p class="eyebrow mb1">Publishing Infrastructure</p>
+        <h3>Substack Growth Agent</h3>
+        <p class="muted small">
+          Ambient Chrome extension and autonomous publishing agent providing real-time SEO intelligence, pacing analysis, and subscriber engagement prediction.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">Manifest V3</span><span class="pill">FastAPI</span><span class="pill">Claude 3.5</span>
         </div>
       </a>
 

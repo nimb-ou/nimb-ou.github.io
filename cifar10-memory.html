@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CIFAR-10 Vision Associative Memory — Nimit Jain</title>
+<meta name="description" content="Visual associative memory networks for natural image classification on CIFAR-10 without backpropagation.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="collections.html">Collections</a>
+    <a href="cifar10-memory.html" class="active">CIFAR-10 Memory</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Computer Vision · Associative Networks · Vector Memory</p>
+    <h1 style="max-width:20ch">CIFAR-10 Vision Associative Memory</h1>
+    <p class="lede" style="max-width:64ch">
+      An exploration of non-backpropagation visual memory capacity. Projects 3,072-dimensional natural color image pixels into orthonormal associative memory prototype matrices, evaluating zero-gradient recall and quantization limits across 10 balanced visual categories.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/cifar10-vision-memory">Source on GitHub →</a>
+      <span class="pill">NumPy · SciPy · Vector Quantization · CIFAR-10</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Memory Store</div><div class="value">24 MB</div><div class="sub">Compressed vector store</div></div>
+      <div class="card stat"><div class="label">Input Resolution</div><div class="value">32×32×3</div><div class="sub">Raw RGB tensor</div></div>
+      <div class="card stat"><div class="label">Training Mode</div><div class="value">Direct</div><div class="sub">No gradient backprop</div></div>
+      <div class="card stat"><div class="label">Classes</div><div class="value">10 Categories</div><div class="sub">Balanced natural objects</div></div>
+    </div>
+
+    <div class="note mt2">
+      <strong>Biological Plausibility.</strong> Cortical visual associative memory stores patterns via synchronous synaptic potentiation rather than end-to-end backpropagation through time. This project implements one-shot memory formation over complex, multi-channel color natural imagery.
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section>
+  <div class="wrap">
+    <h2>1. Quick Start & Execution</h2>
+    <pre><code>git clone https://github.com/nimb-ou/cifar10-vision-memory
+cd cifar10-vision-memory
+pip install -r requirements.txt
+python3 cifar10_memorize.py</code></pre>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/cifar10-vision-memory">Repository on GitHub →</a>
+      <a class="pill" href="index.html">← Back to Overview</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs">Nimit Jain · Portfolio</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Interactive AI/ML Notebook — learn machine learning from the mathematics up</title>
+<meta name="description" content="A live, interactive course in machine learning and AI: probability, statistics, linear algebra, classical ML, deep learning, transformers, LLMs, RAG, agents, and a full ML-interview track — with playgrounds, visualisations, derivations, code drills and quizzes.">
+<link rel="stylesheet" href="vendor/katex/dist/katex.min.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <button class="iconbtn navtoggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+  <a class="brand" href="#/">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-text"><b>The Interactive AI/ML Notebook</b><i>mathematics → models → frontier systems</i></span>
+  </a>
+  <div class="topbar-actions">
+    <button class="searchtrigger" id="searchBtn" aria-label="Search"><span aria-hidden="true">⌕</span><span class="lbl">Search…</span><span class="sk"><kbd>/</kbd></span></button>
+    <button class="iconbtn" id="keysBtn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)">⌨</button>
+    <button class="iconbtn" id="themeBtn" aria-label="Toggle theme" title="Toggle light / dark">◐</button>
+  </div>
+  <div class="readbar"><i id="readbarFill"></i></div>
+</header>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar" aria-label="Curriculum">
+    <div class="sidebar-inner">
+      <div class="progress-card">
+        <div class="progress-ring"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15.9"/><circle cx="18" cy="18" r="15.9" id="progArc"/></svg><span id="progPct">0%</span></div>
+        <div class="progress-meta">
+          <b id="progDone">0 of 0 sections</b>
+          <span>Progress saves in this browser</span>
+          <button class="linkbtn" id="progReset">reset</button>
+        </div>
+      </div>
+      <div class="navfilter"><input type="search" id="navFilter" placeholder="Filter sections…" autocomplete="off" spellcheck="false" aria-label="Filter sections"></div>
+      <div id="navTree" class="navtree"></div>
+    </div>
+  </nav>
+
+  <main id="main" class="content" tabindex="-1"></main>
+</div>
+<div class="navscrim" id="navScrim"></div>
+
+<div class="searchmodal" id="searchModal" hidden>
+  <div class="searchbox">
+    <input type="search" id="searchInput" placeholder="Search — try “KL divergence”, “KV cache”, “ROC”…" autocomplete="off" spellcheck="false">
+    <div id="searchResults" class="searchresults"></div>
+    <div class="searchhint"><kbd>↑</kbd><kbd>↓</kbd> navigate · <kbd>↵</kbd> open · <kbd>esc</kbd> close</div>
+  </div>
+</div>
+
+<div class="keysheet" id="keySheet" hidden>
+  <div class="kbox">
+    <h4>Keyboard shortcuts</h4>
+    <dl>
+      <dt><kbd>/</kbd> <kbd>⌘K</kbd></dt><dd>Search everything</dd>
+      <dt><kbd>j</kbd> <kbd>k</kbd></dt><dd>Next / previous section</dd>
+      <dt><kbd>t</kbd></dt><dd>Toggle light / dark</dd>
+      <dt><kbd>m</kbd></dt><dd>Mark this section complete</dd>
+      <dt><kbd>g</kbd> then <kbd>h</kbd></dt><dd>Go home</dd>
+      <dt><kbd>g</kbd> then <kbd>d</kbd></dt><dd>Go to the drill room</dd>
+      <dt><kbd>?</kbd></dt><dd>This sheet</dd>
+      <dt><kbd>esc</kbd></dt><dd>Close anything open</dd>
+    </dl>
+  </div>
+</div>
+
+<script src="vendor/katex/dist/katex.min.js"></script>
+<script src="vendor/katex/dist/contrib/auto-render.min.js"></script>
+<script src="js/00-core.js"></script>
+<script src="js/10-viz.js"></script>
+<script src="js/20-numeric.js"></script>
+<script src="js/21-numeric-b.js"></script>
+<script src="js/30-labs-core.js"></script>
+<script src="js/content/00-home.js"></script>
+<script src="js/content/10-onramp.js"></script>
+<script src="js/content/11-onramp-b.js"></script>
+<script src="js/content/20-foundations.js"></script>
+<script src="js/content/21-foundations-b.js"></script>
+<script src="js/content/22-foundations-c.js"></script>
+<script src="js/content/30-classical-a.js"></script>
+<script src="js/content/31-classical-b.js"></script>
+<script src="js/content/32-classical-c.js"></script>
+<script src="js/content/33-classical-d.js"></script>
+<script src="js/content/40-deep.js"></script>
+<script src="js/content/41-deep-b.js"></script>
+<script src="js/content/42-deep-c.js"></script>
+<script src="js/content/50-transformers-a.js"></script>
+<script src="js/content/51-transformers-b.js"></script>
+<script src="js/content/52-transformers-c.js"></script>
+<script src="js/content/60-applied.js"></script>
+<script src="js/content/61-applied-b.js"></script>
+<script src="js/content/70-frontier.js"></script>
+<script src="js/content/71-frontier-b.js"></script>
+<script src="js/content/80-interview.js"></script>
+<script src="js/content/81-interview-b.js"></script>
+<script src="js/content/90-reference.js"></script>
+<script src="js/99-boot.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dual-Index Hybrid Retrieval Engine — Nimit Jain</title>
+<meta name="description" content="Sub-millisecond hybrid vector retrieval architecture combining exact hash caching with KDTree spatial indexing and reciprocal rank fusion.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="collections.html">Collections</a>
+    <a href="hybrid-retrieval.html" class="active">Hybrid Retrieval</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Vector Search · Information Retrieval · Algorithm Design</p>
+    <h1 style="max-width:20ch">Dual-Index Hybrid Retrieval Engine</h1>
+    <p class="lede" style="max-width:64ch">
+      A multi-tiered vector search architecture. Routes incoming queries through an O(1) bit-exact byte hash cache (&lt;5 μs) before falling back to a spatial KDTree index with inverse distance-weighted nearest-neighbor voting — providing high throughput and robust noise resistance.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/hybrid-retrieval-engine">Source on GitHub →</a>
+      <span class="pill">Python · Scikit-Learn · KDTree · Hash-Indexing</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Cache Hit Latency</div><div class="value">&lt;5 μs</div><div class="sub">Bit-exact hash path</div></div>
+      <div class="card stat"><div class="label">Spatial Search</div><div class="value">~150 μs</div><div class="sub">KDTree nearest neighbor</div></div>
+      <div class="card stat"><div class="label">Noisy Accuracy</div><div class="value">98.4%</div><div class="sub">Gaussian noise stress test</div></div>
+      <div class="card stat"><div class="label">Dependencies</div><div class="value">Zero</div><div class="sub">No external vector DB required</div></div>
+    </div>
+
+    <div class="note mt2">
+      <strong>Engineering Rationale.</strong> Traditional vector databases run heavy similarity calculations on every incoming query, even when many requests are identical or near-duplicates. This hybrid engine decouples exact lookups from approximate nearest neighbor retrieval, cutting 95th percentile latency drastically.
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section>
+  <div class="wrap">
+    <h2>1. Quick Start & Benchmarks</h2>
+    <pre><code>git clone https://github.com/nimb-ou/hybrid-retrieval-engine
+cd hybrid-retrieval-engine
+pip install -r requirements.txt
+python3 engine.py</code></pre>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/hybrid-retrieval-engine">Repository on GitHub →</a>
+      <a class="pill" href="index.html">← Back to Overview</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs">Nimit Jain · Portfolio</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
