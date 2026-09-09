@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PWM Strategies for Voltage Source Inverters — Nimit Jain</title>
+<meta name="description" content="Analytical modeling, simulation, and microcontroller implementation of Space Vector and Discontinuous PWM strategies for 3-phase Voltage Source Inverters.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="collections.html">Collections</a>
+    <a href="pwm.html" class="active">PWM Inverters</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Power Electronics · Embedded Systems · Signal Processing</p>
+    <h1 style="max-width:20ch">PWM Strategies for Voltage Source Inverters</h1>
+    <p class="lede" style="max-width:64ch">
+      A comprehensive analytical and hardware deployment study comparing Continuous (SVPWM) and Discontinuous Pulse-Width Modulation (DPWM) algorithms for 3-phase two-level Voltage Source Inverters. Features harmonic distortion minimization, switching loss reduction by up to 33%, and practical deployment on ARM Cortex-M microcontrollers.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/pwm-simulation">Source on GitHub →</a>
+      <span class="pill">Python / NumPy · STM32 Nucleo-F411RE · C / Embedded · Matplotlib</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Switching Loss</div><div class="value">-33.3%</div><div class="sub">Under DPWM at high power factors</div></div>
+      <div class="card stat"><div class="label">THD Optimization</div><div class="value">Sub-2.5%</div><div class="sub">Optimized space vector trajectory</div></div>
+      <div class="card stat"><div class="label">Target Hardware</div><div class="value">STM32</div><div class="sub">ARM Cortex-M4 @ 100MHz</div></div>
+      <div class="card stat"><div class="label">Interactive UI</div><div class="value">Flask WebApp</div><div class="sub">Harmonic spectrum visualizer</div></div>
+    </div>
+
+    <div class="note mt2">
+      <strong>Power Engineering Context.</strong> In electric vehicle drivetrains and industrial motor controllers, inverter switching losses dominate thermal limits. Discontinuous PWM clamps each phase leg to the positive or negative DC rail for 60° of the fundamental cycle, completely eliminating switching events during peak current intervals.
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section>
+  <div class="wrap">
+    <h2>1. Methodologies Compared</h2>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>Sine-Triangle (SPWM)</h3>
+        <p class="muted small mb0">
+          Classical carrier-based modulation with third-harmonic injection to extend linear modulation index up to \(2/\sqrt{3} \approx 1.15\).
+        </p>
+      </div>
+      <div class="card">
+        <h3>Space Vector (SVPWM)</h3>
+        <p class="muted small mb0">
+          Seven-segment switching sequence in the \(\alpha\beta\) stationary reference frame, centering zero vectors to minimize total harmonic ripple.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Discontinuous (DPWM1 & DPWMMAX)</h3>
+        <p class="muted small mb0">
+          Clamping modulation strategies reducing high-frequency switching transitions by one third without compromising fundamental voltage output.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>2. Running the Interactive Visualizer</h2>
+    <pre><code>git clone https://github.com/nimb-ou/pwm-simulation
+cd pwm-simulation
+pip install -r requirements.txt
+
+# Run the enhanced interactive Flask visualizer
+python3 pwm-webapp-enhanced.py
+
+# Visit http://localhost:5000 in your browser</code></pre>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/pwm-simulation">Repository on GitHub →</a>
+      <a class="pill" href="index.html">← Back to Overview</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs">Nimit Jain · Portfolio</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

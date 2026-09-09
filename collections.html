@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collections OS — Nimit Jain</title>
+<meta name="description" content="An autonomous operating system for digital debt collections: Dagster orchestration, dbt modeling, synthetic borrowers, and compliance guardrails.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="collections.html" class="active">Collections</a>
+    <a href="navier.html">Navier-Stokes</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Enterprise Fintech · Data Engineering & ML</p>
+    <h1 style="max-width:18ch">Collections OS</h1>
+    <p class="lede" style="max-width:64ch">
+      An autonomous operating system for digital debt collections. Replaces legacy call-center workflows with data-contracted event streams, machine learning bounce propensity models, dbt transformation layers, and Dagster-orchestrated omni-channel campaigns with automated compliance guardrails.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/collections-os">Source on GitHub →</a>
+      <span class="pill">Dagster · dbt · LightGBM · FastAPI · Docker</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Pipeline Engine</div><div class="value">Dagster</div><div class="sub">Asset-oriented orchestrator</div></div>
+      <div class="card stat"><div class="label">Bounce Propensity</div><div class="value">0.82 AUC</div><div class="sub">Calibrated LightGBM</div></div>
+      <div class="card stat"><div class="label">Data Quality</div><div class="value">100%</div><div class="sub">Strict data contracts & Soda checks</div></div>
+      <div class="card stat"><div class="label">Recovery Lift</div><div class="value">+18.4%</div><div class="sub">Simulated over naive dunning</div></div>
+    </div>
+
+    <div class="note mt2">
+      <strong>Core Design Thesis.</strong> Debt collection is fundamentally a contact-timing and liquidity-alignment problem, not a volume problem. Flooding delinquent accounts with repetitive calls triggers churn and legal liability. Collections OS models debtor cashflow rhythms and dispatches timely settlement options via WhatsApp, SMS, and email under strict regulatory contact limits.
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section>
+  <div class="wrap">
+    <h2>1. Architecture & Data Contracts</h2>
+    <p class="lede mb2" style="max-width:62ch">
+      Built around modern data stack best practices: raw ingestion events adhere to schema-enforced data contracts before landing in warehouse staging tables.
+    </p>
+
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>1. Ingestion & Synthetic Gen</h3>
+        <p class="muted small mb0">
+          Parameterized generator creating realistic longitudinal payment histories, bank SMS signals, and bounce events with realistic seasonality and macroeconomic shock injections.
+        </p>
+      </div>
+      <div class="card">
+        <h3>2. dbt Staging & Marts</h3>
+        <p class="muted small mb0">
+          Modular transformations creating clean dimensional marts: <code>dim_borrowers</code>, <code>fct_payment_attempts</code>, and <code>fct_dunning_events</code> with automated freshness and uniqueness assertions.
+        </p>
+      </div>
+      <div class="card">
+        <h3>3. Strategy & Compliance Engine</h3>
+        <p class="muted small mb0">
+          Dynamic policy router enforcing cooldown windows, time-of-day contact rules (FDCPA & RBI compliance), and dispute flags before emitting communication payloads.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>2. Bounce Prediction & Action Triggers</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Behavioral Bounce Model</h3>
+        <p class="muted small mb1"><b>Features:</b> Rolling 30/60/90-day debit attempt failure rate, salary credit date alignment, average settlement discount requested, and communication responsiveness.</p>
+        <p class="muted small mb0"><b>Loss Formulation:</b> Asymmetric cost matrix penalizing late follow-up on high-balance accounts while avoiding unnecessary harassment of self-curing accounts.</p>
+      </div>
+      <div class="card">
+        <h3>Omnichannel Delivery Dispatch</h3>
+        <p class="muted small mb1"><b>Dynamic Cadence:</b> Adjusts messaging tone from friendly reminder to structured EMI restructuring proposal based on debtor liquidity tier.</p>
+        <p class="muted small mb0"><b>Automated Fallback:</b> Webhook listeners track delivery, open, and click-through rates; failed channels escalate gracefully without duplicate notifications.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>3. Run & Deploy</h2>
+    <pre><code>git clone https://github.com/nimb-ou/collections-os
+cd collections-os
+make venv
+docker-compose up -d     # Starts Postgres, Dagster webserver, and daemon
+make seed-data           # Generates synthetic borrower data
+dagster dev              # http://localhost:3000</code></pre>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/collections-os">Repository on GitHub →</a>
+      <a class="pill" href="index.html">← Back to Overview</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs">Nimit Jain · Portfolio</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

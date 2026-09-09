@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peer Review System — Nimit Jain</title>
+<meta name="description" content="AI-powered continuous peer feedback system: behavioral trend detection, Isolation Forest anomaly scoring, and LLM-synthesized manager recommendations.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="collections.html">Collections</a>
+    <a href="peer-review.html" class="active">Peer Review</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Applied AI · Psychometrics · Streamlit</p>
+    <h1 style="max-width:18ch">AI-Powered Peer Review System</h1>
+    <p class="lede" style="max-width:64ch">
+      A lightweight, continuous organizational dynamics system. Tracks daily micro-feedback across 4 behavioral dimensions, runs Isolation Forest anomaly detection to catch burnout or friction early, and uses grounded LLM summarization to turn noisy signals into constructive 1-on-1 coaching plans.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/peer-review-system">Source on GitHub →</a>
+      <span class="pill">Streamlit · Scikit-Learn · SQLite · Gemini API · Docker</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Review Time</div><div class="value">30 sec</div><div class="sub">Frictionless daily input</div></div>
+      <div class="card stat"><div class="label">Anomaly Detector</div><div class="value">Isolation Forest</div><div class="sub">Sudden withdrawal detection</div></div>
+      <div class="card stat"><div class="label">LLM Guidance</div><div class="value">Grounded</div><div class="sub">Rule-based fallback available</div></div>
+      <div class="card stat"><div class="label">Deployment</div><div class="value">Ready</div><div class="sub">Render, Railway & Streamlit Cloud</div></div>
+    </div>
+
+    <div class="note mt2">
+      <strong>Organizational Thesis.</strong> Annual 360 performance reviews suffer from recency bias, political posturing, and lag reality by months. High-performing engineering teams need high-frequency, low-stakes micro-feedback that highlights collaboration patterns and surfaces interpersonal blockers before they turn into resignations or missed deadlines.
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section>
+  <div class="wrap">
+    <h2>1. Behavioral Framework & ML Models</h2>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>1. Micro-Descriptors</h3>
+        <p class="muted small mb0">
+          Replaces subjective grading with four concrete behavioral states: <b>Collaborative</b> (4.0), <b>Neutral</b> (3.0), <b>Withdrawn</b> (2.0), and <b>Blocking</b> (1.0).
+        </p>
+      </div>
+      <div class="card">
+        <h3>2. Rolling Velocity & Trends</h3>
+        <p class="muted small mb0">
+          Engineers 7-day and 14-day exponential moving averages, score volatility, and mutual review reciprocity to filter individual bad days from genuine trend shifts.
+        </p>
+      </div>
+      <div class="card">
+        <h3>3. Anomaly & Archetype Clustering</h3>
+        <p class="muted small mb0">
+          Unsupervised clustering segments team members into interaction archetypes (e.g. core amplifiers, quiet executors, friction points) to guide coaching interventions.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>2. Streamlit Dashboard & LLM Synthesis</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Interactive Team Dashboard</h3>
+        <p class="muted small mb1"><b>Team Overview:</b> Real-time distribution of collaboration health scores, active team friction hotspots, and participation metrics.</p>
+        <p class="muted small mb0"><b>Privacy Safeguards:</b> Optional aggregate anonymization prevents retaliatory scoring and guarantees psychological safety.</p>
+      </div>
+      <div class="card">
+        <h3>Actionable 1-on-1 Insights</h3>
+        <p class="muted small mb1"><b>Grounded LLM Feedback:</b> Synthesizes qualitative comments and numerical scores into structured talking points for engineering managers.</p>
+        <p class="muted small mb0"><b>Reliable Fallback:</b> Functions fully offline with deterministic heuristics when LLM API keys are not provided.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>3. Running Locally</h2>
+    <pre><code>git clone https://github.com/nimb-ou/peer-review-system
+cd peer-review-system
+pip install -r requirements.txt
+python src/data_generator.py   # Seed realistic 60-day team history
+python src/ml_pipeline.py      # Train anomaly models
+streamlit run streamlit_app/app.py</code></pre>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/peer-review-system">Repository on GitHub →</a>
+      <a class="pill" href="index.html">← Back to Overview</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs">Nimit Jain · Portfolio</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Navier-Stokes & Euler Lean 4 Formalization — Nimit Jain</title>
+<meta name="description" content="Formal verification of 3D incompressible Navier-Stokes and Euler equations in Lean 4 mathlib, finite difference simulation, and singularity analysis.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="collections.html">Collections</a>
+    <a href="navier.html" class="active">Navier-Stokes</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Formal Mathematics · Fluid Dynamics · Numerical Simulation</p>
+    <h1 style="max-width:20ch">Navier-Stokes & Euler in Lean 4</h1>
+    <p class="lede" style="max-width:64ch">
+      A dual-track mathematical research system: rigorous machine-checked formalization of the 3D incompressible Navier-Stokes and Euler equations in the Lean 4 interactive theorem prover, alongside high-precision pseudospectral and finite-difference numerical simulations studying finite-time blowup candidates.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/Navier-stokes">Source on GitHub →</a>
+      <span class="pill">Lean 4 · Mathlib · Python / NumPy · WebGL Visualization</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Theorem Prover</div><div class="value">Lean 4</div><div class="sub">Checked with Mathlib v4</div></div>
+      <div class="card stat"><div class="label">Energy Conservation</div><div class="value">Proven</div><div class="sub">Formal proof in Euler.lean</div></div>
+      <div class="card stat"><div class="label">Blowup Resolution</div><div class="value">1024³ Grid</div><div class="sub">Pseudospectral solver</div></div>
+      <div class="card stat"><div class="label">Interactive Lab</div><div class="value">HTML5 / Katex</div><div class="sub">Self-contained browser UI</div></div>
+    </div>
+
+    <div class="note mt2">
+      <strong>The Clay Millennium Problem Context.</strong> The Navier-Stokes existence and smoothness problem asks whether smooth, physically reasonable solutions exist globally for all time in three dimensions. This project combines formal verification of known analytical bounds (Sobolev embedding, Leray-Hopf weak solutions, Kato-Ponce inequalities) with computational searches for potential singularity blowups.
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section>
+  <div class="wrap">
+    <h2>1. Lean 4 Formalization Highlights</h2>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>Euler.lean</h3>
+        <p class="muted small mb0">
+          Formal definition of the inviscid Euler momentum balance on torus \(\mathbb{T}^3\), divergence-free vector field constraints, and complete machine-verified proof of kinetic energy conservation for smooth solutions.
+        </p>
+      </div>
+      <div class="card">
+        <h3>NavierStokes.lean</h3>
+        <p class="muted small mb0">
+          Viscous dissipative operator formulation with positive kinematic viscosity \(\nu > 0\), pressure projection via Leray projector, and energy inequality formalization bounded by initial kinetic energy.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Mathlib Integration</h3>
+        <p class="muted small mb0">
+          Leverages Lean 4 calculus, Sobolev spaces \(H^s(\mathbb{R}^3)\), and distribution theory to formalize weak solutions without unproven axioms.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>2. Numerical Simulation & Visualizer</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Singularity Simulation Suite</h3>
+        <p class="muted small mb1"><b>Initial Conditions:</b> Perturbed Taylor-Green vortex and anti-parallel vortex tube configurations designed to maximize enstrophy growth.</p>
+        <p class="muted small mb0"><b>Adaptive Timestepping:</b> Runge-Kutta 4th order with dynamic CFL condition tracking rapid gradient steepening up to \(t = 0.90\).</p>
+      </div>
+      <div class="card">
+        <h3>Web-Based Interactive Explainer</h3>
+        <p class="muted small mb1"><b>Built-in Web Lab:</b> Self-contained interactive simulator in <code>docs/index.html</code> with KaTeX mathematical derivations and real-time slice plots.</p>
+        <p class="muted small mb0"><b>Static Plot Gallery:</b> Rendered vorticity isosurfaces and cross-sectional velocity profiles demonstrating boundary layer dissipation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>3. Building and Verifying</h2>
+    <pre><code># Formal verification via Lean 4
+lake build
+
+# Run numerical simulation
+python3 simulation/run_cli.py --resolution 256 --dt 0.001 --steps 1000
+
+# View interactive research paper
+open docs/index.html</code></pre>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/Navier-stokes">Repository on GitHub →</a>
+      <a class="pill" href="index.html">← Back to Overview</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs">Nimit Jain · Portfolio</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

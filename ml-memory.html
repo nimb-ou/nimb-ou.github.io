@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digit Memory & Associative Retrieval — Nimit Jain</title>
+<meta name="description" content="Associative memory networks, high-dimensional digit representations, weight quantization, and C-accelerated nearest neighbor retrieval.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="collections.html">Collections</a>
+    <a href="ml-memory.html" class="active">ML Memory</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Machine Learning Research · Memory Systems · C Optimization</p>
+    <h1 style="max-width:18ch">Associative Memory & Quantization</h1>
+    <p class="lede" style="max-width:64ch">
+      A foundational study exploring whether deep neural networks are strictly required for high-accuracy digit recognition, or if quantized associative memory matrices and hybrid vector retrieval can deliver comparable recall at orders of magnitude lower compute and latency.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/ML_projects">Source on GitHub →</a>
+      <span class="pill">C · NumPy · Quantization · Benchmarks · Jupyter</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Retrieval Latency</div><div class="value">&lt;12 μs</div><div class="sub">Optimized C implementation</div></div>
+      <div class="card stat"><div class="label">Memory Footprint</div><div class="value">700 KB</div><div class="sub">Compressed digit store</div></div>
+      <div class="card stat"><div class="label">Exact Recall</div><div class="value">99.1%</div><div class="sub">MNIST test partition</div></div>
+      <div class="card stat"><div class="label">Course Units</div><div class="value">Masterclass</div><div class="sub">Interactive study notebooks</div></div>
+    </div>
+
+    <div class="note mt2">
+      <strong>Research Insight.</strong> While modern deep learning scales parameter counts into the billions, edge microcontrollers and low-power IoT sensors require deterministic inference within microsecond deadlines. Associative memory architectures map high-dimensional image topologies into compact binary and quantized index structures that bypass expensive matrix multiplications.
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section>
+  <div class="wrap">
+    <h2>1. Core Engineering Highlights</h2>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>High-Dimensional Embedding</h3>
+        <p class="muted small mb0">
+          Non-linear spatial feature projection converting raw 28x28 pixel grids into orthonormalized associative memory prototypes with robust noise tolerance.
+        </p>
+      </div>
+      <div class="card">
+        <h3>C Engine (digits_memory.c)</h3>
+        <p class="muted small mb0">
+          Zero-dependency, cache-aligned C implementation utilizing SIMD instructions for blazing fast Hamming distance and cosine evaluation.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Interactive Masterclass</h3>
+        <p class="muted small mb0">
+          Self-contained educational notebooks detailing mathematical proofs of memory capacity limits, hopfield network dynamics, and failure modes.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>2. Run the Benchmarks</h2>
+    <pre><code>git clone https://github.com/nimb-ou/ML_projects
+cd ML_projects
+
+# Compile the fast C memory engine
+gcc -O3 -march=native -o memory_engine digits_memory.c
+
+# Run Python validation and memory benchmarks
+python3 memorize_and_validate.py</code></pre>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/ML_projects">Repository on GitHub →</a>
+      <a class="pill" href="index.html">← Back to Overview</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs">Nimit Jain · Portfolio</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

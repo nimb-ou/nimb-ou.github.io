@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GeoAnalog v2 — Nimit Jain</title>
+<meta name="description" content="Geographic intelligence and neighborhood analog search: 50-dimensional spatial signatures, ChromaDB cosine similarity, and natural language intent routing.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Nimit Jain</a>
+    <a href="credit.html">Credit</a>
+    <a href="power.html">Power</a>
+    <a href="collections.html">Collections</a>
+    <a href="geo-analog.html" class="active">GeoAnalog</a>
+    <a href="course.html">Course</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Spatial AI · Vector Search · Urban Analytics</p>
+    <h1 style="max-width:18ch">GeoAnalog v2</h1>
+    <p class="lede" style="max-width:64ch">
+      A consumer-grade geographic intelligence engine. Maps any location on Earth into a 50-dimensional spatial signature combining 25 OpenStreetMap POI distributions, Open-Meteo climate normals, and World Bank macro indicators — retrieving worldwide neighborhood analogs and evaluating retail business viability.
+    </p>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/geo-analog">Source on GitHub →</a>
+      <span class="pill">ChromaDB · OpenStreetMap · Gemini Flash · Streamlit · Python</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Vector Signature</div><div class="value">50-dim</div><div class="sub">POIs, climate & macro</div></div>
+      <div class="card stat"><div class="label">Vector Index</div><div class="value">ChromaDB</div><div class="sub">Cosine similarity search</div></div>
+      <div class="card stat"><div class="label">Disk Caching</div><div class="value">90 Days</div><div class="sub">SHA-256 keyed Overpass cache</div></div>
+      <div class="card stat"><div class="label">Health Checks</div><div class="value">8/8 Passed</div><div class="sub">Automated pipeline verification</div></div>
+    </div>
+
+    <div class="note mt2">
+      <strong>The Analog Search Problem.</strong> Traditional real estate and commercial planning evaluates locations through crude zip-code medians. GeoAnalog constructs dense feature embeddings from high-resolution spatial points-of-interest (within 1km radius), matching urban vibes across continents (e.g. finding that Williamsburg Brooklyn directly matches Le Marais in Paris and Belleville).
+    </div>
+  </div>
+</section>
+
+<hr class="wrap" style="max-width:var(--maxw)">
+
+<section>
+  <div class="wrap">
+    <h2>1. Four Core Capabilities</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>1. Neighborhood Vibe & Profile</h3>
+        <p class="muted small mb0">
+          Evaluates any global address with A–F scores across 5 urban dimensions (walkability, transit access, community spaces, lifestyle density, and convenience) alongside matched global twins.
+        </p>
+      </div>
+      <div class="card">
+        <h3>2. Relocation Decision Engine</h3>
+        <p class="muted small mb0">
+          Head-to-head comparison for 2–4 candidate locations calibrated by demographic persona (young professional, family, remote worker, student).
+        </p>
+      </div>
+      <div class="card mt2">
+        <h3>3. Commercial Business Viability</h3>
+        <p class="muted small mb0">
+          Feasibility scoring for 10+ retail categories (cafés, gyms, boutiques, dental clinics) calculating category saturation, complementary foot-traffic, and cluster strength.
+        </p>
+      </div>
+      <div class="card mt2">
+        <h3>4. 5-Year Trajectory Forecasting</h3>
+        <p class="muted small mb0">
+          Predictive urban lifecycle modeling matching a neighborhood's current archetype against historical analog progressions over time.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>2. System Architecture</h2>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>SmartRouter (Gemini)</h3>
+        <p class="muted small mb0">
+          Zero-shot entity resolution and intent parser turning arbitrary natural-language questions into structured API requests with graceful local regex fallbacks.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Spatial Signature Assembler</h3>
+        <p class="muted small mb0">
+          Normalizes Overpass 1km POI histograms, temperature seasonalities, and country-level GDP metrics into unit-scaled continuous vectors.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Fast Vector Retrieval</h3>
+        <p class="muted small mb0">
+          ChromaDB embedding index querying 98 hand-verified reference urban archetypes in &lt;15ms.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>3. Launch Locally</h2>
+    <pre><code>git clone https://github.com/nimb-ou/geo-analog
+cd geo-analog
+pip install -r requirements.txt
+./run.sh health         # Runs all 8 system checks
+./run.sh                # Launches consumer dashboard at http://localhost:8501</code></pre>
+    <div class="row mt2">
+      <a class="pill accent" href="https://github.com/nimb-ou/geo-analog">Repository on GitHub →</a>
+      <a class="pill" href="index.html">← Back to Overview</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row between">
+      <div><a href="index.html">← All projects</a></div>
+      <div class="xs">Nimit Jain · Portfolio</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

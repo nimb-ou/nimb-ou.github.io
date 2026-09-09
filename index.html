@@ -3,12 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nimit Jain — Machine learning projects</title>
-<meta name="description" content="Two production-shaped machine learning systems, built end to end: a credit decisioning service with a grounded LLM layer, and a GB electricity price forecaster with a battery arbitrage backtest.">
+<title>Nimit Jain — Machine Learning & Systems Engineering Portfolio</title>
+<meta name="description" content="Production machine learning, quantitative market forecasters, formal verification in Lean 4, and enterprise data operating systems built end to end.">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
 <script>
-  // Before paint, so there is no flash of the wrong theme.
   try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
 </script>
 </head>
@@ -19,6 +18,9 @@
     <a href="index.html" class="brand">Nimit Jain</a>
     <a href="credit.html">Credit</a>
     <a href="power.html">Power</a>
+    <a href="collections.html">Collections</a>
+    <a href="navier.html">Navier-Stokes</a>
+    <a href="geo-analog.html">GeoAnalog</a>
     <a href="course.html">Course</a>
     <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
   </div>
@@ -26,17 +28,17 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">Machine learning · Python · Applied statistics</p>
-    <h1 style="max-width:16ch">Two systems, built to be checked.</h1>
-    <p class="lede" style="max-width:60ch">
-      Not notebooks. Two working services with real data, tests that assert the hard parts,
-      CI that re-measures every claim on every push, and a written course that teaches how
-      each one was built.
+    <p class="eyebrow">Machine Learning · Quantitative Systems · Applied Statistics</p>
+    <h1 style="max-width:18ch">Systems, built to be checked.</h1>
+    <p class="lede" style="max-width:62ch">
+      Not toy notebooks. Production-shaped services with real data, formal machine-checked proofs, tests that assert the hard parts, and automated pipelines that re-measure every claim.
     </p>
 
-    <div class="row mt2">
+    <div class="row mt2" style="flex-wrap: wrap; gap: 0.6rem;">
       <a href="credit.html" class="pill accent">Loan Underwriting Copilot →</a>
       <a href="power.html" class="pill accent">Power Price Alpha →</a>
+      <a href="collections.html" class="pill accent">Collections OS →</a>
+      <a href="navier.html" class="pill accent">Navier-Stokes (Lean 4) →</a>
       <a href="course.html" class="pill">31 lessons →</a>
     </div>
   </div>
@@ -44,6 +46,7 @@
 
 <section>
   <div class="wrap">
+    <h2 class="mb2">Flagship Machine Learning Systems</h2>
     <div class="grid grid-2">
 
       <a class="card card-link" href="credit.html">
@@ -56,9 +59,9 @@
           against its evidence before it is shown.
         </p>
         <div class="grid grid-3 mt2" style="gap:.6rem">
-          <div><div class="stat" style="padding:0"><div class="label">ROC-AUC</div><div class="value" data-k="credit.auc">—</div></div></div>
-          <div><div class="stat" style="padding:0"><div class="label">Decision threshold</div><div class="value" data-k="credit.threshold">—</div></div></div>
-          <div><div class="stat" style="padding:0"><div class="label">Tests</div><div class="value" data-k="credit.tests">—</div></div></div>
+          <div><div class="stat" style="padding:0\"><div class="label">ROC-AUC</div><div class="value" data-k="credit.auc">—</div></div></div>
+          <div><div class="stat" style="padding:0\"><div class="label">Threshold</div><div class="value" data-k="credit.threshold">—</div></div></div>
+          <div><div class="stat" style="padding:0\"><div class="label">Tests</div><div class="value" data-k="credit.tests">—</div></div></div>
         </div>
         <div class="tags mt2">
           <span class="pill">XGBoost</span><span class="pill">SHAP</span>
@@ -76,9 +79,9 @@
           battery arbitrage schedule charged for the frictions it would really pay.
         </p>
         <div class="grid grid-3 mt2" style="gap:.6rem">
-          <div><div class="stat" style="padding:0"><div class="label">MAE vs best naive</div><div class="value" data-k="power.improvement">—</div></div></div>
-          <div><div class="stat" style="padding:0"><div class="label">Out-of-sample</div><div class="value" data-k="power.n">—</div></div></div>
-          <div><div class="stat" style="padding:0"><div class="label">Tests</div><div class="value" data-k="power.tests">—</div></div></div>
+          <div><div class="stat" style="padding:0\"><div class="label">MAE vs naive</div><div class="value" data-k="power.improvement">—</div></div></div>
+          <div><div class="stat" style="padding:0\"><div class="label">Out-of-sample</div><div class="value" data-k="power.n">—</div></div></div>
+          <div><div class="stat" style="padding:0\"><div class="label">Tests</div><div class="value" data-k="power.tests">—</div></div></div>
         </div>
         <div class="tags mt2">
           <span class="pill">XGBoost</span><span class="pill">Walk-forward</span>
@@ -93,78 +96,114 @@
 
 <section>
   <div class="wrap">
-    <h2>What I was actually trying to demonstrate</h2>
-    <p class="lede mb2" style="max-width:62ch">
-      Both projects are built around the same idea: a result is worth what its verification is
-      worth. Most of the engineering in each repository exists to make a claim checkable rather
-      than to make it larger.
-    </p>
-
+    <h2 class="mb2">Production Infrastructure & Data Systems</h2>
     <div class="grid grid-3">
-      <div class="card">
-        <h3>Measured, not remembered</h3>
-        <p class="muted small mb0">
-          Every number quoted anywhere — this site, the READMEs, the model card — is read from a
-          <code>metrics.json</code> that regenerates from raw data on every push. Nothing is
-          typed by hand, so nothing can quietly drift from the model it describes.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Reported against the hardest comparison</h3>
-        <p class="muted small mb0">
-          The forecasting project declares its baseline before fitting, then discovers the
-          declared one is not the hardest — and quotes the smaller improvement against the
-          hardest instead. The credit model's headline sits next to a logistic regression that
-          beats it on the holdout.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Negative results kept</h3>
-        <p class="muted small mb0">
-          The retrieval layer was supposed to improve accuracy. It slightly degrades it, so the
-          lesson says so and keeps the layer for a different, stated reason. A hypothesis about
-          missing-data patterns was tested, rejected, and left in the docstring.
-        </p>
-      </div>
-    </div>
 
-    <div class="grid grid-3 mt2">
-      <div class="card">
-        <h3>The bugs are in the history</h3>
-        <p class="muted small mb0">
-          A strategy reporting a Sharpe of 50 by trading a spread no instrument pays. A Docker
-          path bug that reported <code>model_loaded: false</code> with no error. A segfault that
-          105 passing tests never saw. Each is a commit with the reasoning attached.
+      <a class="card card-link" href="collections.html">
+        <p class="eyebrow mb1">Fintech Infrastructure</p>
+        <h3>Collections OS</h3>
+        <p class="muted small">
+          An autonomous operating system for digital debt collections: Dagster orchestration, dbt transformations, LightGBM bounce models, and automated compliance guardrails.
         </p>
-      </div>
-      <div class="card">
-        <h3>Statistics that can say "no"</h3>
-        <p class="muted small mb0">
-          The fairness test was replaced after the first version flagged all three protected
-          attributes — because a bootstrap around a minimum-over-groups is biased, not because
-          the model was unfair. The replacement finds one real disparity instead of three.
+        <div class="tags mt2">
+          <span class="pill">Dagster</span><span class="pill">dbt</span><span class="pill">LightGBM</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="geo-analog.html">
+        <p class="eyebrow mb1">Spatial Intelligence</p>
+        <h3>GeoAnalog v2</h3>
+        <p class="muted small">
+          Consumer-grade geospatial intelligence engine matching global urban twins via 50-dimensional spatial POI signatures, climate normals, and ChromaDB vector retrieval.
         </p>
-      </div>
-      <div class="card">
-        <h3>Built as a taught course</h3>
-        <p class="muted small mb0">
-          31 lessons that derive each decision before writing the code, with exercises and
-          worked solutions. Several exercises are designed so the obvious approach fails
-          instructively.
+        <div class="tags mt2">
+          <span class="pill">ChromaDB</span><span class="pill">OSM</span><span class="pill">Gemini</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="peer-review.html">
+        <p class="eyebrow mb1">Applied AI & Psychometrics</p>
+        <h3>Peer Review System</h3>
+        <p class="muted small">
+          Continuous team dynamics analytics: Isolation Forest behavioral anomaly detection, interaction archetype clustering, and grounded LLM 1-on-1 coaching plans.
         </p>
-      </div>
+        <div class="tags mt2">
+          <span class="pill">Streamlit</span><span class="pill">Scikit-Learn</span><span class="pill">SQLite</span>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <div class="callout">
-      <strong>How to read this site.</strong> The interactive parts run on the real scored
-      output of each pipeline — the held-out applicants with their actual probabilities and
-      SHAP values, and the out-of-sample forecasts with their actual errors. The arithmetic in
-      the browser is live; the model that produced the numbers ran offline. Where a chart could
-      be mistaken for a live model, it says so.
+    <h2 class="mb2">Mathematical Modeling & Deep Research</h2>
+    <div class="grid grid-3">
+
+      <a class="card card-link" href="navier.html">
+        <p class="eyebrow mb1">Formal Math & Simulation</p>
+        <h3>Navier-Stokes (Lean 4)</h3>
+        <p class="muted small">
+          Interactive theorem proving in Lean 4 mathlib formalizing 3D fluid equations alongside high-resolution pseudospectral numerical simulations of potential singularity blowups.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">Lean 4</span><span class="pill">Mathlib</span><span class="pill">Fluid Dynamics</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="ml-memory.html">
+        <p class="eyebrow mb1">ML & Low-Level C</p>
+        <h3>Associative Memory</h3>
+        <p class="muted small">
+          High-dimensional associative memory networks and weight quantization delivering 12-microsecond digit recall in pure SIMD-optimized C without deep backprop.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">C (SIMD)</span><span class="pill">Quantization</span><span class="pill">MNIST</span>
+        </div>
+      </a>
+
+      <a class="card card-link" href="pwm.html">
+        <p class="eyebrow mb1">Power Electronics</p>
+        <h3>Inverter PWM Strategies</h3>
+        <p class="muted small">
+          Space Vector and Discontinuous PWM algorithms for 3-phase Voltage Source Inverters cutting switching losses by 33% on STM32 ARM Cortex-M4 hardware.
+        </p>
+        <div class="tags mt2">
+          <span class="pill">Embedded C</span><span class="pill">STM32</span><span class="pill">Flask UI</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Engineering Principles</h2>
+    <p class="lede mb2" style="max-width:62ch">
+      Most of the engineering across each repository exists to make claims verifiable rather than merely impressive.
+    </p>
+
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>Measured, not remembered</h3>
+        <p class="muted small mb0">
+          Key performance metrics are read from automated build artifacts that regenerate from raw data on every push. Nothing is typed by hand.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Reported against hard baselines</h3>
+        <p class="muted small mb0">
+          Models are benchmarked against the strongest domain baselines, not easy strawmen. Improvements are tested across regime changes.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Negative results preserved</h3>
+        <p class="muted small mb0">
+          Hypotheses that failed in testing are preserved and documented in code comments and ablation tables rather than swept under the rug.
+        </p>
+      </div>
     </div>
   </div>
 </section>
@@ -174,7 +213,8 @@
     <div class="row between">
       <div>
         Built by Nimit Jain ·
-        <a href="mailto:nimitjain.248@gmail.com">nimitjain.248@gmail.com</a>
+        <a href="mailto:nimitjain.248@gmail.com">nimitjain.248@gmail.com</a> ·
+        <a href="https://github.com/nimb-ou">GitHub Profile</a>
       </div>
       <div class="xs" data-k="build.stamp">—</div>
     </div>
@@ -198,13 +238,10 @@ try {
   set("credit.threshold", fmt.pct(credit.model.threshold, 1));
   set("power.improvement", fmt.pct(power.headline.improvement_vs_strongest, 0));
   set("power.n", fmt.int(power.headline.n_predictions));
-  // Both counts come from `pytest --collect-only` at export time. Hardcoding
-  // them here is what made the site advertise 117 tests for a suite of 201.
   set("credit.tests", fmt.int(credit.meta?.tests));
   set("power.tests", fmt.int(power.meta?.tests));
   set("build.stamp", `credit @ ${credit.generated_from_commit ?? "—"} · power @ ${power.generated_from_commit ?? "—"}`);
 } catch (error) {
-  // The landing page is readable without live numbers; leave the em-dashes.
   console.warn("stat load failed", error);
 }
 </script>
