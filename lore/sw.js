@@ -4,8 +4,8 @@
  * - Same-origin assets: cache first. Cross-origin API calls (Wikipedia, Overpass, Gemini) are never
  *   touched here: stories and places are cached in IndexedDB by the app.
  * All paths are relative to the worker's location, so it works under any base path (e.g. /lore/). */
-const VERSION = "eb9b1e15f0ad";
-const PRECACHE = ["./","assets/fraunces-B2S8_hai.woff2","assets/index-CztMxnyy.css","assets/index-DDA4u8y6.js","assets/inter-9GvP5jGv.woff2","assets/jetbrains-mono-B8NcMHdO.woff2","icons/apple-touch-icon.png","icons/favicon.svg","icons/icon-1024.png","icons/icon-192.png","icons/icon-512.png","icons/icon-maskable-512.png","icons/lore-app-icon.svg","icons/lore-symbol-bone.svg","icons/lore-symbol-ink.svg","icons/lore-symbol-terracotta.svg","index.html","manifest.webmanifest"];
+const VERSION = "361e167307ca";
+const PRECACHE = ["./","assets/fraunces-B2S8_hai.woff2","assets/index-BtgqL6BP.js","assets/index-CztMxnyy.css","assets/inter-9GvP5jGv.woff2","assets/jetbrains-mono-B8NcMHdO.woff2","icons/apple-touch-icon.png","icons/favicon.svg","icons/icon-1024.png","icons/icon-192.png","icons/icon-512.png","icons/icon-maskable-512.png","icons/lore-app-icon.svg","icons/lore-symbol-bone.svg","icons/lore-symbol-ink.svg","icons/lore-symbol-terracotta.svg","index.html","manifest.webmanifest"];
 const CACHE = `lore-field-${VERSION}`;
 const SHELL = new URL("./", self.location).href;
 
