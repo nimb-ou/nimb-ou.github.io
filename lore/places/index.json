@@ -1,0 +1,161 @@
+{
+ "generatedAt": "2026-11-01T09:58:39.927Z",
+ "zones": [
+  {
+   "id": "blr-cubbon",
+   "name": "Cubbon Park · MG Road",
+   "city": "Bengaluru",
+   "generatedAt": "2026-11-01T09:50:29.753Z",
+   "places": 949,
+   "kinds": {
+    "sight": 199,
+    "eat": 596,
+    "stay": 154
+   }
+  },
+  {
+   "id": "blr-pete",
+   "name": "KR Market · Fort · Chickpet",
+   "city": "Bengaluru",
+   "generatedAt": "2026-11-01T09:51:13.339Z",
+   "places": 332,
+   "kinds": {
+    "stay": 66,
+    "eat": 148,
+    "sight": 118
+   }
+  },
+  {
+   "id": "blr-basavanagudi",
+   "name": "Basavanagudi · Gandhi Bazaar",
+   "city": "Bengaluru",
+   "generatedAt": "2026-11-01T09:51:57.808Z",
+   "places": 294,
+   "kinds": {
+    "eat": 174,
+    "sight": 107,
+    "stay": 13
+   }
+  },
+  {
+   "id": "blr-malleshwaram",
+   "name": "Malleshwaram",
+   "city": "Bengaluru",
+   "generatedAt": "2026-11-01T09:52:37.742Z",
+   "places": 219,
+   "kinds": {
+    "sight": 60,
+    "eat": 154,
+    "stay": 5
+   }
+  },
+  {
+   "id": "blr-indiranagar",
+   "name": "Indiranagar",
+   "city": "Bengaluru",
+   "generatedAt": "2026-11-01T09:53:32.308Z",
+   "places": 690,
+   "kinds": {
+    "sight": 146,
+    "eat": 505,
+    "stay": 39
+   }
+  },
+  {
+   "id": "blr-koramangala",
+   "name": "Koramangala",
+   "city": "Bengaluru",
+   "generatedAt": "2026-11-01T09:54:03.927Z",
+   "places": 481,
+   "kinds": {
+    "eat": 371,
+    "stay": 42,
+    "sight": 68
+   }
+  },
+  {
+   "id": "del-cp",
+   "name": "Connaught Place · Janpath",
+   "city": "Delhi",
+   "generatedAt": "2026-11-01T09:54:34.267Z",
+   "places": 580,
+   "kinds": {
+    "sight": 110,
+    "stay": 145,
+    "eat": 325
+   }
+  },
+  {
+   "id": "del-indiagate",
+   "name": "India Gate · Kartavya Path",
+   "city": "Delhi",
+   "generatedAt": "2026-11-01T09:55:14.430Z",
+   "places": 145,
+   "kinds": {
+    "eat": 72,
+    "sight": 58,
+    "stay": 15
+   }
+  },
+  {
+   "id": "del-old",
+   "name": "Chandni Chowk · Red Fort · Jama Masjid",
+   "city": "Delhi",
+   "generatedAt": "2026-11-01T09:56:00.342Z",
+   "places": 226,
+   "kinds": {
+    "eat": 92,
+    "stay": 17,
+    "sight": 117
+   }
+  },
+  {
+   "id": "del-lodhi",
+   "name": "Lodhi Garden · Humayun's Tomb",
+   "city": "Delhi",
+   "generatedAt": "2026-11-01T09:56:30.180Z",
+   "places": 221,
+   "kinds": {
+    "sight": 117,
+    "eat": 85,
+    "stay": 19
+   }
+  },
+  {
+   "id": "del-hauzkhas",
+   "name": "Hauz Khas",
+   "city": "Delhi",
+   "generatedAt": "2026-11-01T09:57:08.214Z",
+   "places": 229,
+   "kinds": {
+    "eat": 138,
+    "sight": 47,
+    "stay": 44
+   }
+  },
+  {
+   "id": "del-mehrauli",
+   "name": "Mehrauli · Qutub Minar",
+   "city": "Delhi",
+   "generatedAt": "2026-11-01T09:57:55.632Z",
+   "places": 140,
+   "kinds": {
+    "eat": 42,
+    "sight": 89,
+    "stay": 9
+   }
+  },
+  {
+   "id": "bom-fort",
+   "name": "Fort · Kala Ghoda · Colaba",
+   "city": "Mumbai",
+   "generatedAt": "2026-11-01T09:58:34.926Z",
+   "places": 284,
+   "kinds": {
+    "eat": 147,
+    "sight": 77,
+    "stay": 60
+   }
+  }
+ ]
+}
